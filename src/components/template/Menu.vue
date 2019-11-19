@@ -1,14 +1,17 @@
-<template>
-  <aside class="menu" v-show="isMenuVisible">
 
-  </aside>
+<template>
+    <aside class="menu" v-show="isMenuVisible">
+        <div class="logo-box">
+            <img src="../../assets/ComPano.jpg" class="logo-img" alt="Logo" v-show="this.$store.state.isMenuVisible">
+        </div>
+    </aside>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 export default {
     name:'Menu',
-    computed: mapState(['isMenuVisible'])
+    computed: mapState(['isMenuVisible']),
 }
 </script>
 
@@ -26,4 +29,32 @@ export default {
                     0 0 1em rgba(0,0,0,0.22),
                     inset 0 0 1em rgba(0,0,0,0.22);
     }
+
+    .logo-box{
+        width: 215px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        padding-top: 20px;
+    }
+
+    .logo-img {
+        width: 40%;
+        height: 96% ;
+        box-shadow: 0px 1px 2px 2px rgba(0,0,0,0.22);
+        border-radius: 8px;
+    }
+
+    .fade-enter  {
+        opacity: 0;
+    }
+    .fade-enter-active {
+        transition: opacity 2s;
+    }
+    .fade-enter-to  {
+        opacity: 1;
+    }
+
 </style>

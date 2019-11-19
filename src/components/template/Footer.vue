@@ -21,5 +21,9 @@ export default {
         justify-content: flex-end;
         padding-right: 10px;
         box-shadow: 0px 1px 5px 2px rgba(0,0,0,.22);
+        flex-grow: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

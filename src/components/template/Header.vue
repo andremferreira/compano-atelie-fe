@@ -1,10 +1,11 @@
 <template>
   <header class="header">
+      <img src="../../assets/ComPano.jpg" class="logo" alt="Logo" v-show="!this.$store.state.isMenuVisible">
       <a @click="toggleMenu" class="toggle" v-if="!hideToggle">
           <i class="fa fa-lg" :class="icon"></i>
       </a>
       <h1 class="title">
-          {{ title }}
+          <div class="title-box">{{ title }}</div>
       </h1>
       <UserDropdown v-if="!hideUserDropdown" />
   </header>
@@ -44,13 +45,29 @@ export default {
         align-items: center;
         box-shadow: inset 0 2px 20px rgba(0,0,0,0.25);
     }
+    .logo {
+        display: flex;
+        justify-content: center;
+        height: 80%;
+        box-shadow: 0px 1px 2px 2px rgba(0,0,0,0.3);
+        border-radius: 5px;
+        margin: 4px;
+
+    }
     .title {
         font-size: 1.3rem;
         color:rgb(29, 23, 61);
         font-weight: 500;
         flex-grow: 1;
         text-align: center;
+        padding-top: 10px;
+        /* padding-left: 40px; */
     }
+    .title .title-box{
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
     .title a {
         color:rgb(29, 23, 61);
         text-decoration: none;

@@ -7,11 +7,13 @@
           </div>
           <i class="fa fa-angle-down" />
       </div>
-      <div class="user-dropdown-content">
-          <a href=""><i class="fa fa-cogs"></i>Administração</a>
-          <a href=""><i class="fa fa-sign-out"></i>Sair</a>
+      <transition>
+        <div class="user-dropdown-content">
+            <a href=""><i class="fa fa-cogs"></i>Administração</a>
+            <a href=""><i class="fa fa-sign-out"></i>Sair</a>
 
-      </div>
+        </div>
+      </transition>
   </div>
 </template>
 
@@ -69,6 +71,13 @@ export default {
 
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0s, opacity 0.5 ease;
+        transition: visibility 0s, opacity 0.5s ease;
+    }
+
+    .user-dropdown:hover .user-dropdown-content {
+        visibility: visible;
+        background-color: aliceblue;
+        opacity: 1;
+
     }
 </style>

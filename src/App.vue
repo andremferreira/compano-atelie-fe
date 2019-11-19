@@ -1,10 +1,10 @@
 <template>
-	<div id="app" :class="{'hide-menu': !isMenuVisible}">
-		<Header title="ComPano Ateliê de Costura - Gestão de Serviços" :hideToggle="false" />
-		<Menu />
-		<Content />
-		<Footer />
-	</div>
+		<div id="app" :class="{'hide-menu': !isMenuVisible}">
+			<Header title="Gestão de Serviços" :hideToggle="false" />
+			<Menu />
+			<Content />
+			<Footer />
+		</div>
 </template>
 
 <script>
@@ -32,11 +32,10 @@ export default {
 	#app {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-
 		height: 100vh;
 		display: grid;
 		grid-template-rows: 60px 1fr 40px;
-		grid-template-columns: 300px 1fr;
+		grid-template-columns: 215px 1fr;
 		grid-template-areas: 
 			"header header"
 			"menu content"
@@ -49,4 +48,5 @@ export default {
 			"content content"
 			"footer footer";
 	}
+
 </style>
