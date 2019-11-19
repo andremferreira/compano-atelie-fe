@@ -46,20 +46,20 @@ export default {
     }
     .title {
         font-size: 1.3rem;
-        color:rgb(47, 39, 95);
-        font-weight: 400;
+        color:rgb(29, 23, 61);
+        font-weight: 500;
         flex-grow: 1;
         text-align: center;
     }
     .title a {
-        color:rgb(47, 39, 95);
+        color:rgb(29, 23, 61);
         text-decoration: none;
     }
 
     header.header > a.toggle {
         width: 60px;
         height: 100%;
-        color:rgb(47, 39, 95);
+        color:rgb(29, 23, 61);
         justify-self: flex-start;
         text-decoration: none;
         display: flex;
@@ -68,6 +68,7 @@ export default {
     }
 
     header.header > a.toggle:hover {
-        background-color: rgba(255, 116, 2, 0.5);
+        background-color: rgba(255, 116, 2, 0.3);
+        /* background-color: rgba(0, 0, 0, 0.22); */
     }
 </style>
