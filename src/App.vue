@@ -1,6 +1,6 @@
 <template>
 		<div id="app" :class="{'hide-menu': !isMenuVisible}">
-			<Header title="ComPano Ateliê" 
+			<Header title="ComPano Atheliê" 
 			:hideToggle="false"
 			:hideUserDropdown="false" />
 			<Menu />
@@ -36,7 +36,7 @@ export default {
 		-moz-osx-font-smoothing: grayscale;
 		height: 100vh;
 		display: grid;
-		grid-template-rows: 60px 60px 1fr 40px;
+		grid-template-rows: 60px 40px 1fr 30px;
 		grid-template-columns: 1fr;
 		grid-template-areas: 
 			"header header"
@@ -46,7 +46,7 @@ export default {
 	}
 
 	#app.hide-menu {
-		grid-template-rows: 60px 1fr 40px;
+		grid-template-rows: 60px 1fr 30px;
 		grid-template-columns: 1fr;
 		grid-template-areas: 
 			"header header"

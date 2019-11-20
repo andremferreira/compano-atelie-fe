@@ -15,12 +15,14 @@ export default {
 
 <style>
     .page-title h1 {
-        font-size: 2.3rem;
+        font-size: 2.1rem;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
         color:azure;
         margin: 0px;
     }
 
     .page-title h2 {
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
         color:#999;
         margin-top: 5px;
         font-size: 1.2rem;

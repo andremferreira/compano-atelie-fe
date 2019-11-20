@@ -13,7 +13,6 @@
                 <i class="fa fa-cogs grip-lines-vertical"></i> Administração
             </router-link>
             <a href=""><i class="fa fa-sign-out"></i> Sair</a>
-
         </div>
       </transition>
   </div>
@@ -33,21 +32,35 @@ export default {
     .user-dropdown {
         position: relative;
         height: 100%;
+        background-color: rgba(255, 179, 2, 0.2);
+        box-shadow: 0px 0px 0px rgba(0,0,0,0.2),
+        0 0 1em rgba(0,0,0,0.22),
+        inset 0 0 1em rgba(0,0,0,0.22);
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
     }
 
     .user-button {
         display: flex;
         align-items: center;
-        color: #fff;
         font-weight: 200;
         height: 100%;
         padding: 0px 20px;
+        color:azure;
 
     }
 
+    .user-button:hover{
+        color:black;
+    }
     .user-dropdown:hover {
-        background-color: rgba(0,0,0, 0.2)
+        text-shadow: none;
+        color:black;
+        background-color: rgba(255, 179, 2, 0.8); 
+        box-shadow: 0px 1px 1px rgba(0,0,0,0.5),
+            0 0 1em rgba(0,0,0,0.22),
+            inset 0 0 1em rgba(0,0,0,0.22);
     }
+
 
     .user-dropdown-img {
         margin: 0px 10px;
@@ -62,7 +75,7 @@ export default {
         position: absolute;
         right: 0px;
         background-color: linear-gradient(to left, #4BC0C8, rgb(23, 66, 206));
-        min-width: 192px;
+        min-width: 193px;
         min-height: 120px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 10px;
@@ -79,7 +92,7 @@ export default {
 
     .user-dropdown:hover .user-dropdown-content {
         visibility: visible;
-        background-color:rgba(240,248,255, 0.95);
+        background-color:rgba(240,248,255, 0.90);
         opacity: 1;
     }
 
@@ -93,7 +106,7 @@ export default {
         background-color:rgba(250, 170, 20, 0.63);
         color: black;
         text-decoration: none;
-        box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2);
+        box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.2);
         font-weight: 600;
         font-size: 1rem;
     }
