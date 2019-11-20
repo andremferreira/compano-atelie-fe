@@ -1,6 +1,8 @@
 <template>
 		<div id="app" :class="{'hide-menu': !isMenuVisible}">
-			<Header title="Gestão de Serviços" :hideToggle="false" />
+			<Header title="ComPano Ateliê" 
+			:hideToggle="false"
+			:hideUserDropdown="false" />
 			<Menu />
 			<Content />
 			<Footer />
@@ -34,15 +36,18 @@ export default {
 		-moz-osx-font-smoothing: grayscale;
 		height: 100vh;
 		display: grid;
-		grid-template-rows: 60px 1fr 40px;
-		grid-template-columns: 215px 1fr;
+		grid-template-rows: 60px 60px 1fr 40px;
+		grid-template-columns: 1fr;
 		grid-template-areas: 
 			"header header"
-			"menu content"
-			"menu footer";
+			"menu menu"
+			"content content"
+			"footer footer";
 	}
 
 	#app.hide-menu {
+		grid-template-rows: 60px 1fr 40px;
+		grid-template-columns: 1fr;
 		grid-template-areas: 
 			"header header"
 			"content content"

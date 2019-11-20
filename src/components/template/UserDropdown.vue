@@ -9,8 +9,10 @@
       </div>
       <transition>
         <div class="user-dropdown-content">
-            <a href=""><i class="fa fa-cogs"></i>Administração</a>
-            <a href=""><i class="fa fa-sign-out"></i>Sair</a>
+            <router-link to="/admin">
+                <i class="fa fa-cogs grip-lines-vertical"></i> Administração
+            </router-link>
+            <a href=""><i class="fa fa-sign-out"></i> Sair</a>
 
         </div>
       </transition>
@@ -61,6 +63,7 @@ export default {
         right: 0px;
         background-color: linear-gradient(to left, #4BC0C8, rgb(23, 66, 206));
         min-width: 192px;
+        min-height: 120px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 10px;
         z-index: 1;
@@ -76,8 +79,22 @@ export default {
 
     .user-dropdown:hover .user-dropdown-content {
         visibility: visible;
-        background-color: aliceblue;
+        background-color:rgba(240,248,255, 0.95);
         opacity: 1;
+    }
 
+    .user-dropdown-content a {
+        text-decoration: none;
+        color: #000;
+        padding: 10px;
+    }
+
+    .user-dropdown-content a:hover{
+        background-color:rgba(250, 170, 20, 0.63);
+        color: black;
+        text-decoration: none;
+        box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.2);
+        font-weight: 600;
+        font-size: 1rem;
     }
 </style>

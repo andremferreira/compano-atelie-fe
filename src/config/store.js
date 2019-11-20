@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        isMenuVisible: true,
+        isMenuVisible: false,
         user: {
             name: 'User Person',
             email: 'person@pers.com'
