@@ -30,9 +30,9 @@ export default {
         margin-right: 16px;
         margin-bottom: 16px;
         background: #f7f6f3;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to top, #f7f6f3, #e6e2d8);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to top, #f7f6f3, #e6e2d8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        min-width: 200px;
+        background: -webkit-linear-gradient(to bottom, #fdfdfd, #e6e2d8);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to bottom, #fdfdfd, #e6e2d8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        /* min-width: 160px; */
         padding: 16px;
         border: 1px solid rgba(255,255,255,0.8);
         color: darkblue;
@@ -48,7 +48,7 @@ export default {
 
     .stat-icon i {
         text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
-        font-size: 4rem;
+        font-size: 3rem;
         padding-left: 10px;
     }
 
@@ -57,19 +57,17 @@ export default {
         display:flex;
         flex-direction: column;
         align-items: flex-end;
-        
-        
-
     }
 
     .stat-title {
         color:black;
-        font-size: 1.1rem;
+        font-size: calc(0.9vw + 1.04vh);
         align-self: center;
+        text-shadow: 0px 1px 2px rgba(0,0,0,0.9);
     }
 
     .stat-value {
-        font-size: 3rem;
+        font-size: calc(1.3vw + 1.3vh);
         align-self: center; 
     }
 </style>

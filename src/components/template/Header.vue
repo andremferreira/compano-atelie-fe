@@ -66,7 +66,7 @@ export default {
         padding-top: 10px;
     }
     .title .title-box{
-        font-size: 2rem;
+        font-size: calc(1vw + 3vh);
         font-family: 'Allura', cursive, 'Nothing You Could Do', cursive;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
