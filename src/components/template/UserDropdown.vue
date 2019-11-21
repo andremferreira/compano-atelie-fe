@@ -30,6 +30,7 @@ export default {
 
 <style>
     .user-dropdown {
+        z-index: 20;
         position: relative;
         height: 100%;
         background-color: rgba(255, 179, 2, 0.2);
@@ -75,8 +76,8 @@ export default {
         position: absolute;
         right: 0px;
         background-color: linear-gradient(to left, #4BC0C8, rgb(23, 66, 206));
-        min-width: 193px;
-        min-height: 120px;
+        width: 193px;
+        height: 120px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 10px;
         z-index: 1;

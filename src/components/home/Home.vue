@@ -1,12 +1,13 @@
 <template>
   <div class="home">
-    <PageTitle icon="fa fa-home" main="Menu de Serviços"
-            sub="Módulo de Gerenciamento de Ordem de Serviços."/>
-    <div class="service-menu">
-        <ServiceMenu v-for="(s,i) in serviceMenu" :key="i" :title="serviceMenu[i].title" :path="serviceMenu[i].path" 
-          :icon="serviceMenu[i].icon" :color="serviceMenu[i].color"/>
+    <div class="service-menu-box" v-if="!this.$store.state.isMenuVisible">
+      <PageTitle icon="fa fa-home" main="Menu de Serviços"
+              sub="Módulo de Gerenciamento de Ordem de Serviços."/>
+      <div class="service-menu">
+          <ServiceMenu v-for="(s,i) in serviceMenu" :key="i" :title="serviceMenu[i].title" :path="serviceMenu[i].path" 
+            :icon="serviceMenu[i].icon" :color="serviceMenu[i].color"/>
+      </div>
     </div>
-
     <PageTitle icon="fa fa-line-chart" main="Dashboard"
             sub="Indicadores de desempenho"/>
     <div class="stats">
@@ -24,6 +25,7 @@ import Stat from './Stat'
 import ServiceMenu from './ServiceMenu'
 import axios from 'axios'
 import { baseApiUrl } from '@/global'
+// import { baseApiLang } from '@/lang'
 
 export default {
     name: 'Home',
@@ -36,9 +38,9 @@ export default {
         servOrders:{ count: 0 },
         users:{ count: 0 },
         serviceMenu: [ 
-          { title: 'Orçamentos',  path: '/budget', icon: 'fa fa-pencil', color: 'seagreen' },
-          { title: 'Ordem de Serviços',  path: '/servOrder', icon: 'fa fa-handshake-o', color: 'darkorange' },
-          { title: 'Seriços',  path: '/service', icon: 'fa fa-inbox', color: 'gold' }
+          { title: 'Orçamentos',  path: '/budgets', icon: 'fa fa-pencil', color: 'seagreen' },
+          { title: 'Ordem de Serviços',  path: '/servOrders', icon: 'fa fa-handshake-o', color: 'darkorange' },
+          { title: 'Seriços',  path: '/services', icon: 'fa fa-inbox', color: 'gold' }
         ],
         error:[{}]
       }
