@@ -1,0 +1,50 @@
+{
+    "lang": [{
+        "page": "Menu",
+        "cod": "BTMENU01",
+        "icon": ["fa fa-home", "fa fa-pencil", "fa fa-handshake-o", "fa fa-inbox"],
+        "path": ["/", "/budgets", "/servOrders", "/services"],
+        "alert": [],
+        "variation": [
+        {
+            "type": "pt-BR",
+            "title": [],
+            "subTitle": [],
+            "description": [],
+            "label": ["Página Inicial", "Orçamentos", "Ordem de Serviços", "Serviços", "Idioma"],
+            "placeholder":[]
+        },
+        {
+            "type": "en-US",
+            "title": [],
+            "subTitle": [],
+            "description": [],
+            "label": ["Home", "Budgets", "Service Orders", "Services", "Lang"],
+            "placeholder":[]
+        }]
+    },
+    {
+        "page": "MyProfile",
+        "cod": "MYPROF01",
+        "icon": ["fa floppy-o", "fa fa-pencil", "fa fa-refresh", "fa fa-trash-o", "fa fa-undo"],
+        "path": ["/api/user/id/"],
+        "alert": ["primary", "info", "warning", "danger", "secondary" ],
+        "variation": [
+        {
+            "type": "pt-BR",
+            "title": ["Meu Perfil", "Minhas Informaçõs"],
+            "subtitle": ["Página de gestão de dados pessoais."],
+            "description": ["Formulário de atualização e gestão de suas informações pessoais.", "Nunca compartilhe o seu login com ninguém."],
+            "label": ["Nome","Sobrenome","E-mail","Nova Senha","Confirmar Senha","Salvar","Editar","Modificar","Excluir","Cancelar"],
+            "placeholder": ["Informe o nome.", "Informe o sobrenome.", "Informe o e-mail.", "Informe a nova senha.", "Informe a mesma senha."]
+        },
+        {
+            "type": "en-US",
+            "title": ["My Profile", "My informations"],
+            "subtitle": ["Personal data management page."],
+            "description": ["Form for updating and managing your personal information.","We'll never share your login with anyone else."],
+            "label": ["Name","Lastname","E-mail","New Password","Confirm New Password","Save","Edit","Modify","Delete","Cancel"],
+            "placeholder": ["Enter name.", "Enter lastname.", "Enter e-mail.", "Enter new password", "Repeat new password"]
+        }]
+    }
+]}

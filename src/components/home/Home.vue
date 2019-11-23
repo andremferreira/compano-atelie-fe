@@ -24,12 +24,8 @@ import PageTitle from '@/components/template/PageTitle'
 import Stat from './Stat'
 import ServiceMenu from './ServiceMenu'
 import axios from 'axios'
-import { baseApiUrl } from '@/global'
-const tolken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIwIjoicyIsIjEiOiJ5IiwiMiI6InMiLCIzIjoiYSIsIjQiOiJkIiwiNSI6Im0iLCI2IjoiQCIsIjciOiJlIiwiOCI6Im0iLCI5IjoiYSIsIjEwIjoiaSIsIjExIjoibCIsIjEyIjoiLiIsIjEzIjoiYyIsIjE0IjoibyIsIjE1IjoibSIsImlhdCI6MTU3NDQyNDQyOSwiZXhwIjoxNTc0NTEwODI5fQ.mhpR_xj6A5AO2Rncz3T4HQ3SHsqrShDW55oKoyivN2w'
-const myHeader = { 
-        headers: {
-            "authorization": tolken } 
-          }
+import { baseApiUrl, tolken } from '@/global'
+const myHeader = { headers: {"authorization": tolken }}
 axios.create({ headers:{ common: { 'Authentication': tolken }}})
 export default {
     name: 'Home',
