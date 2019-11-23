@@ -1,13 +1,13 @@
 <template>
   <div class="my-profile">
-    <b-card>
+    <b-card >
       <template v-slot:header>
         <h4 class="mb-0">{{ titlepage }}</h4>
       </template>
       <b-card-title>{{ subtitlepage }}</b-card-title>
       <b-card-text>{{ descriptionpage[1]}}</b-card-text>
         <b-card-body>
-          <b-form >
+          <b-form class="form-my-profile">
             <b-form-group
                 id="form-profile-g-name"
                 :label="labelpage[0]"
@@ -65,8 +65,12 @@
               :placeholder="placeholderpage[4]"
             />
             </b-form-group>
+            <b-button variant="primary"><i class="fa fa-save" /> Save</b-button>
           </b-form>
         </b-card-body>
+      <template v-slot:footer>
+        <em></em>
+      </template>
       </b-card>
   </div>
 </template>

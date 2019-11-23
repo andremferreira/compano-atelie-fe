@@ -1,11 +1,15 @@
 <template>
-		<div id="app" :class="{'hide-menu': !isMenuVisible}">
-			<Header title="ComPano Atheliê" 
-			:hideToggle="false"
-			:hideUserDropdown="false" />
-			<Menu />
-			<Content />
-			<Footer />
+		<div class="dv-bg-image">
+			<div class="master">
+				<div id="app" :class="{'hide-menu': !isMenuVisible}">
+					<Header title="ComPano Atheliê" 
+					:hideToggle="false"
+					:hideUserDropdown="false" />
+					<Menu />
+					<Content />
+					<Footer />
+				</div>
+			</div>
 		</div>
 </template>
 
@@ -27,10 +31,34 @@ export default {
 		font-family:'Lato', Tahoma, Geneva, Verdana, sans-serif;
 
 	}
-	body {
-		margin:0;
-	}
+	/* html {
+		height:100%;
+        margin:0;
+        padding:0;
+	} */
 
+	body{
+		height:100%;
+        margin:0;
+        padding:0;
+		background-image: url("./assets/bgImage.jpg");
+		background-repeat: repeat;
+		background-position: center;
+	}
+	.dv-bg-image {
+        margin:0;
+        padding:0;
+		position: relative;
+	}
+	.master{
+		margin:0;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+	}
 	#app {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
@@ -43,6 +71,8 @@ export default {
 			"menu menu"
 			"content content"
 			"footer footer";
+		width: 100%;
+		max-width: 1200px;
 	}
 
 	#app.hide-menu {
