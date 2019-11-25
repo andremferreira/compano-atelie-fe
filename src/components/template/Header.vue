@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :style='`style="${header_img}"`'>
       <router-link to="/">
         <img src="../../assets/ComPano.jpg" class="logo" alt="Logo">
       </router-link>
@@ -21,7 +21,8 @@ export default {
     props: {
         title: String,
         hideToggle: Boolean,
-        hideUserDropdown: Boolean
+        hideUserDropdown: Boolean,
+        header_img: String
     },
     computed: {
         icon() {

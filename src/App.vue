@@ -2,10 +2,12 @@
 		<div class="dv-bg-image">
 			<div class="master">
 				<div id="app" :class="{'hide-menu': !isMenuVisible}">
-					<Header title="ComPano Atheliê" 
+					<Header 
+					:title="parameters.app_title" 
+					:header_img="parameters.header_img"
 					:hideToggle="false"
 					:hideUserDropdown="false" />
-					<Menu />
+					<Menu :bg="parameters.bg_menu"/>
 					<Content />
 					<Footer />
 				</div>
@@ -22,7 +24,23 @@ import Footer from '@/components/template/Footer'
 export default {
 	name: "App",
 	components: { Header, Menu, Content, Footer },
-	computed: mapState(['isMenuVisible'])
+	computed: mapState(['isMenuVisible']),
+	data() {
+		return {
+			parameters: []
+		}
+	},
+	methods:{
+		getInterface(){
+			const interfaceDb = require('./config/parameters/interfaceDb.json')
+			this.parameters =  interfaceDb
+			// eslint-disable-next-line
+			console.log(this.parameters)
+		}
+	},
+	mounted(){
+		this.getInterface()
+	}
 }
 </script>
 
@@ -31,19 +49,23 @@ export default {
 		font-family:'Lato', Tahoma, Geneva, Verdana, sans-serif;
 
 	}
-	/* html {
-		height:100%;
-        margin:0;
-        padding:0;
-	} */
 
-	body{
-		height:100%;
+	body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, p, blockquote, th, td {
         margin:0;
         padding:0;
-		background-image: url("./assets/bgImage.jpg");
+		direction: 1tr;
+	}
+
+	body {
+		position: relative;
+		/* background-image: url("./assets/bgImage.jpg"); */
 		background-repeat: repeat;
 		background-position: center;
+		letter-spacing: 0;
+		font-weight: normal;
+		font-style: normal;
+		font-size: 13px;
+		line-height: 1.5;
 	}
 	.dv-bg-image {
         margin:0;

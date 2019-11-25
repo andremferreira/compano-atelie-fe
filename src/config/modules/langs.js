@@ -1,4 +1,4 @@
-const db = require('./langDb.json') 
+const db = require('../parameters/langDb.json')
 export default {
     namespaced: true,
     state:{
@@ -17,7 +17,8 @@ export default {
         setCod(state, dCod) {
             state.cod = dCod
         },
-        defineLang(state) {
+        defineLang(state, dLang) {
+            var lang = dLang || state.lang 
             for (var i in db.lang) {
                 if (db.lang[i].page == state.page && db.lang[i].cod == state.cod) {
                     state.objL.icon = db.lang[i].icon
@@ -25,7 +26,7 @@ export default {
                     state.objL.alert = db.lang[i].alert
                     var sLang = db.lang[i].variation
                     for (var j in sLang){
-                        if ( sLang[j].type == state.lang){
+                        if ( sLang[j].type == lang){
                             state.objL.title = sLang[j].title
                             state.objL.subtitle = sLang[j].subtitle
                             state.objL.description = sLang[j].description

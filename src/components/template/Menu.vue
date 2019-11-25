@@ -1,6 +1,6 @@
 
 <template>
-  <aside class="menu" v-show="isMenuVisible">
+  <aside class="menu" :style='`style="${bg}"`' v-show="isMenuVisible">
     <div class="menu-box">
         <b-navbar type="dark" top>
                 <router-link v-for="(path, i) in pathRoute" :key="path" :to="`${path}`">
@@ -23,6 +23,7 @@ import { mapState } from "vuex";
 import { baseApiLang } from '@/lang'
 export default {
   name: "Menu",
+  props: [ 'bg' ],
   computed: mapState(["isMenuVisible"]),
   data() {
       return {
@@ -52,15 +53,16 @@ export default {
       modifyLang(lang, name, cod ) {
           this.defineLang(lang, name, cod)
           localStorage.lang = lang
+          this.$store.state.dLang = lang
     }   
   },
   mounted() {
       if (localStorage.lang) {
           this.lang = localStorage.lang
       } else {
-          localStorage.lang = this.lang || 'pt-BR'
+          localStorage.lang = this.lang || this.$store.state.dLang || 'pt-BR'
       }
-        this.defineLang(localStorage.lang || this.lang, this.name, this.cod)
+        this.defineLang(localStorage.lang || this.lang || this.$store.state.dLang, this.name, this.cod)
     //   this.menu.home.title = ( this.defineLang(localStore.page.lang, 'HOME01') )
   }
 };
