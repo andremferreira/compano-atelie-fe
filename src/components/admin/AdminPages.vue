@@ -42,9 +42,7 @@ export default {
       descriptionpage: [],
       labelpage: [],
       placeholderpage: [],
-      obj: [],
-      users: [],
-      fields: []
+      obj: []
     };
   },
   methods:{
