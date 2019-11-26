@@ -1,7 +1,11 @@
 <template>
   <div class="stat">
       <div class="stat-icon">
-          <i :class="icon" :style="styleColor"></i>
+          <span id="span-icon-awe" class="fa-stack fa-lg" :style="styleColor" style="font-size: 24px;">
+            <i class="fa fa-circle fa-stack-2x fa-4x"></i>
+            <i :class="icon" style="font-size: 24px;" class="fa fa-stack-1x fa-inverse"></i>
+        </span>
+          <!-- <i :class="icon" ></i> -->
       </div>
       <div class="stat-info">
           <span class="stat-title">{{ title }}</span>
@@ -49,7 +53,6 @@ export default {
     .stat-icon i {
         text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
         font-size: 3rem;
-        padding-left: 10px;
     }
 
     .stat-info {
