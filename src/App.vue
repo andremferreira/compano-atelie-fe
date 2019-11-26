@@ -35,11 +35,16 @@ export default {
 			const interfaceDb = require('./config/parameters/interfaceDb.json')
 			this.parameters =  interfaceDb
 			// eslint-disable-next-line
-			console.log(this.parameters)
+			// console.log(this.parameters)
+		},
+		defBg(){
+			var imgNew = 'url("' + require('@/assets/' + this.parameters.body_img) + '")'
+			document.getElementsByTagName('body')[0].style.backgroundImage = imgNew
 		}
 	},
 	mounted(){
 		this.getInterface()
+		this.defBg()
 	}
 }
 </script>
@@ -58,7 +63,7 @@ export default {
 
 	body {
 		position: relative;
-		/* background-image: url("./assets/bgImage.jpg"); */
+		background-image: url("./assets/bgImage.jpg");
 		background-repeat: repeat;
 		background-position: center;
 		letter-spacing: 0;

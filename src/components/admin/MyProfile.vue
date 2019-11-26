@@ -63,7 +63,7 @@
             />
           </b-form-group>
           <b-button variant="primary">
-            <i class="fa fa-save" /> Save
+            <i :class="iconpage[0]" />  {{ labelpage[5] }}
           </b-button>
         </b-form>
       </b-card-body>
@@ -121,6 +121,7 @@ export default {
   },
   data() {
     return {
+      iconpage: [],
       pagename: "MyProfile",
       codename: "MYPROF01",
       titlepage: "",
@@ -156,11 +157,11 @@ export default {
     this.objL = this.$store.state.dLang;
     this.loadMyProfile();
     this.titlepage = this.objL.title;
-    this.subtitlepage =
-      this.objL.subtitle || "Personal data management page.";
-    this.descriptionpage = this.objL.description; //'Form for updating and managing your personal information.'
+    this.subtitlepage = this.objL.subtitle ;
+    this.descriptionpage = this.objL.description;
     this.labelpage = this.objL.label;
     this.placeholderpage = this.objL.placeholder;
+    this.iconpage = this.objL.icon;
     //  console.log(this.objL)
   },
   watch: {
@@ -168,8 +169,7 @@ export default {
       if (val != old ) {
         this.objL = this.$store.state.dLang;
           this.titlepage = this.objL.title;
-          this.subtitlepage =
-            this.objL.subtitle || "Personal data management page.";
+          this.subtitlepage = this.objL.subtitle ;
           this.descriptionpage = this.objL.description; //'Form for updating and managing your personal information.'
           this.labelpage = this.objL.label;
           this.placeholderpage = this.objL.placeholder;
