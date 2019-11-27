@@ -79,44 +79,13 @@
 <script>
 // eslint-disable-next-line
 import { baseApiUrl, tolken } from "@/global";
+import defLang from "@/config/factory/defLang"
 import axios from "axios";
 const myHeader = { headers: { authorization: tolken } };
 axios.create({ headers: { common: { Authentication: tolken } } });
 export default {
   name: "MyProfile",
   computed: {
-    lang: {
-      get() {
-        return this.$store.state.langs.lang;
-      },
-      set(valor) {
-        this.$store.commit("langs/setLang", valor);
-      }
-    },
-    page: {
-      get() {
-        return this.$store.state.langs.page;
-      },
-      set(valor) {
-        this.$store.commit("langs/setPage", valor);
-      }
-    },
-    cod: {
-      get() {
-        return this.$store.state.langs.cod;
-      },
-      set(valor) {
-        this.$store.commit("langs/setCod", valor);
-      }
-    },
-    objL: {
-      get() {
-        return this.$store.state.langs.objL;
-      },
-      set(valor) {
-        this.$store.commit("langs/defineLang", valor);
-      }
-    },
     changeLang() {
       return this.$store.state.dLang;
     }
@@ -133,12 +102,13 @@ export default {
       placeholderpage: [],
       repassword: "",
       password: "",
-      user: {}
+      user: {},
+      obj:[]
     };
   },
   methods: {
     loadMyProfile() {
-      const url = `${baseApiUrl}${this.objL.path}1`;
+      const url = `${baseApiUrl}${this.obj.path}1`;
       axios.get(url, myHeader).then(res => {
         this.user = res.data;
       });
@@ -153,28 +123,29 @@ export default {
     // }
   },
   mounted() {
-    this.lang = this.changeLang || localStorage.lang;
+    this.lang = this.$store.state.dLang;
     this.page = this.pagename;
     this.cod = this.codename;
-    this.objL = this.$store.state.dLang;
+    this.obj = defLang.langFind( this.lang, this.pagename, this.codename);
+    this.titlepage = this.obj.title;
+    this.subtitlepage = this.obj.subtitle ;
+    this.descriptionpage = this.obj.description;
+    this.labelpage = this.obj.label;
+    this.placeholderpage = this.obj.placeholder;
+    this.iconpage = this.obj.icon;
     this.loadMyProfile();
-    this.titlepage = this.objL.title;
-    this.subtitlepage = this.objL.subtitle ;
-    this.descriptionpage = this.objL.description;
-    this.labelpage = this.objL.label;
-    this.placeholderpage = this.objL.placeholder;
-    this.iconpage = this.objL.icon;
     //  console.log(this.objL)
   },
   watch: {
     changeLang(val, old) {
       if (val != old ) {
-        this.objL = this.$store.state.dLang;
-          this.titlepage = this.objL.title;
-          this.subtitlepage = this.objL.subtitle ;
-          this.descriptionpage = this.objL.description; //'Form for updating and managing your personal information.'
-          this.labelpage = this.objL.label;
-          this.placeholderpage = this.objL.placeholder;
+          this.lang = this.$store.state.dLang;
+          this.obj = defLang.langFind( this.lang, this.pagename, this.codename);
+          this.titlepage = this.obj.title;
+          this.subtitlepage = this.obj.subtitle ;
+          this.descriptionpage = this.obj.description;
+          this.labelpage = this.obj.label;
+          this.placeholderpage = this.obj.placeholder;
       }
     }
   }

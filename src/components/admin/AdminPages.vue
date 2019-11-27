@@ -21,9 +21,9 @@
 </template>
 <script>
 import PageTitle from "@/components/template/PageTitle";
+import defLang from "@/config/factory/defLang"
 import MyProfile from "./MyProfile";
 import ManagerUsers from "./ManagerUsers";
-const db = require('@/config/parameters/langDb.json')
 export default {
   name: "AdminPages",
   components: { PageTitle, MyProfile, ManagerUsers },
@@ -45,31 +45,9 @@ export default {
       obj: []
     };
   },
-  methods:{
-    defineLang(lang) {
-      if(!lang) 'pt-BR' 
-      for (var i in db.lang) {
-          if (db.lang[i].page == this.pagename && db.lang[i].cod == this.codename) {
-              this.obj.icon = db.lang[i].icon
-              this.obj.path = db.lang[i].path
-              this.obj.alert = db.lang[i].alert
-              var sLang = db.lang[i].variation
-              for (var j in sLang){
-                  if ( sLang[j].type == lang){
-                      this.obj.title = sLang[j].title
-                      this.obj.subtitle = sLang[j].subtitle
-                      this.obj.description = sLang[j].description
-                      this.obj.label = sLang[j].label
-                      this.obj.placeholder = sLang[j].placeholder
-                  }
-              }
-          }
-      }
-    }
-  },
   mounted() {
-    this.lang = this.changeLang || localStorage.lang;
-    this.defineLang(this.lang);
+    this.lang = this.$store.state.dLang;
+    this.obj = defLang.langFind( this.lang, this.pagename, this.codename)
     this.titlepage = this.obj.title;
     this.pageicon = this.obj.icon;
     this.subtitlepage = this.obj.subtitle;
@@ -79,7 +57,7 @@ export default {
   watch: {
     changeLang(val, old) {
       if (val != old) {
-        this.defineLang(this.$store.state.dLang)
+        this.obj = defLang.langFind( this.$store.state.dLang, this.pagename, this.codename )
         this.titlepage = this.obj.title;
         this.subtitlepage = this.obj.subtitle;
         this.descriptionpage = this.obj.description;
