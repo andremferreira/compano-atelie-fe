@@ -98,7 +98,7 @@
                         "Informe o sobrenome.",
                         "Informe o e-mail.",
                         "Informe a nova senha.",
-                        "Informe a mesma senha."
+                        "Confirme a nova senha."
                     ]
                 },
                 {
@@ -164,7 +164,7 @@
         {
             "page": "ManagerUsers",
             "cod": "ADMUSS01",
-            "icon": ["fa fa-user-plus","fa fa-user","fa fa-user-times"],
+            "icon": ["fa fa-user-plus","fa fa-user","fa fa-user-times", "fa fa-floppy-o", "fa fa-undo", "fa fa-times"],
             "path": [],
             "alert": ["success","warning","danger"],
             "variation": [
@@ -173,16 +173,27 @@
                     "title": ["Gestão de Usuários"],
                     "subtitle": ["Configuração, administra e cadastro de usuários."],
                     "description": ["Administre os dados com responsabilidade."],
-                    "label": ["Adicionar", "Editar", "Remover", "Admin", "Gestor", "Usuário", "Convidado", "Id", "Nome", "Sobrenome", "E-mail", "Perfil", "Ações"],
-                    "placeholder": []
+                    "label": ["Adicionar", "Editar", "Remover", "Admin", "Gestor", "Usuário", "Convidado", "Id", "Nome", "Sobrenome", "E-mail", "Perfil", "Ações", "Selecione", "Senha", "Confirmar Senha", "Salvar", "Cancelar"],
+                    "placeholder": [
+                        "Informe o nome.",
+                        "Informe o sobrenome.",
+                        "Informe o e-mail.",
+                        "Informe a senha.",
+                        "Confirme a senha." ]
                 },
                 {
                     "type": "en-US",
                     "title": ["User Management"],
                     "subtitle": ["Administration, configuration and creation of users."],
                     "description": ["Manage the users with responsibly."],
-                    "label": ["Add", "Edit", "Remove", "Admin", "Manager", "User", "Guest", "Id", "Name", "Lastname", "E-mail", "Profile", "Actions"],
-                    "placeholder": []
+                    "label": ["Add", "Edit", "Remove", "Admin", "Manager", "User", "Guest", "Id", "Name", "Lastname", "E-mail", "Profile", "Actions", "Select", "Password", "Confirm password", "Save", "Cancel"],
+                    "placeholder": [
+                        "Enter name.",
+                        "Enter lastname.",
+                        "Enter e-mail.",
+                        "Enter password",
+                        "Repeat password"
+                    ]
                 }
             ]
         }
