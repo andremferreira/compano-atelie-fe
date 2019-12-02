@@ -2,5 +2,4 @@
     "app_title": "ComPano Atheliê", 
     "body_img": "bgImage.jpg",
     "header_img": "background-image: url(\"./assets/bgHeader.jpg\")",
-    "bg_menu": "background: #232526; background: -webkit-linear-gradient(to right, #414345, #232526); background: linear-gradient(to right, #414345, #232526);"
-}
+    "bg_menu": "background: #232526; background: -webkit-linear-gradient(to right, #414345, #232526); background: linear-gradient(to right, #414345, #232526);"}

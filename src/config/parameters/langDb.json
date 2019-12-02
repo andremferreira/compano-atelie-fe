@@ -171,9 +171,9 @@
                 {
                     "type": "pt-BR",
                     "title": ["Gestão de Usuários"],
-                    "subtitle": ["Configuração, administra e cadastro de usuários."],
-                    "description": ["Administre os dados com responsabilidade."],
-                    "label": ["Adicionar", "Editar", "Remover", "Admin", "Gestor", "Usuário", "Convidado", "Id", "Nome", "Sobrenome", "E-mail", "Perfil", "Ações", "Selecione", "Senha", "Confirmar Senha", "Salvar", "Cancelar"],
+                    "subtitle": ["Configuração, administra e cadastro de usuários.", "Confirmação de Remoção de Usuário"],
+                    "description": ["Administre os dados com responsabilidade.", "Realmente deseja remover o usuário?"],
+                    "label": ["Adicionar", "Editar", "Remover", "Admin", "Gestor", "Usuário", "Convidado", "Id", "Nome", "Sobrenome", "E-mail", "Perfil", "Ações", "Selecione", "Senha", "Confirmar Senha", "Salvar", "Cancelar","Sim","Não"],
                     "placeholder": [
                         "Informe o nome.",
                         "Informe o sobrenome.",
@@ -184,9 +184,9 @@
                 {
                     "type": "en-US",
                     "title": ["User Management"],
-                    "subtitle": ["Administration, configuration and creation of users."],
-                    "description": ["Manage the users with responsibly."],
-                    "label": ["Add", "Edit", "Remove", "Admin", "Manager", "User", "Guest", "Id", "Name", "Lastname", "E-mail", "Profile", "Actions", "Select", "Password", "Confirm password", "Save", "Cancel"],
+                    "subtitle": ["Administration, configuration and creation of users.", "User Removal Confirmation"],
+                    "description": ["Manage the users with responsibly.", "Are you sure you want to remove this user?"],
+                    "label": ["Add", "Edit", "Remove", "Admin", "Manager", "User", "Guest", "Id", "Name", "Lastname", "E-mail", "Profile", "Actions", "Select", "Password", "Confirm password", "Save", "Cancel", "Yes", "No"],
                     "placeholder": [
                         "Enter name.",
                         "Enter lastname.",

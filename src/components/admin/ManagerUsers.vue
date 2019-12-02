@@ -12,21 +12,21 @@
           <b-row>
             <b-col md="4" sm="12">
               <b-form-group :label="`${labelpage[8]}:`" label-for="user-name">
-                <b-form-input id="user-name" type="text"
-                    v-model="user.vc_name" required  :placeholder="placeholderpage[0]"
+                <b-form-input id="user-name" type="text" style="text-transform: uppercase;"
+                    v-model="user.vc_name" required :readonly="mode === 'remove'" :placeholder="placeholderpage[0]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col md="4" sm="12">
               <b-form-group :label="`${labelpage[9]}:`" label-for="user-lastname">
-                <b-form-input id="user-lastname" type="text"
+                <b-form-input id="user-lastname" type="text" :readonly="mode === 'remove'" style="text-transform: uppercase;"
                     v-model="user.vc_lastname" required  :placeholder="placeholderpage[1]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col md="4" sm="12">
               <b-form-group :label="`${labelpage[10]}:`" label-for="user-email">
-                <b-form-input id="user-email" type="text"
+                <b-form-input id="user-email" type="text" :readonly="mode === 'remove'" style="text-transform: lowercase;"
                     v-model="user.vc_email" required  :placeholder="placeholderpage[2]"
                 ></b-form-input>
               </b-form-group>
@@ -35,7 +35,7 @@
           <b-row>
             <b-col md="4" sm="12">
               <b-form-group :label="`${labelpage[11]}:`" label-for="user-profile">
-                <b-form-select id="user-profile" v-model="user.in_profile">
+                <b-form-select id="user-profile" v-model="user.in_profile" :disabled="mode === 'remove'">
                   <option :value="null" disabled>{{labelpage[13]}}</option>
                   <option value="1">{{labelpage[3]}}</option>
                   <option value="2">{{labelpage[4]}}</option>
@@ -46,14 +46,14 @@
             </b-col>
             <b-col md="4" sm="12">
               <b-form-group :label="`${labelpage[14]}:`" label-for="user-password">
-                <b-form-input id="user-password" type="password"
+                <b-form-input id="user-password" type="password" :readonly="mode === 'remove'"
                     v-model="user.vc_password" required  :placeholder="placeholderpage[3]"
                 ></b-form-input>
               </b-form-group>
             </b-col>   
             <b-col md="4" sm="12">
               <b-form-group :label="`${labelpage[15]}:`" label-for="user-confirm-password">
-                <b-form-input id="user-confirm-password" type="password"
+                <b-form-input id="user-confirm-password" type="password" :readonly="mode === 'remove'"
                     v-model="user.vc_repassword" required  :placeholder="placeholderpage[4]"
                 ></b-form-input>
               </b-form-group>
@@ -68,7 +68,7 @@
                     </b-link>
                   </div>
                   <div id="btnl-remove" v-if="mode === 'remove'">
-                    <b-link class="btn btnl-action btnl-remove-stlyle" @click="removeUser">
+                    <b-link class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete">
                       <i :class="pageicon[5]" ></i> <span style="color: #fff;">{{ labelpage[2] }}</span>
                     </b-link>
                   </div>
@@ -82,7 +82,16 @@
           </b-row>
         </b-form>
         <hr>
-        <b-table hover outlined small striped :items="users" :fields="this.fields"></b-table>
+        <b-table hover outlined small striped :items="users" :fields="this.fields">
+          <template v-slot:cell(actions)="data">
+              <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
+                <i class="fa fa-pencil"></i>
+              </b-button>
+              <b-button variant="danger" @click="loadUser(data.item, 'remove')" class="mr-2">
+                <i class="fa fa-trash"></i>
+              </b-button>
+          </template>
+        </b-table>
       </b-card-body>
       <template v-slot:footer>
         <em></em>
@@ -92,7 +101,7 @@
 </template>
 
 <script>
-import { baseApiUrl, tolken, showError } from "@/global";
+import { baseApiUrl, tolken, showError, showSuccess } from "@/global";
 import axios from "axios";
 import defLang from "@/config/factory/defLang"
 const myHeader = { headers: { authorization: tolken } };
@@ -165,20 +174,56 @@ export default {
           data: this.user
         }
         axios(config, this.user)
-          .then(()=>{
-            this.$toasted.global.defaultSuccess()
+          .then( res => {
+            showSuccess(res.data.info)  
             this.cancelUser()
-          })
+            }
+          )
           .catch(showError)
       },
       removeUser(){
         // eslint-disable-next-line
-        console.log("Remover Usuário")
+        const id = this.user.id_user
+        const method = 'delete'
+        const pathCall = `/api/user/id/${id}`
+        let query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
+        const pathRoute = baseApiUrl + pathCall + query
+        const config = {
+          method: method,
+          url: pathRoute,
+          headers: { authorization: tolken }
+        }
+        axios(config)
+          .then( res => {
+            showSuccess(res.data.info)
+            this.cancelUser()
+          })
+          .catch(showError)
       },
       cancelUser(){
         this.user = {}
         this.mode = 'save'
         this.loadUsers()
+      },
+      loadUser(user, mode = 'save'){
+        this.mode = mode 
+        this.user = { ...user }
+      },
+      showModalDelete(){
+        this.$bvModal.msgBoxConfirm(this.descriptionpage[1], {
+          title: this.subtitlepage[1],
+          size: 'sm',
+          buttonSize: 'ld',
+          okVariant: 'warning',
+          okTitle: this.labelpage[18],
+          cantelTitle: this.labelpage[19],
+          hideHeaderClose: false,
+          centered: false
+        })
+          .then( value  => {
+            if (value) this.removeUser()
+          })
+          .catch(showError)
       }
     },
     mounted() {
@@ -208,6 +253,7 @@ export default {
 </script>
 
 <style>
+
 .btnl-group {
   display: flex;
   flex-direction: row;
