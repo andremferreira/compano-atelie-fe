@@ -43,17 +43,17 @@
                   <option value="4">{{labelpage[6]}}</option>
                 </b-form-select>
               </b-form-group>
-            </b-col>
-            <b-col md="4" sm="12">
+            </b-col >
+            <b-col md="4" sm="12" v-show="mode !== 'remove'">
               <b-form-group :label="`${labelpage[14]}:`" label-for="user-password">
-                <b-form-input id="user-password" type="password" :readonly="mode === 'remove'"
+                <b-form-input id="user-password" type="password"
                     v-model="user.vc_password" required  :placeholder="placeholderpage[3]"
                 ></b-form-input>
               </b-form-group>
             </b-col>   
-            <b-col md="4" sm="12">
+            <b-col md="4" sm="12" v-show="mode !== 'remove'">
               <b-form-group :label="`${labelpage[15]}:`" label-for="user-confirm-password">
-                <b-form-input id="user-confirm-password" type="password" :readonly="mode === 'remove'"
+                <b-form-input id="user-confirm-password" type="password" 
                     v-model="user.vc_repassword" required  :placeholder="placeholderpage[4]"
                 ></b-form-input>
               </b-form-group>
@@ -82,7 +82,7 @@
           </b-row>
         </b-form>
         <hr>
-        <b-table hover outlined small striped :items="users" :fields="this.fields">
+        <b-table hover outlined striped :items="users" :fields="this.fields" small="small">
           <template v-slot:cell(actions)="data">
               <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
                 <i class="fa fa-pencil"></i>
@@ -92,6 +92,14 @@
               </b-button>
           </template>
         </b-table>
+        <div id="paginator-box">
+            <b-pagination @click="loadUsers" class="mt-3" v-model="page" :total-rows="count" :per-page="limit" />
+            <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2">
+              <b-dropdown-item @click="limit=5" >5</b-dropdown-item>
+              <b-dropdown-item @click="limit=10">10</b-dropdown-item>
+              <b-dropdown-item @click="limit=20">20</b-dropdown-item>
+          </b-dropdown>
+        </div>
       </b-card-body>
       <template v-slot:footer>
         <em></em>
@@ -115,6 +123,9 @@ export default {
     },
     data: function() {
       return {
+        page: 1,
+        limit: 5,
+        count: 0,
         mode: 'save',
         confirm: '',
         pagename: "ManagerUsers",
@@ -126,7 +137,7 @@ export default {
         labelpage: [],
         placeholderpage: [],
         obj: [],
-        user: {},
+        user: { in_profile: null },
         users: [],
         fields: [
             { key: 'id_user', label: 'Id', sortable: true },
@@ -140,9 +151,10 @@ export default {
     },
     methods: {
       loadUsers() {
-        const url = `${baseApiUrl}/api/users/small`;
+        const url = `${baseApiUrl}/api/users/small?page=${this.page}&limit=${this.limit}`;
         axios.get(url, myHeader).then(res => {
-            this.users = res.data
+            this.users = res.data.rows
+            this.count = res.data.count 
           })
         },
       perfilUser(value) {
@@ -247,6 +259,12 @@ export default {
         this.labelpage = this.obj.label;
         this.placeholderpage = this.obj.placeholder;
       }
+    },
+    page() {
+      this.loadUsers()
+    },
+    limit() {
+      this.loadUsers()
     }
   }
 }
@@ -258,10 +276,27 @@ export default {
   display: flex;
   flex-direction: row;
 }
+
+#paginator-box {
+  display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	align-content: stretch;
+}
+
 #btnl-save, #btnl-remove, #btnl-cancel {
   align-content: initial;
   padding-left: 0px;
   cursor:pointer;
+}
+
+hr {
+  border-top: 1px solid rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+  border-radius: 1px;
+
 }
 
 .btnl-action{position:relative;padding-left:44px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

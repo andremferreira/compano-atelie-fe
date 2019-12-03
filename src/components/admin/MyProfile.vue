@@ -9,10 +9,24 @@
       <b-card-body>
         <b-form class="form-my-profile">
           <b-row>
-            <b-col lg="1" md="2"  sm="12" v-show="showAvatar" id="box-avatar">
-                <img id="avatar" src="" alt="Picture of item"/>
+            <b-col lg="2" md="3"  sm="12" id="box-avatar">
+                <img id="avatar" src="" @click="modifyAvatar=!modifyAvatar" v-show="showAvatar" alt="Picture of item"/>
+                <b-spinner variant="primary" v-if="!showAvatar" label="Spinning" />
             </b-col>
-            <b-col lg="11" md="10" sm="12">
+            <b-col lg="10" md="10" sm="12" v-if="modifyAvatar">
+              <b-form-group class="mt-3" id="form-profile-g-avatar" :label="labelpage[7]" label-for="input-image">
+                <b-form-file
+                  id="input-image"
+                  v-model="file"
+                  label-cols-sm="2"
+                  accept=".jpg, .png, .gif"
+                  :browse-text="labelpage[10]"
+                  :placeholder="placeholderpage[5]"
+                  class="mt-3"
+                />
+              </b-form-group>
+            </b-col>
+            <b-col lg="12" md="12" sm="12">
               <b-form-group id="form-profile-g-name" :label="labelpage[0]" label-for="input-name">
                 <b-form-input
                   id="input-name"
@@ -74,7 +88,7 @@
             />
           </b-form-group>
           <div id="btn-save">
-            <b-link class="btn btn-action btn-save-stlyle">
+            <b-link class="btn btn-action btn-save-stlyle" @click="saveUser">
               <i :class="iconpage[0]" ></i> <span style="color: #fff;">{{ labelpage[5] }}</span>
             </b-link>
           </div>
@@ -89,7 +103,7 @@
 
 <script>
 // eslint-disable-next-line
-import { baseApiUrl, tolken } from "@/global";
+import { baseApiUrl, tolken, showError, showSuccess } from "@/global";
 import defLang from "@/config/factory/defLang"
 import axios from "axios";
 const myHeader = { headers: { authorization: tolken } };
@@ -104,6 +118,7 @@ export default {
   data() {
     return {
       showAvatar: false,
+      modifyAvatar: true,
       iconpage: [],
       pagename: "MyProfile",
       codename: "MYPROF01",
@@ -115,7 +130,8 @@ export default {
       repassword: "",
       password: "",
       user: {},
-      obj:[]
+      obj:[],
+      file: null
     };
   },
   methods: {
@@ -125,14 +141,24 @@ export default {
         this.user = res.data;
       });
     },
-    // onSubmit(e){
-    //   e.preventDefault()
-    //   alert(JSON.stringify(this.user))
-    // },
-    //  onReset(e){
-    //    e.preventDefault()
-    //   alert('Limpar dados!')
-    // }
+    saveUser(){
+        const method = 'put'
+        const pathCall = `/api/user/id/${this.user.id_user}`
+        let query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
+        const pathRoute = baseApiUrl + pathCall + query
+        const config = {
+          method: method,
+          url: pathRoute,
+          headers: { authorization: tolken },
+          data: this.user
+        }
+        axios(config, this.user)
+          .then( res => {
+            showSuccess(res.data.info)  
+            }
+          )
+          .catch(showError)
+      },
     imgAvatar(){
       const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
       const byteCharacters = atob(b64Data);
@@ -154,13 +180,24 @@ export default {
       return blob;
       }
       
-      const contentType = 'image/png';
-      const b64Data = this.user.tx_image
-      const blob = b64toBlob(b64Data, contentType);
-      const blobUrl = URL.createObjectURL(blob);
-      var elementAvatar = document.getElementById("avatar");
+      let contentType = 'image/png';
+      let b64Data = this.user.tx_image
+      let blob = b64toBlob(b64Data, contentType);
+      let blobUrl = URL.createObjectURL(blob);
+      let elementAvatar = document.getElementById("avatar");
       elementAvatar.src = blobUrl
     },
+    convertImage(){
+      const toBase64 = file => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result.replace(/^data:.+;base64,/, ''));
+          reader.onerror = error => reject(error);
+      });
+      toBase64(this.file).then( result => {
+        this.user.tx_image = result  
+      })
+    }
   },
   mounted() {
     this.lang = this.$store.state.dLang;
@@ -179,9 +216,6 @@ export default {
       return this.showAvatar = true 
     }, 1000)
   },
-  befireUpdate(){
-    
-  },
   watch: {
     changeLang(val, old) {
       if (val != old ) {
@@ -192,6 +226,18 @@ export default {
           this.descriptionpage = this.obj.description;
           this.labelpage = this.obj.label;
           this.placeholderpage = this.obj.placeholder;
+      }
+    },
+    file(){
+      if ( this.file.size > 5000000 ) {
+        showError(this.descriptionpage[2])
+      } else { 
+        this.convertImage()
+        this.showAvatar = false
+        setTimeout(() => {
+            this.imgAvatar()
+            return this.showAvatar = true 
+          }, 1500)
       }
     }
   }
@@ -230,16 +276,20 @@ b-form-input .email {
 #avatar {
   width:100%;
   background-color: rgba(36, 150, 243, 0.2);
-  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-  border-radius: 4px;
+  border-radius: 8px;
+  -webkit-box-shadow: 7px 9px 31px -15px rgba(25,3,110,0.69);
+  -moz-box-shadow: 7px 9px 31px -15px rgba(25,3,110,0.69);
+  box-shadow: 7px 9px 31px -15px rgba(25,3,110,0.69);
 }
 
 #avatar:hover {
   cursor:pointer;
   width:100%;
   background-color: rgba(36, 150, 243, 0.3);
-  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.6);
-  border-radius: 4px;
+  border-radius: 8px;
+  -webkit-box-shadow: 7px 9px 31px -15px rgba(25,3,110,0.69);
+  -moz-box-shadow: 7px 9px 31px -15px rgba(25,3,110,0.69);
+  box-shadow: 7px 9px 31px -15px rgba(25,3,110,0.69);
 }
 
 .d-block {
