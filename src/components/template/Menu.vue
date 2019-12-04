@@ -2,18 +2,23 @@
 <template>
   <aside class="menu" :style='`style="${bg}"`' v-show="isMenuVisible">
     <div class="menu-box">
-        <b-navbar type="dark" top>
-                <router-link v-for="(path, i) in pathRoute" :key="path" :to="`${path}`">
-                    <b-navbar-brand><i :class="iconB[i]" /> {{ buttonL[i] }}</b-navbar-brand>
-                </router-link>
-            <!-- Right aligned nav items -->
-                <b-navbar-nav class="p-2">
-                    <b-nav-item-dropdown class="lang" :text="`${this.buttonL[4]}`" left>
-                    <b-dropdown-item @click="modifyLang('pt-BR', name, cod)" >pt-BR</b-dropdown-item>
-                    <b-dropdown-item @click="modifyLang('en-US', name, cod)" >en-US</b-dropdown-item>
-                    </b-nav-item-dropdown>
-                </b-navbar-nav>
-        </b-navbar>
+        <b-nav class="w-10" vertical>
+            <router-link v-for="(path, i) in pathRoute" :key="path" :to="`${path}`">
+                <!-- <b-nav-item> -->
+                    <b-row class="item-menu mb-2">
+                        <b-col sm="1"><i :class="iconB[i]" class="mr-2"/></b-col>
+                        <b-col sm="7">{{ buttonL[i] }}</b-col>
+                    </b-row>
+                    <hr>
+                <!-- </b-nav-item> -->
+            </router-link>
+            <b-nav-item-dropdown 
+                toggle-class="nav-link-custom"
+                :text="`${this.buttonL[4]}`" left>
+            <b-dropdown-item @click="modifyLang('pt-BR', name, cod)" >pt-BR</b-dropdown-item>
+            <b-dropdown-item @click="modifyLang('en-US', name, cod)" >en-US</b-dropdown-item>
+            </b-nav-item-dropdown>
+        </b-nav>
     </div>
   </aside>
 </template>
@@ -71,6 +76,7 @@ export default {
 <style>
 .menu {
   grid-area: menu;
+  background: #2325259d; background: -webkit-linear-gradient(to right, #414345c4, #232526cc); background: linear-gradient(to right, #414345c4, #232526cc);
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5), 
     0 0 1em rgba(0, 0, 0, 0.22),
     inset 0 0 1em rgba(0, 0, 0, 0.22);
@@ -78,8 +84,8 @@ export default {
 
 .menu-box {
     position: relative;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5), 0 0 1em rgba(0, 0, 0, 0.22),
-    inset 0 0 1em rgba(0, 0, 0, 0.22);
+    margin: 10px;
+    margin-top: 20px;
 }
 .menu-button-left {
     display: flex;
@@ -89,24 +95,32 @@ export default {
 }
 
 nav {
-    height:40px;
-    width: calc(100% - 193px);
-    flex-wrap: wrap
-    /* max-width: 400px; */
+    display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	align-content: stretch;
+    /* max-height: calc(100vh - 9rem);
+    overflow-y: auto; */
 }
-.navbar-brand {
-    display:flex;
-    font-size: calc(1vw + 1vh) !important;
+.item-menu {
+    margin:0;
+    color:azure;
+    width: 200px;
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.4);
+    font-size: 1.1rem !important;
+    /* font-size: calc(1vw + 1vh) !important; */
 }
 
-nav span {
+.item-menu a {
     color:azure;
-    font-size: calc(0.5vw + 1vh);
+    /* font-size: calc(0.5vw + 1vh); */
     text-shadow: 0px 1px 2px rgba(0,0,0,0.4);
 }
 
-nav span:hover {
-    font-size: calc(0.5vw + 1vh);
+.item-menu a:hover {
+    /* font-size: calc(0.5vw + 1vh); */
     color:rgb(255, 238, 0, 1);
     text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
 }

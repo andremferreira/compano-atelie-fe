@@ -61,27 +61,21 @@
               style="text-transform: lowercase;"
             />
           </b-form-group>
-          <b-form-group
-            id="form-profile-g-password"
-            :label="labelpage[3]"
-            label-for="input-password"
-          >
+          <b-form-group :label="labelpage[3]" label-for="user-password-my">
             <b-form-input
-              id="input-password"
-              v-model="password"
+              id="user-password-my"
               type="password"
+              v-model="user.password"
               required
-              :placeholder="placeholderpage[3]"
-            />
+              :placeholder="placeholderpage[3]"></b-form-input>
           </b-form-group>
           <b-form-group
-            id="form-profile-g-repassword"
             :label="labelpage[4]"
             label-for="input-repassword"
           >
             <b-form-input
               id="input-repassword"
-              v-model="repassword"
+              v-model="user.vc_repassword"
               type="password"
               required
               :placeholder="placeholderpage[4]"
@@ -154,10 +148,16 @@ export default {
         }
         axios(config, this.user)
           .then( res => {
-            showSuccess(res.data.info)  
+            this.user = {}
+            this.loadMyProfile()
+            return showSuccess(res.data.info)  
             }
           )
-          .catch(showError)
+          .catch(error => {
+            this.user = {}
+            this.loadMyProfile()
+            return showError(error)
+          })
       },
     imgAvatar(){
       const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
@@ -275,6 +275,7 @@ b-form-input .email {
 
 #avatar {
   width:100%;
+  max-width: 200px;
   background-color: rgba(36, 150, 243, 0.2);
   border-radius: 8px;
   -webkit-box-shadow: 7px 9px 31px -15px rgba(25,3,110,0.69);

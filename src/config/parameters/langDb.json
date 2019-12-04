@@ -79,7 +79,7 @@
                     ],
                     "description": [
                         "Formulário de atualização e gestão de suas informações pessoais.",
-                        "Nunca compartilhe o seu login com ninguém.",
+                        "Nunca compartilhe os seus dados pessoais com ninguém.",
                         "A image excede o limite de 5Mb!"
                     ],
                     "label": [
@@ -115,7 +115,7 @@
                     ],
                     "description": [
                         "Form for updating and managing your personal information.",
-                        "We'll never share your login with anyone else.",
+                        "We'll never share your personal information with anyone else.",
                         "The image choose exceeds the 5Mb limit!"
                     ],
                     "label": [

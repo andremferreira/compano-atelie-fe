@@ -82,7 +82,9 @@
           </b-row>
         </b-form>
         <hr>
-        <b-table hover outlined striped :items="users" :fields="this.fields" small="small">
+        <b-table 
+          sticky-header="stickyHeader" no-border-collapse="noCollapse"
+          hover outlined striped :items="users" :fields="this.fields" responsive small="small">
           <template v-slot:cell(actions)="data">
               <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
                 <i class="fa fa-pencil"></i>
@@ -141,8 +143,7 @@ export default {
         users: [],
         fields: [
             { key: 'id_user', label: 'Id', sortable: true },
-            { key: 'vc_name', label: 'Name', sortable: true },
-            { key: 'vc_lastname', label: 'Lastname', sortable: true },
+            { key: 'fullname', label: 'Name', sortable: true },
             { key: 'vc_email', label: 'E-mail', sortable: true },
             { key: 'in_profile', label: 'Profile', sortable: true, formatter: (value) =>  { return this.perfilUser(value) } },
             { key: 'actions', label: 'Actions'}
@@ -155,6 +156,7 @@ export default {
         axios.get(url, myHeader).then(res => {
             this.users = res.data.rows
             this.count = res.data.count 
+            this.fullName(res.data.rows)
           })
         },
       perfilUser(value) {
@@ -174,6 +176,12 @@ export default {
         }
         return result;
       },
+      fullName(users) {
+        for ( var i in users ) { 
+          this.users[i].fullname = `${users[i].vc_name} ${users[i].vc_lastname}`
+        }
+      }
+      ,
       saveUser(){
         const method = this.user.id_user ? 'put' : 'post'
         const pathCall =  this.user.id_user ? `/api/user/id/${this.user.id_user}` : `/api/user`
@@ -213,7 +221,7 @@ export default {
           .catch(showError)
       },
       cancelUser(){
-        this.user = {}
+        this.user = { in_profile: null }
         this.mode = 'save'
         this.loadUsers()
       },

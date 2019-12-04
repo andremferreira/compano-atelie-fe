@@ -91,24 +91,30 @@ export default {
 		-moz-osx-font-smoothing: grayscale;
 		height: 100vh;
 		display: grid;
-		grid-template-rows: 60px 40px 1fr 30px;
-		grid-template-columns: 1fr;
+		grid-template-rows: 60px 1fr 30px;
+		grid-template-columns: 200px 1fr;
 		grid-template-areas: 
 			"header header"
-			"menu menu"
-			"content content"
+			"menu content"
 			"footer footer";
 		width: 100%;
 		max-width: 1200px;
 	}
 
 	#app.hide-menu {
+		display: grid;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		height: 100vh;
 		grid-template-rows: 60px 1fr 30px;
 		grid-template-columns: 1fr;
 		grid-template-areas: 
 			"header header"
 			"content content"
 			"footer footer";
+	}
+	.content {
+		height: 1fr;
 	}
 
 </style>
