@@ -6,18 +6,23 @@
             <router-link v-for="(path, i) in pathRoute" :key="path" :to="`${path}`">
                 <!-- <b-nav-item> -->
                     <b-row class="item-menu mb-2">
-                        <b-col sm="1"><i :class="iconB[i]" class="mr-2"/></b-col>
-                        <b-col sm="7">{{ buttonL[i] }}</b-col>
+                        <b-col sm="1"><i :class="pageicon[i]" class="mr-2"/></b-col>
+                        <b-col sm="7">{{ labelpage[i] }}</b-col>
                     </b-row>
                     <hr>
                 <!-- </b-nav-item> -->
             </router-link>
-            <b-nav-item-dropdown 
-                toggle-class="nav-link-custom"
-                :text="`${this.buttonL[4]}`" left>
-            <b-dropdown-item @click="modifyLang('pt-BR', name, cod)" >pt-BR</b-dropdown-item>
-            <b-dropdown-item @click="modifyLang('en-US', name, cod)" >en-US</b-dropdown-item>
-            </b-nav-item-dropdown>
+            <b-row class="item-menu">
+                <b-col sm="1"><i class="fa fa-language" style="margin-top: 12px;"/></b-col>
+                <b-col>
+                    <b-nav-item-dropdown id="box-lang"
+                        toggle-class="nav-link-custom"
+                        :text="`${this.labelpage[5]}`" left>
+                    <b-dropdown-item @click="modifyLang('pt-BR', pagename, codename)" >pt-BR</b-dropdown-item>
+                    <b-dropdown-item @click="modifyLang('en-US', pagename, codename)" >en-US</b-dropdown-item>
+                    </b-nav-item-dropdown>
+                </b-col>
+            </b-row>
         </b-nav>
     </div>
   </aside>
@@ -25,51 +30,57 @@
 
 <script>
 import { mapState } from "vuex";
-import { baseApiLang } from '@/lang'
+import defLang from "@/config/factory/defLang"
 export default {
   name: "Menu",
   props: [ 'bg' ],
-  computed: mapState(["isMenuVisible"]),
+  computed: {
+            changeLang() { return this.$store.state.dLang },
+            ...mapState(["isMenuVisible"])
+  },          
   data() {
       return {
-          name: "Menu",
-          cod: "BTMENU01", 
-          lang: "",
-          iconB: [],
-          pathRoute: [],
-          buttonL: []
-          }
+            pageicon: [],
+            pagename: "Menu",
+            codename: "BTMENU01", 
+            titlepage: [],
+            subtitlepage: [],
+            descriptionpage: [],
+            labelpage: [],
+            placeholderpage: [],
+            pathRoute:[],
+            obj: []
+        };
     },
   methods: {
-      defineLang(lang, name, cod) {
-      for (var idA in baseApiLang.lang) {
-          if (baseApiLang.lang[idA].page == this.name && baseApiLang.lang[idA].cod == cod) {
-              this.iconB = baseApiLang.lang[idA].icon
-              this.pathRoute = baseApiLang.lang[idA].path
-              var btLang = baseApiLang.lang[idA].button
-              for (var idB in btLang){
-                  if ( btLang[idB].type == lang){
-                      this.buttonL = btLang[idB].title
-                  }
-              }
-          }
-        }   
-      },
       modifyLang(lang, name, cod ) {
-          this.defineLang(lang, name, cod)
+          defLang.langFind( lang, name, cod)
           localStorage.lang = lang
           this.$store.state.dLang = lang
     }   
   },
   mounted() {
-      if (localStorage.lang) {
-          this.lang = localStorage.lang
-      } else {
-          localStorage.lang = this.lang || this.$store.state.dLang || 'pt-BR'
-      }
-        this.defineLang(localStorage.lang || this.lang || this.$store.state.dLang, this.name, this.cod)
-    //   this.menu.home.title = ( this.defineLang(localStore.page.lang, 'HOME01') )
-  }
+        this.lang = localStorage.lang || this.$store.state.dLang || 'pt-BR';
+        if (!localStorage.lang) localStorage.lang = this.lang
+        this.obj = defLang.langFind( this.lang, this.pagename, this.codename)
+        this.titlepage = this.obj.title;
+        this.pageicon = this.obj.icon;
+        this.subtitlepage = this.obj.subtitle;
+        this.descriptionpage = this.obj.description;
+        this.pathRoute = this.obj.path;
+        this.labelpage = this.obj.label;
+  },
+  watch: {
+      changeLang() {
+            this.obj = defLang.langFind( this.$store.state.dLang, this.pagename, this.codename )
+            this.titlepage = this.obj.title;
+            this.pageicon = this.obj.icon;
+            this.subtitlepage = this.obj.subtitle;
+            this.descriptionpage = this.obj.description;
+            this.pathRoute = this.obj.path;
+            this.labelpage = this.obj.label;
+        }
+    }
 };
 </script>
 
@@ -94,34 +105,55 @@ export default {
     text-shadow: 0px 1px 2px rgba(0,0,0,0.9);
 }
 
-nav {
-    display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	align-items: stretch;
-	align-content: stretch;
-    /* max-height: calc(100vh - 9rem);
-    overflow-y: auto; */
-}
 .item-menu {
     margin:0;
     color:azure;
+    font-weight: 500;
     width: 200px;
     text-shadow: 0px 1px 2px rgba(0,0,0,0.4);
     font-size: 1.1rem !important;
-    /* font-size: calc(1vw + 1vh) !important; */
 }
 
-.item-menu a {
-    color:azure;
-    /* font-size: calc(0.5vw + 1vh); */
-    text-shadow: 0px 1px 2px rgba(0,0,0,0.4);
+.item-menu:hover {
+    background-color:rgba(250, 170, 20, 0.63);
+    color: black;
+    text-decoration: none;
+    box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.2);
+    font-weight: 500;
+    font-size: 1.1rem !important;
 }
 
-.item-menu a:hover {
-    /* font-size: calc(0.5vw + 1vh); */
-    color:rgb(255, 238, 0, 1);
-    text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
+.nav a:hover{
+    text-decoration: none;
+}
+
+.item-menu > .col > li > a {
+    text-decoration: none;
+    color: azure;
+
+}
+
+.item-menu > .col > li > a:hover {
+    text-decoration: none;
+    color:black;
+    font-weight: 500;
+    font-size: 1.1rem !important;
+}
+
+hr {
+
+  text-decoration: none;
+  border-top: 1px solid rgba(0,0,0,0.6);
+  border-bottom: 1px solid rgba(0,0,0,0.6);
+  border-radius: 1px;
+
+}
+.nav-link-custom {
+  padding: 0.4rem 0.1rem !important;
+}
+
+.router-link-exact-active > .item-menu > .col-sm-1 > i {
+    color:rgba(250, 170, 20, 0.9);
+    font-size: 1.3rem;
 }
 </style>

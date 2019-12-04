@@ -54,6 +54,11 @@ export default {
 		font-family:'Lato', Tahoma, Geneva, Verdana, sans-serif;
 
 	}
+	html {
+		margin-left: calc(100vw - 100%);
+		overflow: hidden;
+	}
+
 
 	body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, p, blockquote, th, td {
         margin:0;
@@ -71,7 +76,47 @@ export default {
 		font-style: normal;
 		font-size: 13px;
 		line-height: 1.5;
+		overflow: scroll;
+		margin: 0 auto;
+		font: 100%/1.4 serif;
 	}
+
+	.scrollbar {
+		margin-left: 30px;
+		float: left;
+		height: 100px;
+		width: 65px;
+		background: #F5F5F5;
+		overflow-y: scroll;
+		margin-bottom: 25px;
+	}
+
+	body::-webkit-scrollbar-track
+	{
+		box-shadow:  inset 0 0 6px rgba(0,0,0,0.4);
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
+		background-color: rgba(255,255,255,0.3);
+		border-radius: 10px;
+	}
+
+	body::-webkit-scrollbar
+	{
+		width: 10px;
+		background-color: rgba(255,255,255,0.4);
+	}
+
+	body::-webkit-scrollbar-thumb
+	{
+		border-radius: 10px;
+		max-width: 8px;
+		background-image: -webkit-linear-gradient(top left,
+										rgb(122, 217, 217),
+										rgb(73, 114, 189),
+										rgb(36, 28, 148));
+		box-shadow: inside 1 1 1 6px rgba(0,0,0,0.3);
+	}
+
+
 	.dv-bg-image {
         margin:0;
         padding:0;

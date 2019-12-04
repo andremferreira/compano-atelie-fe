@@ -83,7 +83,7 @@
         </b-form>
         <hr>
         <b-table 
-          sticky-header="stickyHeader" no-border-collapse="noCollapse"
+          sticky-header="stickyHeader" :no-border-collapse="true"
           hover outlined striped :items="users" :fields="this.fields" responsive small="small">
           <template v-slot:cell(actions)="data">
               <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
@@ -298,13 +298,6 @@ export default {
   align-content: initial;
   padding-left: 0px;
   cursor:pointer;
-}
-
-hr {
-  border-top: 1px solid rgba(0,0,0,0.3);
-  border-bottom: 1px solid rgba(0,0,0,0.3);
-  border-radius: 1px;
-
 }
 
 .btnl-action{position:relative;padding-left:44px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

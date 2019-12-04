@@ -28,9 +28,5 @@ export default {
         font-size: 1.2rem;
     }
 
-    hr {
-        border-top: 1px solid rgba(215, 255, 255, 0.876);
-        border-bottom: 1px solid rgba(215, 255, 255, 0.876);
-    }
 
 </style>
