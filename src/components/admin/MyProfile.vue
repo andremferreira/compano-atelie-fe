@@ -7,7 +7,7 @@
       <b-card-title><h5>{{ subtitlepage[0] }}</h5></b-card-title>
       <b-card-text>{{ descriptionpage[1] }}</b-card-text>
       <b-card-body>
-        <b-form class="form-my-profile">
+        <b-form class="form-my-profile" @submit="onSubmit">
           <b-row>
             <b-col lg="2" md="3"  sm="12" id="box-avatar">
                 <img id="avatar" src="" @click="modifyAvatar=!modifyAvatar" v-show="showAvatar" alt="Picture of item"/>
@@ -66,7 +66,6 @@
               id="user-password-my"
               type="password"
               v-model="user.password"
-              required
               :placeholder="placeholderpage[3]"></b-form-input>
           </b-form-group>
           <b-form-group
@@ -77,14 +76,13 @@
               id="input-repassword"
               v-model="user.vc_repassword"
               type="password"
-              required
               :placeholder="placeholderpage[4]"
             />
           </b-form-group>
           <div id="btn-save">
-            <b-link class="btn btn-action btn-save-stlyle" @click="saveUser">
+            <b-button type="submit" class="btn btn-action btn-save-stlyle">
               <i :class="iconpage[0]" ></i> <span style="color: #fff;">{{ labelpage[5] }}</span>
-            </b-link>
+            </b-button>
           </div>
         </b-form>
       </b-card-body>
@@ -134,6 +132,10 @@ export default {
       axios.get(url, myHeader).then(res => {
         this.user = res.data;
       });
+    },
+      onSubmit(evt) {
+        evt.preventDefault()
+        this.saveUser()  
     },
     saveUser(){
         const method = 'put'
@@ -195,7 +197,7 @@ export default {
           reader.onerror = error => reject(error);
       });
       toBase64(this.file).then( result => {
-        this.user.tx_image = result  
+        return this.user.tx_image = result  
       })
     }
   },

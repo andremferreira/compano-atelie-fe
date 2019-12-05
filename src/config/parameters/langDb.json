@@ -219,26 +219,37 @@
                     "title": ["Gestão de Clientes", "Cadastro de Clientes"],
                     "subtitle": ["Cadastro & Cia", "Recomendações & Boas Práticas", "Confirmação de Remoção de Cliente"],
                     "description": ["Solicite documento oficial com foto atualizada, para realização do cadastro.", "Realmente deseja remover o cliente?"],
-                    "label": ["Adicionar", "Editar", "Remover", "Id", "Nome", "Sobrenome", "E-mail", "Aniversário (dia / mês)", "Ações", "Selecione", "Senha", "Confirmar Senha", "Salvar", "Cancelar","Sim","Não"],
+                    "label": ["Adicionar", "Editar", "Remover", "Id", "Nome", "Sobrenome", "E-mail", "Aniversário (dia / mês)", "CPF", "Celular", "Indicação", "CEP", "Ações", "Selecione", "Senha", "Confirmar Senha", "Salvar", "Cancelar","Sim","Não"],
                     "placeholder": [
                         "Informe o nome.",
                         "Informe o sobrenome.",
                         "Informe o e-mail.",
-                        "Informe a senha.",
-                        "Confirme a senha." ]
+                        "Dia",
+                        "Mês",
+                        "Informe o CPF.",
+                        "(xx)",
+                        "9 9999-9999",
+                        "Infome indicação.",
+                        "informe o CEP."
+                     ]
                 },
                 {
                     "type": "en-US",
                     "title": ["Clients Management","Clients Register"],
                     "subtitle": ["Registration & Purposes", "Recommendations & Best Practices","Client Removal Confirmation"],
                     "description": ["Request official document with recent photo to register the enroll.", "Are you sure you want to remove the client?"],
-                    "label": ["Add", "Edit", "Remove", "Id", "Name", "Lastname", "E-mail", "Birthday (day / month)", "Actions", "Select", "Password", "Confirm password", "Save", "Cancel", "Yes", "No"],
+                    "label": ["Add", "Edit", "Remove", "Id", "Name", "Lastname", "E-mail", "Birthday (day / month)", "SSC" , "Mobile", "Indication", "Zip Code","Actions", "Select", "Password", "Confirm password", "Save", "Cancel", "Yes", "No"],
                     "placeholder": [
                         "Enter name.",
                         "Enter lastname.",
                         "Enter e-mail.",
-                        "Enter password",
-                        "Repeat password"
+                        "Day",
+                        "Month",
+                        "Enter S.Security Code.",
+                        "(xx)",
+                        "9 9999-9999",
+                        "Enter indication.",
+                        "Enter zip code."
                     ]
                 }
             ]

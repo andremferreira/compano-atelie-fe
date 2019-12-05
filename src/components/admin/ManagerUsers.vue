@@ -12,15 +12,15 @@
           <b-row>
             <b-col md="4" sm="12">
               <b-form-group :label="`${labelpage[8]}:`" label-for="user-name">
-                <b-form-input id="user-name" type="text" style="text-transform: uppercase;"
+                <b-form-input id="user-name" type="text" v-uppercase
                     v-model="user.vc_name" required :readonly="mode === 'remove'" :placeholder="placeholderpage[0]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col md="4" sm="12">
               <b-form-group :label="`${labelpage[9]}:`" label-for="user-lastname">
-                <b-form-input id="user-lastname" type="text" :readonly="mode === 'remove'" style="text-transform: uppercase;"
-                    v-model="user.vc_lastname" required  :placeholder="placeholderpage[1]"
+                <b-form-input id="user-lastname" type="text" v-uppercase
+                    v-model="user.vc_lastname" required  :readonly="mode === 'remove'" :placeholder="placeholderpage[1]"
                 ></b-form-input>
               </b-form-group>
             </b-col>

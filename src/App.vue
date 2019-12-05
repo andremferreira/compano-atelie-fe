@@ -91,6 +91,10 @@ export default {
 		margin-bottom: 25px;
 	}
 
+	.modal-open {
+		overflow: scroll !important;
+	}
+
 	body::-webkit-scrollbar-track
 	{
 		box-shadow:  inset 0 0 6px rgba(0,0,0,0.4);
