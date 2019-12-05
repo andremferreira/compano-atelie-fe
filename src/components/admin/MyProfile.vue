@@ -4,7 +4,7 @@
       <template v-slot:header>
         <h4 class="mb-0">{{ titlepage[0] }}</h4>
       </template>
-      <b-card-title>{{ subtitlepage[0] }}</b-card-title>
+      <b-card-title><h5>{{ subtitlepage[0] }}</h5></b-card-title>
       <b-card-text>{{ descriptionpage[1] }}</b-card-text>
       <b-card-body>
         <b-form class="form-my-profile">
@@ -201,8 +201,6 @@ export default {
   },
   mounted() {
     this.lang = this.$store.state.dLang;
-    this.page = this.pagename;
-    this.cod = this.codename;
     this.obj = defLang.langFind( this.lang, this.pagename, this.codename);
     this.titlepage = this.obj.title;
     this.subtitlepage = this.obj.subtitle ;
@@ -217,8 +215,7 @@ export default {
     }, 1000)
   },
   watch: {
-    changeLang(val, old) {
-      if (val != old ) {
+    changeLang() {
           this.lang = this.$store.state.dLang;
           this.obj = defLang.langFind( this.lang, this.pagename, this.codename);
           this.titlepage = this.obj.title;
@@ -226,7 +223,6 @@ export default {
           this.descriptionpage = this.obj.description;
           this.labelpage = this.obj.label;
           this.placeholderpage = this.obj.placeholder;
-      }
     },
     file(){
       if ( this.file.size > 5000000 ) {

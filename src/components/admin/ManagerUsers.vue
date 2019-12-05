@@ -4,7 +4,7 @@
       <template v-slot:header>
         <h4 class="mb-0">{{ titlepage[0] }}</h4>
       </template>
-      <b-card-title>{{ subtitlepage[0] }}</b-card-title>
+      <b-card-title><h5>{{ subtitlepage[0] }}</h5></b-card-title>
       <b-card-text>{{ descriptionpage[0] }}</b-card-text>
       <b-card-body>
         <b-form>

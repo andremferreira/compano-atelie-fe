@@ -1,6 +1,6 @@
 import Vue from 'vue'
-export const baseApiUrl = 'http://192.168.252.197:4000'
-export const tolken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIwIjoicyIsIjEiOiJ5IiwiMiI6InMiLCIzIjoiYSIsIjQiOiJkIiwiNSI6Im0iLCI2IjoiQCIsIjciOiJlIiwiOCI6Im0iLCI5IjoiYSIsIjEwIjoiaSIsIjExIjoibCIsIjEyIjoiLiIsIjEzIjoiYyIsIjE0IjoibyIsIjE1IjoibSIsImlhdCI6MTU3NTQ2MDk2NSwiZXhwIjoxNTc1NTQ3MzY1fQ.kAyqi-AVjYi1GfRBrVdwOBimjqTOTBuPP0gUGDFNn3g'
+export const baseApiUrl = 'http://192.168.0.107:4000'
+export const tolken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIwIjoicyIsIjEiOiJ5IiwiMiI6InMiLCIzIjoiYSIsIjQiOiJkIiwiNSI6Im0iLCI2IjoiQCIsIjciOiJlIiwiOCI6Im0iLCI5IjoiYSIsIjEwIjoiaSIsIjExIjoibCIsIjEyIjoiLiIsIjEzIjoiYyIsIjE0IjoibyIsIjE1IjoibSIsImlhdCI6MTU3NTUwNDA3NywiZXhwIjoxNTc1NTkwNDc3fQ.h_jEfZXVyPmwgf-luzlduOdTNYEeVN8hhQhDdxc4VGs'
 
 export function showError(e){
     if(e && e.response && e.response.data ){
