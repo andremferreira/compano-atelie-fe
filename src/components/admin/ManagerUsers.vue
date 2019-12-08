@@ -7,7 +7,7 @@
       <b-card-title><h5>{{ subtitlepage[0] }}</h5></b-card-title>
       <b-card-text>{{ descriptionpage[0] }}</b-card-text>
       <b-card-body>
-        <b-form>
+        <b-form @submit.prevent="saveUser" @reset.prevent="cancelUser">
           <input id="user-id" type="hidden" v-model="user.id_user" />
           <b-row>
             <b-col md="4" sm="12">
@@ -47,14 +47,14 @@
             <b-col md="4" sm="12" v-show="mode !== 'remove'">
               <b-form-group :label="`${labelpage[14]}:`" label-for="user-password">
                 <b-form-input id="user-password" type="password"
-                    v-model="user.vc_password" required  :placeholder="placeholderpage[3]"
+                    v-model="user.vc_password" :placeholder="placeholderpage[3]"
                 ></b-form-input>
               </b-form-group>
             </b-col>   
             <b-col md="4" sm="12" v-show="mode !== 'remove'">
               <b-form-group :label="`${labelpage[15]}:`" label-for="user-confirm-password">
                 <b-form-input id="user-confirm-password" type="password" 
-                    v-model="user.vc_repassword" required  :placeholder="placeholderpage[4]"
+                    v-model="user.vc_repassword" :placeholder="placeholderpage[4]"
                 ></b-form-input>
               </b-form-group>
             </b-col>   
@@ -63,19 +63,19 @@
             <b-col>
                 <div class="btn-group">
                   <div id="btnl-save" v-if="mode === 'save'">
-                    <b-link class="btn btnl-action btnl-save-stlyle" @click="saveUser">
+                    <b-button class="btn btnl-action btnl-save-stlyle" type="submit" >
                       <i :class="pageicon[3]" ></i> <span style="color: #fff;">{{ labelpage[16] }}</span>
-                    </b-link>
+                    </b-button>
                   </div>
                   <div id="btnl-remove" v-if="mode === 'remove'">
-                    <b-link class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete">
+                    <b-button class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete">
                       <i :class="pageicon[5]" ></i> <span style="color: #fff;">{{ labelpage[2] }}</span>
-                    </b-link>
+                    </b-button>
                   </div>
                   <div id="btnl-cancel">
-                    <b-link class="btn ml-2 btnl-action btnl-cancel-stlyle mr-2" @click="cancelUser">
+                    <b-button class="btn ml-2 btnl-action btnl-cancel-stlyle mr-2" type="reset">
                       <i :class="pageicon[4]" ></i> <span style="color: #fff;">{{ labelpage[17] }}</span>
-                    </b-link>
+                    </b-button>
                   </div>
                 </div>
             </b-col>
