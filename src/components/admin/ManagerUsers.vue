@@ -60,25 +60,27 @@
             </b-col>   
           </b-row>
           <b-row>
-            <b-col>
+            <b-col md="6" sm="12">
                 <div class="btn-group">
                   <div id="btnl-save" v-if="mode === 'save'">
-                    <b-button class="btn btnl-action btnl-save-stlyle" type="submit" >
+                    <b-button size="sm" style="width:100%;" class="btn btnl-action btnl-save-stlyle" type="submit" >
                       <i :class="pageicon[3]" ></i> <span style="color: #fff;">{{ labelpage[16] }}</span>
                     </b-button>
                   </div>
                   <div id="btnl-remove" v-if="mode === 'remove'">
-                    <b-button class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete">
+                    <b-button size="sm" style="width:100%;" class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete">
                       <i :class="pageicon[5]" ></i> <span style="color: #fff;">{{ labelpage[2] }}</span>
                     </b-button>
                   </div>
+                </div>
+              </b-col>
+              <b-col md="6" sm="12">
                   <div id="btnl-cancel">
-                    <b-button class="btn ml-2 btnl-action btnl-cancel-stlyle mr-2" type="reset">
+                    <b-button size="sm" style="width:100%;" class="btn btnl-action btnl-cancel-stlyle mt-2" type="reset">
                       <i :class="pageicon[4]" ></i> <span style="color: #fff;">{{ labelpage[17] }}</span>
                     </b-button>
                   </div>
-                </div>
-            </b-col>
+              </b-col>
           </b-row>
         </b-form>
         <hr>
@@ -86,10 +88,10 @@
           sticky-header="stickyHeader" :no-border-collapse="true"
           hover outlined striped :items="users" :fields="this.fields" responsive small="small">
           <template v-slot:cell(actions)="data">
-              <b-button variant="warning" @click="loadUser(data.item)" class="mr-2">
+              <b-button size="sm" variant="warning" @click="loadUser(data.item)" class="mr-2">
                 <i class="fa fa-pencil"></i>
               </b-button>
-              <b-button variant="danger" @click="loadUser(data.item, 'remove')" class="mr-2">
+              <b-button size="sm" variant="danger" @click="loadUser(data.item, 'remove')" class="mr-2">
                 <i class="fa fa-trash"></i>
               </b-button>
           </template>
@@ -300,10 +302,10 @@ export default {
   cursor:pointer;
 }
 
-.btnl-action{position:relative;padding-left:44px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.btnl-action :first-child{position:absolute;left:0;top:0;bottom:0;width:32px;line-height:34px;font-size:1.6em;text-align:center;border-right:1px solid rgba(0,0,0,0.2)}
-.btnl-action-icon{position:relative;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:34px;width:34px}
-.btnl-action-icon :first-child{position:absolute;left:0;top:0;bottom:0;width:32px;line-height:34px;font-size:1.6em;text-align:center;border-right:1px solid rgba(0,0,0,0.2)}
+.btnl-action{position:relative;padding-left:32px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btnl-action :first-child{position:absolute;left:0;top:0;bottom:0;width:24px;line-height:24px;font-size:1.6em;text-align:center;border-right:1px solid rgba(0,0,0,0.2)}
+.btnl-action-icon{position:relative;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:24px;width:24px}
+.btnl-action-icon :first-child{position:absolute;left:0;top:0;bottom:0;width:24px;line-height:26px;font-size:1.6em;text-align:center;border-right:1px solid rgba(0,0,0,0.2)}
 .btnl-action-icon :first-child{border:none;text-align:center;width:100% !important}
 /* BUTTON SAVE */
 .btnl-action i.fa.fa-floppy-o { color: rgba(255,255,255,0.8); font-size: 1.2em; padding-top: 2px;}
