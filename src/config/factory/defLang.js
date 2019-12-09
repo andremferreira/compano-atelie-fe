@@ -6,6 +6,9 @@ function langFind(lang, page, code) {
             objL.icon = db.lang[i].icon
             objL.path = db.lang[i].path
             objL.alert = db.lang[i].alert
+            objL.subicon = db.lang[i].subicon || []
+            objL.subiconcolor = db.lang[i].subiconcolor || []
+            objL.subpath = db.lang[i].subpath || []
             var sLang = db.lang[i].variation
             for (var j in sLang){
                 if ( sLang[j].type == lang){

@@ -14,7 +14,10 @@
 import PageTitle from '@/components/template/PageTitle'
 export default {
     name: 'Services',
-    components: { PageTitle }
+    components: { PageTitle },
+    mounted(){
+        this.$store.state.isMenuVisible = false
+    }
 }
 </script>
 

@@ -34,8 +34,6 @@ export default {
 		getInterface(){
 			const interfaceDb = require('./config/parameters/interfaceDb.json')
 			this.parameters =  interfaceDb
-			// eslint-disable-next-line
-			// console.log(this.parameters)
 		},
 		defBg(){
 			var imgNew = 'url("' + require('@/assets/' + this.parameters.body_img) + '")'

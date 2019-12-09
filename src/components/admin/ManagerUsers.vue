@@ -60,23 +60,40 @@
             </b-col>   
           </b-row>
           <b-row>
-            <b-col md="6" sm="12">
-                <div class="btn-group">
-                  <div id="btnl-save" v-if="mode === 'save'">
-                    <b-button size="sm" style="width:100%;" class="btn btnl-action btnl-save-stlyle" type="submit" >
+            <b-col lg="1" md="2" sm="12">
+                <div class="btn-group-sm d-block d-md-none"  style="width:100%;">
+                  <div id="btnl-save" v-if="mode === 'save'" style="width:100%;">
+                    <b-button size="sm" style="width:100%; text-align:center;" class="btn btnl-action btnl-save-stlyle" type="submit" >
                       <i :class="pageicon[3]" ></i> <span style="color: #fff;">{{ labelpage[16] }}</span>
                     </b-button>
                   </div>
                   <div id="btnl-remove" v-if="mode === 'remove'">
-                    <b-button size="sm" style="width:100%;" class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete">
+                    <b-button size="sm" style="width:100%; text-align:center;" class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete">
+                      <i :class="pageicon[5]" ></i> <span style="color: #fff;">{{ labelpage[2] }}</span>
+                    </b-button>
+                  </div>
+                </div>
+                <div class="btn-group d-none d-md-block">
+                  <div id="btnl-save" v-if="mode === 'save'">
+                    <b-button size="sm"  class="btn btnl-action btnl-save-stlyle" type="submit" >
+                      <i :class="pageicon[3]" ></i> <span style="color: #fff;">{{ labelpage[16] }}</span>
+                    </b-button>
+                  </div>
+                  <div id="btnl-remove" v-if="mode === 'remove'">
+                    <b-button size="sm" class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete">
                       <i :class="pageicon[5]" ></i> <span style="color: #fff;">{{ labelpage[2] }}</span>
                     </b-button>
                   </div>
                 </div>
               </b-col>
-              <b-col md="6" sm="12">
-                  <div id="btnl-cancel">
-                    <b-button size="sm" style="width:100%;" class="btn btnl-action btnl-cancel-stlyle mt-2" type="reset">
+              <b-col lg="1" md="2" sm="12">
+                  <div id="btnl-cancel-sm" class="d-block d-md-none">
+                    <b-button size="sm" style="width:100%; text-align:center;" class="btn btnl-action btnl-cancel-stlyle mt-2" type="reset">
+                      <i :class="pageicon[4]" ></i> <span style="color: #fff;">{{ labelpage[17] }}</span>
+                    </b-button>
+                  </div>
+                  <div id="btnl-cancel" class="d-none d-md-block ml-3">
+                    <b-button size="sm" style=" text-align:center;" class="btn btnl-action btnl-cancel-stlyle" type="reset">
                       <i :class="pageicon[4]" ></i> <span style="color: #fff;">{{ labelpage[17] }}</span>
                     </b-button>
                   </div>
@@ -88,17 +105,17 @@
           sticky-header="stickyHeader" :no-border-collapse="true"
           hover outlined striped :items="users" :fields="this.fields" responsive small="small">
           <template v-slot:cell(actions)="data">
-              <b-button size="sm" variant="warning" @click="loadUser(data.item)" class="mr-2">
+              <b-button size="sm" variant="warning" @click="loadUser(data.item)" class="mr-2 mt-1">
                 <i class="fa fa-pencil"></i>
               </b-button>
-              <b-button size="sm" variant="danger" @click="loadUser(data.item, 'remove')" class="mr-2">
+              <b-button size="sm" variant="danger" @click="loadUser(data.item, 'remove')" class="mr-2 mt-1">
                 <i class="fa fa-trash"></i>
               </b-button>
           </template>
         </b-table>
         <div id="paginator-box">
-            <b-pagination @click="loadUsers" class="mt-3" v-model="page" :total-rows="count" :per-page="limit" />
-            <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2">
+            <b-pagination @click="loadUsers" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
+            <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
               <b-dropdown-item @click="limit=5" >5</b-dropdown-item>
               <b-dropdown-item @click="limit=10">10</b-dropdown-item>
               <b-dropdown-item @click="limit=20">20</b-dropdown-item>
@@ -144,7 +161,6 @@ export default {
         user: { in_profile: null },
         users: [],
         fields: [
-            { key: 'id_user', label: 'Id', sortable: true },
             { key: 'fullname', label: 'Name', sortable: true },
             { key: 'vc_email', label: 'E-mail', sortable: true },
             { key: 'in_profile', label: 'Profile', sortable: true, formatter: (value) =>  { return this.perfilUser(value) } },

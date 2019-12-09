@@ -1,6 +1,6 @@
 import Vue from 'vue'
 export const baseApiUrl = 'http://127.0.0.1:4000'
-export const tolken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIwIjoicyIsIjEiOiJ5IiwiMiI6InMiLCIzIjoiYSIsIjQiOiJkIiwiNSI6Im0iLCI2IjoiQCIsIjciOiJlIiwiOCI6Im0iLCI5IjoiYSIsIjEwIjoiaSIsIjExIjoibCIsIjEyIjoiLiIsIjEzIjoiYyIsIjE0IjoibyIsIjE1IjoibSIsImlhdCI6MTU3NTc3MTUzNywiZXhwIjoxNTc1ODU3OTM3fQ.F3UAq7ZIvvKaPzWKVG4wxN2ZGyfGC03p5_BwDxycKrk'
+export const tolken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIwIjoicyIsIjEiOiJ5IiwiMiI6InMiLCIzIjoiYSIsIjQiOiJkIiwiNSI6Im0iLCI2IjoiQCIsIjciOiJlIiwiOCI6Im0iLCI5IjoiYSIsIjEwIjoiaSIsIjExIjoibCIsIjEyIjoiLiIsIjEzIjoiYyIsIjE0IjoibyIsIjE1IjoibSIsImlhdCI6MTU3NTg5OTgwNCwiZXhwIjoxNTc1OTg2MjA0fQ.BYH5fUca35LcncTYEblJ_nOJQ4hbnL8fG4NHDrUJ65U'
 
 export function showError(e){
     if(e && e.response && e.response.data ){

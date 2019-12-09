@@ -1,21 +1,21 @@
 <template>
   <div class="home">
     <div class="service-menu-box" v-if="!this.$store.state.isMenuVisible">
-      <PageTitle icon="fa fa-home" main="Menu de Serviços"
-              sub="Módulo de Gerenciamento de Ordem de Serviços."/>
+      <PageTitle :icon="iconpage[0]" :main="titlepage[0]"
+              :sub="subtitlepage[0]"/>
       <div class="service-menu">
-          <ServiceMenu v-for="(s,i) in serviceMenu" :key="i" :title="serviceMenu[i].title" :path="serviceMenu[i].path" 
-            :icon="serviceMenu[i].icon" :color="serviceMenu[i].color"/>
+          <ServiceMenu v-for="(s,i) in labelpage" :key="i" :title="labelpage[i]" :path="subpath[i]" 
+            :icon="subicon[i]" :color="subiconcolor[i]"/>
       </div>
     </div>
-    <PageTitle icon="fa fa-line-chart" main="Dashboard"
-            sub="Indicadores de desempenho"/>
+    <PageTitle :icon="iconpage[1]" :main="titlepage[1]"
+            :sub="subtitlepage[1]"/>
     <div class="stats">
-        <Stat title="Clientes" :value="clients.count" icon="fa fa-address-book-o" color="dodgerblue"/>
-        <Stat title="Orçamentos" :value="budgets.count" icon="fa fa-pencil" color="seagreen" />
-        <Stat title="Ord. Serviços" :value="servOrders.count" icon="fa fa-handshake-o" color="darkorange" /> 
-        <Stat title="Serviços" :value="services.count" icon="fa fa-inbox" color="gold" /> 
-        <Stat title="Usuários" :value="users.count" icon="fa fa-users" color="crimson" />
+        <Stat :title="labelpage[0]" :value="clients.count" :icon="subicon[0]" :color="subiconcolor[0]"/>
+        <Stat :title="labelpage[1]" :value="budgets.count" :icon="subicon[1]" :color="subiconcolor[1]" />
+        <Stat :title="labelpage[2]" :value="servOrders.count" :icon="subicon[2]" :color="subiconcolor[2]" /> 
+        <Stat :title="labelpage[3]" :value="services.count" :icon="subicon[3]" :color="subiconcolor[3]" /> 
+        <Stat :title="labelpage[4]" :value="users.count" :icon="subicon[4]" :color="subiconcolor[4]" />
     </div>
   </div>
 </template>
@@ -25,19 +25,39 @@ import Stat from './Stat'
 import ServiceMenu from './ServiceMenu'
 import axios from 'axios'
 import { baseApiUrl, tolken } from '@/global'
+import defLang from "@/config/factory/defLang";
 const myHeader = { headers: {"authorization": tolken }}
 axios.create({ headers:{ common: { 'Authentication': tolken }}})
 export default {
     name: 'Home',
     components: { PageTitle, Stat, ServiceMenu },
+    computed: {
+      changeLang() {
+        return this.$store.state.dLang;
+      },
+    },
     data: function() {
       return {
+        lang: null,
         clients: { count: 0 },
         budgets: { count: 0 },
         services:{ count: 0 },
         servOrders:{ count: 0 },
         users:{ count: 0 },
+        iconpage: [],
+        subicon: [],
+        subiconcolor:[],
+        subpath: [],
+        pagename: "Home",
+        codename: "HOMEIN01",
+        titlepage: [],
+        subtitlepage: [],
+        descriptionpage: [],
+        labelpage: [],
+        placeholderpage: [],
+        obj: [],
         serviceMenu: [ 
+          { title: 'Clientes', path: '/clients', icon: 'fa fa-address-book-o', color: 'dodgerblue'},
           { title: 'Orçamentos',  path: '/budgets', icon: 'fa fa-pencil', color: 'seagreen' },
           { title: 'Ordem de Serviços',  path: '/servOrders', icon: 'fa fa-handshake-o', color: 'darkorange' },
           { title: 'Seriços',  path: '/services', icon: 'fa fa-inbox', color: 'gold' }
@@ -89,12 +109,36 @@ export default {
         }
     },
     mounted() {
+      this.lang = this.$store.state.dLang;
+      this.obj = defLang.langFind(this.lang, this.pagename, this.codename);
+      this.titlepage = this.obj.title;
+      this.subtitlepage = this.obj.subtitle;
+      this.descriptionpage = this.obj.description;
+      this.labelpage = this.obj.label;
+      this.iconpage = this.obj.icon;
+      this.subicon = this.obj.subicon;
+      this.subiconcolor = this.obj.subiconcolor;
+      this.subpath = this.obj.subpath;
       this.getClients()
       this.getUsers()
       this.getBudgets()
       this.getServices()
       this.getServOrders()
       // if (this.error.length > 0) alert("Conection error!!!")
+    },
+      watch: {
+        changeLang() {
+          this.lang = this.$store.state.dLang;
+          this.obj = defLang.langFind(this.lang, this.pagename, this.codename);
+          this.titlepage = this.obj.title;
+          this.subtitlepage = this.obj.subtitle;
+          this.descriptionpage = this.obj.description;
+          this.labelpage = this.obj.label;
+          this.iconpage = this.obj.icon;
+          this.subicon = this.obj.subicon;
+          this.subiconcolor = this.obj.subiconcolor;
+          this.subpath = this.obj.subpath;
+       }
     }
 }
 </script>

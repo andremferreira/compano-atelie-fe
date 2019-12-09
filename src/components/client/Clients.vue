@@ -188,125 +188,131 @@
                     class="inp-z-code"
                     size="sm"
                   />
-                  <b-button class="b-zip-code" @click="getZipCode" size="sm">
+                  <b-button 
+                    :class="`b-zip-code ${visible ? 'visible' : 'collapsed' }`"
+                    :aria-expanded="visible ? 'true': 'false'"
+                    aria-controls="address-collapse"
+                    @click="getZipCode" size="sm">
                     <i :class="iconpage[4]"></i>
                   </b-button>
                 </b-input-group>
               </b-form-group>
             </b-col>
           </b-row>
-          <b-row>
-            <b-col lg="8" md="8" sm="12">
-              <b-form-group
-                id="form-client-g-address"
-                :label="labelpage[12]"
-                label-for="input-client-address"
-              >
-                <b-form-input
-                  id="input-client-address"
-                  v-model="client.vc_address"
-                  type="text"
-                  required
-                  :placeholder="placeholderpage[10]"
-                  v-uppercase
-                  :disabled="enableaddress"
-                  size="sm"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col lg="1" md="2" sm="6">
-              <b-form-group
-                id="form-client-g-a-number"
-                :label="labelpage[13]"
-                label-for="input-client-a-number"
-              >
-                <b-form-input
-                  id="input-client-a-number"
-                  v-model="client.vc_address_number"
-                  type="text"
-                  required
-                  v-uppercase
-                  :placeholder="placeholderpage[11]"
-                  :disabled="enableaddress"
-                  size="sm"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col lg="3" md="3" sm="6">
-              <b-form-group
-                id="form-client-g-a-compl"
-                :label="labelpage[17]"
-                label-for="input-client-a-compl"
-              >
-                <b-form-input
-                  id="input-client-a-compl"
-                  v-model="client.vc_address_complement"
-                  type="text"
-                  required
-                  v-uppercase
-                  :placeholder="placeholderpage[15]"
-                  :disabled="enableaddress"
-                  size="sm"
-                />
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col lg="4" md="4" sm="12">
-              <b-form-group
-                id="form-client-g-district"
-                :label="labelpage[14]"
-                label-for="input-client-district"
-              >
-                <b-form-input
-                  id="input-client-district"
-                  v-model="client.vc_district"
-                  type="text"
-                  required
-                  v-uppercase
-                  :placeholder="placeholderpage[12]"
-                  :disabled="enableaddress"
-                  size="sm"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col lg="4" md="4" sm="12">
-              <b-form-group
-                id="form-client-g-city"
-                :label="labelpage[15]"
-                label-for="input-client-city"
-              >
-                <b-form-input
-                  id="input-client-city"
-                  v-model="client.vc_city"
-                  type="text"
-                  required
-                  v-uppercase
-                  :placeholder="placeholderpage[13]"
-                  :disabled="enableaddress"
-                  size="sm"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col lg="4" md="4" sm="12">
-              <b-form-group
-                id="form-client-g-state"
-                :label="labelpage[16]"
-                label-for="input-client-state"
-              >
-                <b-form-input
-                  id="input-client-state"
-                  v-model="client.vc_state"
-                  type="text"
-                  required
-                  v-uppercase
-                  :placeholder="placeholderpage[14]"
-                  :disabled="enableaddress"
-                  size="sm"
-                />
-              </b-form-group>
-            </b-col>
-          </b-row>
+          <b-collapse id="address-collapse" v-model="visible">
+            <b-row>
+              <b-col lg="8" md="8" sm="12">
+                <b-form-group
+                  id="form-client-g-address"
+                  :label="labelpage[12]"
+                  label-for="input-client-address"
+                >
+                  <b-form-input
+                    id="input-client-address"
+                    v-model="client.vc_address"
+                    type="text"
+                    required
+                    :placeholder="placeholderpage[10]"
+                    v-uppercase
+                    :disabled="enableaddress"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <b-col lg="1" md="2" sm="6">
+                <b-form-group
+                  id="form-client-g-a-number"
+                  :label="labelpage[13]"
+                  label-for="input-client-a-number"
+                >
+                  <b-form-input
+                    id="input-client-a-number"
+                    v-model="client.vc_address_number"
+                    type="text"
+                    required
+                    v-uppercase
+                    :placeholder="placeholderpage[11]"
+                    :disabled="enableaddress"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <b-col lg="3" md="3" sm="6">
+                <b-form-group
+                  id="form-client-g-a-compl"
+                  :label="labelpage[17]"
+                  label-for="input-client-a-compl"
+                >
+                  <b-form-input
+                    id="input-client-a-compl"
+                    v-model="client.vc_address_complement"
+                    type="text"
+                    required
+                    v-uppercase
+                    :placeholder="placeholderpage[15]"
+                    :disabled="enableaddress"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col lg="4" md="4" sm="12">
+                <b-form-group
+                  id="form-client-g-district"
+                  :label="labelpage[14]"
+                  label-for="input-client-district"
+                >
+                  <b-form-input
+                    id="input-client-district"
+                    v-model="client.vc_district"
+                    type="text"
+                    required
+                    v-uppercase
+                    :placeholder="placeholderpage[12]"
+                    :disabled="enableaddress"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <b-col lg="4" md="4" sm="12">
+                <b-form-group
+                  id="form-client-g-city"
+                  :label="labelpage[15]"
+                  label-for="input-client-city"
+                >
+                  <b-form-input
+                    id="input-client-city"
+                    v-model="client.vc_city"
+                    type="text"
+                    required
+                    v-uppercase
+                    :placeholder="placeholderpage[13]"
+                    :disabled="enableaddress"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+              <b-col lg="4" md="4" sm="12">
+                <b-form-group
+                  id="form-client-g-state"
+                  :label="labelpage[16]"
+                  label-for="input-client-state"
+                >
+                  <b-form-input
+                    id="input-client-state"
+                    v-model="client.vc_state"
+                    type="text"
+                    required
+                    v-uppercase
+                    :placeholder="placeholderpage[14]"
+                    :disabled="enableaddress"
+                    size="sm"
+                  />
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-collapse>
           <b-row>
             <b-col class="mb-3">
               <b-form-checkbox
@@ -323,19 +329,19 @@
             <b-col>
               <div class="btn-group">
                 <div id="btnl-save" v-if="mode === 'save'">
-                  <b-button class="btn btnl-action btnl-save-stlyle" type="submit">
+                  <b-button class="btn btnl-action btnl-save-stlyle" type="submit" size="sm">
                     <i :class="iconpage[1]"></i>
                     <span style="color: #fff;">{{ labelpage[23] }}</span>
                   </b-button>
                 </div>
                 <div id="btnl-remove" v-if="mode === 'remove'">
-                  <b-button class="btn btnl-action btnl-remove-stlyle">
+                  <b-button class="btn btnl-action btnl-remove-stlyle" size="sm">
                     <i :class="iconpage[3]"></i>
                     <span style="color: #fff;">{{ labelpage[2] }}</span>
                   </b-button>
                 </div>
                 <div id="btnl-cancel">
-                  <b-button class="btn ml-2 btnl-action btnl-cancel-stlyle mr-2" type="reset">
+                  <b-button class="btn ml-2 btnl-action btnl-cancel-stlyle" size="sm" type="reset">
                     <i :class="iconpage[2]"></i>
                     <span style="color: #fff;">{{ labelpage[24] }}</span>
                   </b-button>
@@ -357,10 +363,10 @@
           small="small"
         >
           <template v-slot:cell(actions)="data">
-            <b-button variant="warning" @click="loadClient(data.item)" class="mr-2">
+            <b-button variant="warning" @click="loadClient(data.item)" class="mr-2 mt-1">
               <i class="fa fa-pencil"></i>
             </b-button>
-            <b-button variant="danger" @click="loadClient(data.item, 'remove')" class="mr-2">
+            <b-button variant="danger" @click="loadClient(data.item, 'remove')" class="mr-2 mt-1">
               <i class="fa fa-trash"></i>
             </b-button>
           </template>
@@ -390,6 +396,7 @@ export default {
   },
   data() {
     return {
+      lang: null,
       renderComponent: true,
       mode: "save",
       iconpage: [],
@@ -406,8 +413,8 @@ export default {
       birthdayDay: null,
       birthdayMonth: null,
       enableaddress: true,
+      visible: false,
       fields: [
-        { key: "id_client", label: "Id", sortable: true },
         { key: "fullname", label: "Name", sortable: true },
         { key: "vc_email", label: "E-mail", sortable: true },
         { key: "mobile", label: "Mobile", sortable: true },
@@ -425,7 +432,7 @@ export default {
         this.joinData(res.data);
         // this.count = res.data.count
         // this.fullName(res.data.rows)
-      });
+      })
     },
     getZipCode() {
       const zc = `${this.client.nu_zip_code}`.replace(/()-/g,'')
@@ -438,8 +445,13 @@ export default {
             document.getElementById("input-client-state").value = res.data[0].vc_state
             document.getElementById("input-client-a-compl").value = ""
             document.getElementById("input-client-a-number").value = ""
-            this.enableaddress = false 
-            showSuccess('Zip code found!!! =)')    
+            this.client.vc_address = res.data[0].vc_address
+            this.client.vc_district = res.data[0].vc_district
+            this.client.vc_city = res.data[0].vc_city
+            this.client.vc_state = res.data[0].vc_state
+            this.enableaddress = false
+            this.visible = true 
+            showSuccess( this.descriptionpage[2] )    
           })
         .catch(() => {
             this.enableaddress = false   
@@ -478,6 +490,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.state.isMenuVisible = false
     this.lang = this.$store.state.dLang;
     this.obj = defLang.langFind(this.lang, this.pagename, this.codename);
     this.titlepage = this.obj.title;

@@ -218,7 +218,7 @@
                     "type": "pt-BR",
                     "title": ["Gestão de Clientes", "Cadastro de Clientes"],
                     "subtitle": ["Cadastro & Cia", "Recomendações & Boas Práticas", "Confirmação de Remoção de Cliente"],
-                    "description": ["Solicite documento oficial com foto atualizada, para realização do cadastro.", "Realmente deseja remover o cliente?"],
+                    "description": ["Solicite documento oficial com foto atualizada, para realização do cadastro.", "Realmente deseja remover o cliente?", "Endereço encontrado com sucesso!"],
                     "label": ["Adicionar", "Editar", "Remover", "Id", "Nome", "Sobrenome", "E-mail", "Aniversário (dia / mês)", "CPF", "Celular", "Indicação", "CEP", "Endereço","Nº","Bairro","Cidade","Estado","Complemento","Aceito receber ofertas e promoções.","Ações", "Selecione", "Senha", "Confirmar Senha", "Salvar", "Cancelar","Sim","Não"],
                     "placeholder": [
                         "Informe o nome.",
@@ -228,7 +228,7 @@
                         "Mês",
                         "Informe o CPF.",
                         "(xx)",
-                        "9 9999-9999",
+                        "Informe o celular.",
                         "Infome indicação.",
                         "Informe o CEP.",
                         "Informe o endereço.",
@@ -243,7 +243,7 @@
                     "type": "en-US",
                     "title": ["Clients Management","Clients Register"],
                     "subtitle": ["Registration & Purposes", "Recommendations & Best Practices","Client Removal Confirmation"],
-                    "description": ["Request official document with recent photo to register the enroll.", "Are you sure you want to remove the client?"],
+                    "description": ["Request official document with recent photo to register the enroll.", "Are you sure you want to remove the client?", "Address find with success!"],
                     "label": ["Add", "Edit", "Remove", "Id", "Name", "Lastname", "E-mail", "Birthday (day / month)", "SSC" , "Mobile", "Indication", "Zip Code","Address","Nº","District","City","State","Address Compl.","I accept to receive offers and promotions.","Actions", "Select", "Password", "Confirm password", "Save", "Cancel", "Yes", "No"],
                     "placeholder": [
                         "Enter name.",
@@ -253,7 +253,7 @@
                         "Month",
                         "Enter S.Security Code.",
                         "(xx)",
-                        "9 9999-9999",
+                        "Enter mob. number.",
                         "Enter indication.",
                         "Enter zip code.",
                         "Enter address.",
@@ -263,6 +263,34 @@
                         "Enter state.",
                         "Apto, bloc, ..."
                     ]
+                }
+            ]
+        },
+        {
+            "page": "Home",
+            "cod": "HOMEIN01",
+            "icon": ["fa fa-home", "fa fa-line-chart"],
+            "subicon": ["fa fa-address-book-o", "fa fa-pencil", "fa fa-handshake-o", "fa fa-inbox", "fa fa-users"],
+            "subiconcolor":["dodgerblue", "seagreen", "darkorange", "gold", "crimson"],
+            "path": ["/"],
+            "subpath": ["/clients", "/budgets", "/servOrders", "/services", "/admin"],
+            "alert": [],
+            "variation": [
+                {
+                    "type": "pt-BR",
+                    "title": ["Página Inicial", "Dempenho"],
+                    "subtitle": ["Menu de Contro & Serviços.", "Indicadores de Desempenho"],
+                    "description": [],
+                    "label": ["Clientes", "Orçamentos", "Ordem de Serviços", "Homologação de Serviços", "Usuários"],
+                    "placeholder": []
+                },
+                {
+                    "type": "en-US",
+                    "title": ["Home", "Dashboard"],
+                    "subtitle": ["Control Menu & Services", "Key Performance Indicator"],
+                    "description": [],
+                    "label": ["Clients", "Budgets", "Service Orders", "Services", "Users"],
+                    "placeholder": []
                 }
             ]
         }

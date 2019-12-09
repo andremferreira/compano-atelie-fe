@@ -1,14 +1,16 @@
 <template>
   <header class="header" :style='`style="${header_img}"`'>
-      <router-link to="/">
+      <!-- <router-link to="/">
         <img src="../../assets/ComPano.jpg" class="logo" alt="Logo">
-      </router-link>
-      <h1 class="title">
-          <div class="title-box">{{ title }}</div>
-      </h1>
+      </router-link> -->
       <a @click="toggleMenu" class="toggle" v-if="!hideToggle">
-          <i class="fa fa-lg" :class="icon"></i>
+          <i class="fa fa-bars" :class="icon"></i>
       </a>
+      <h1 class="title">
+          <router-link to="/">
+            <div class="title-box">{{ title }}</div>
+          </router-link>
+      </h1>
       <UserDropdown v-if="!hideUserDropdown" />
   </header>
 </template>
@@ -26,7 +28,7 @@ export default {
     },
     computed: {
         icon() {
-            return this.$store.state.isMenuVisible ? "fa-angle-left" : "fa-angle-down"
+            return this.$store.state.isMenuVisible ? "fa-angle-left" : "fa-bars"
         }
     },
     methods:{
@@ -73,8 +75,19 @@ export default {
         text-overflow: ellipsis !important;
     }
 
-    .title a {
-        color:rgb(29, 23, 61);
+    .title-box > a:hover {
+        color:azure !important;
+        text-decoration: none;
+    }
+
+    .title > a {
+        color:azure !important;;
+        text-decoration: none;
+    }
+
+
+    .title:houver > a {
+        color:azure !important;;
         text-decoration: none;
     }
 

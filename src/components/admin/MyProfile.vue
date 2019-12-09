@@ -109,6 +109,7 @@ export default {
   },
   data() {
     return {
+      currUser: 2,
       showAvatar: false,
       modifyAvatar: true,
       iconpage: [],
@@ -128,7 +129,7 @@ export default {
   },
   methods: {
     loadMyProfile() {
-      const url = `${baseApiUrl}${this.obj.path}1`;
+      const url = `${baseApiUrl}${this.obj.path}${this.currUser}`;
       axios.get(url, myHeader).then(res => {
         this.user = res.data;
       });

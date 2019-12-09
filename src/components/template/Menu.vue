@@ -4,23 +4,19 @@
     <div class="menu-box">
         <b-nav class="w-10" vertical>
             <router-link v-for="(path, i) in pathRoute" :key="path" :to="`${path}`">
-                <!-- <b-nav-item> -->
-                    <b-row class="item-menu mb-2">
-                        <b-col sm="1"><i :class="pageicon[i]" class="mr-2"/></b-col>
-                        <b-col sm="7">{{ labelpage[i] }}</b-col>
-                    </b-row>
-                    <hr>
-                <!-- </b-nav-item> -->
+                <b-row class="item-menu mb-2">
+                    <b-col><i :class="pageicon[i]" class="mr-2"/>{{ labelpage[i] }}</b-col>
+                </b-row>
+                <hr>
             </router-link>
-            <b-row class="item-menu">
-                <b-col sm="1"><i class="fa fa-language" style="margin-top: 12px;"/></b-col>
+            <b-row class="item-menu" style="padding-left:15px;">
                 <b-col>
-                    <b-nav-item-dropdown id="box-lang"
-                        toggle-class="nav-link-custom"
-                        :text="`${this.labelpage[5]}`" left>
-                    <b-dropdown-item @click="modifyLang('pt-BR', pagename, codename)" >pt-BR</b-dropdown-item>
-                    <b-dropdown-item @click="modifyLang('en-US', pagename, codename)" >en-US</b-dropdown-item>
-                    </b-nav-item-dropdown>
+                    <b-row class="lang-c-row"><i class="fa fa-language mr-2" style="margin-top: 12px;"/><span class="mt-2">{{this.labelpage[5]}}</span>
+                        <b-nav-item-dropdown id="box-lang" toggle-class="nav-link-custom" left>
+                        <b-dropdown-item @click="modifyLang('pt-BR', pagename, codename)" >pt-BR</b-dropdown-item>
+                        <b-dropdown-item @click="modifyLang('en-US', pagename, codename)" >en-US</b-dropdown-item>
+                        </b-nav-item-dropdown>
+                    </b-row>
                 </b-col>
             </b-row>
         </b-nav>
@@ -57,7 +53,7 @@ export default {
           defLang.langFind( lang, name, cod)
           localStorage.lang = lang
           this.$store.state.dLang = lang
-    }   
+    },
   },
   mounted() {
         this.lang = localStorage.lang || this.$store.state.dLang || 'pt-BR';
@@ -127,13 +123,19 @@ export default {
     text-decoration: none;
 }
 
-.item-menu > .col > li > a {
+.item-menu > .col > .lang-c-row > li > a {
     text-decoration: none;
     color: azure;
 
 }
 
-.item-menu > .col > li > a:hover {
+.item-menu:hover > .col > .lang-c-row > li > a {
+    text-decoration: none;
+    color:black;
+
+}
+
+.item-menu > .col > .lang-c-row > li > a:hover {
     text-decoration: none;
     color:black;
     font-weight: 500;

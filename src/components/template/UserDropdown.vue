@@ -9,10 +9,12 @@
       </div>
       <transition>
         <div class="user-dropdown-content">
-            <router-link to="/admin">
+            <router-link to="/admin" id="admin-page-show">
                 <i class="fa fa-cogs grip-lines-vertical"></i> Administração
             </router-link>
-            <a href=""><i class="fa fa-sign-out"></i> Sair</a>
+            <router-link to="/singout" id="singout-page-show">
+                <i class="fa fa-sign-out"></i> Sair
+            </router-link>
         </div>
       </transition>
   </div>

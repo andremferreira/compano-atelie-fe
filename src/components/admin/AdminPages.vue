@@ -5,7 +5,7 @@
       :main="titlepage[0]"
       :sub="subtitlepage[0]"
     />
-    <div class="admin-pages-tabs">
+    <div class="admin-pages-tabs" id="admin-pgs">
       <b-card no-body>
         <b-tabs card>
           <b-tab :title="labelpage[0]" active>
@@ -46,6 +46,7 @@ export default {
     };
   },
   mounted() {
+    this.$store.state.isMenuVisible = false
     this.lang = this.$store.state.dLang;
     this.obj = defLang.langFind( this.lang, this.pagename, this.codename)
     this.titlepage = this.obj.title;

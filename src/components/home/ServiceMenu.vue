@@ -1,11 +1,23 @@
 <template>
     <router-link :to="this.path" class="rlink">
-        <div class="service" id="service">
-            <div class="service-icon">
-                <i :class="icon" :style="styleColor"></i>
+        <div class="service ">
+            <div class="service-box-icon" id="service-ic">
+                <b-row sm="12" > 
+                    <b-col sm="12" >
+                        <div class="service-icon">
+                            <i :class="icon" :style="styleColor"></i>
+                        </div>
+                    </b-col>
+                </b-row>
             </div>
-            <div class="service-info">
-                <span class="service-title">{{ title }}</span>
+            <div class="service-box-text" id="service-tx">
+                <b-row sm=12>
+                    <b-col sm=12>
+                        <div class="service-info">
+                            <span class="service-title">{{ title }}</span>
+                        </div>
+                    </b-col>
+                </b-row>
             </div>
         </div>
     </router-link>
@@ -36,15 +48,29 @@ export default {
         background: #f7f6f3;  
         background: -webkit-linear-gradient(to bottom, #fdfdfd, #e6e2d8);
         background: linear-gradient(to bottom, #fdfdfd, #e6e2d8);
-        min-width: 110px;
-        max-width: 160px;
-        min-height: 140px;
-        min-height: 160px;
-        padding: 16px;
+        width: 90%;
+        min-width: 214px;
+        height: 160px;
         border: 1px solid rgba(255,255,255,0.8);
         box-shadow: 0px 1px 1px rgba(0,0,0,0.5),
             0 0 1em rgba(0,0,0,0.22),
             inset 0 0 1em rgba(0,0,0,0.22);
+    }
+    .service-box-icon{
+        padding-top:10px;
+        height:50%;
+        width:100%;
+        background-color: rgba(255,255,255,0.40);
+        border-top-left-radius: 8;
+        border-top-right-radius: 8;
+    }
+
+    .service-box-text {
+        display:flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        height:50%;
+        padding-top: 10px;
     }
     .service:hover {
         flex: 1;
@@ -56,25 +82,26 @@ export default {
         margin-right: 16px;
         margin-bottom: 16px;
         background: #d8da9c;  
-        background: -webkit-linear-gradient(to bottom, #fffeee, #d8da9c);
-        background: linear-gradient(to bottom, #fffeee, #d8da9c);
-        min-width: 110px;
-        max-width: 160px;
-        min-height: 140px;
-        min-height: 160px;
-        padding: 16px;
+        background: -webkit-linear-gradient(to bottom, #eefcff, #faeadc);
+        background: linear-gradient(to bottom, #eefcff, #faeadc);
+        width: 90%;
+        min-width: 214px;
+        height: 160px;
         border: 1px solid rgba(255,255,255,0.4);
         box-shadow: 0px 1px 1px rgba(0,0,0,0.7),
             0 0 1em rgba(0,0,0,0.22),
             inset 0 0 1em rgba(0,0,0,0.22);
     }
-    .service-icon {
-        min-width: 120px;
-        padding-bottom: 8px;
+    .service:hover i{
+        text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
+    }
+    .service:hover .service-title {
+        font-weight: 300;
+        font-size: 1.1rem;
     }
     .service-icon i {
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
         font-size: 4rem;
+        text-shadow: 1px 3px 10px rgba(0,0,0,0.2);
     }
     .service-info {
         flex: 1;
@@ -83,7 +110,7 @@ export default {
     }
     .service-title {
         color:black;
-        font-size: calc(0.5vw + 1.1vh);
+        font-size: 1rem;
         text-shadow: 0px 1px 2px rgba(0,0,0,0.9);
     }
     .rlink:hover {
