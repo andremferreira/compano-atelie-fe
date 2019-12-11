@@ -10,10 +10,12 @@
       </b-card-title>
       <b-card-text>{{ descriptionpage[0] }}</b-card-text>
       <b-card-body>
-        <b-form class="form-client-edit" @reset="cancelClient">
+        <b-form class="form-client-edit" 
+        v-on:keydown.enter.prevent="submit"
+        @submit.prevent="saveClient" @reset.prevent="cancelClient">
           <input id="form-client-id" type="hidden" v-model="client.id_client" />
           <b-row>
-            <b-col lg="3" md="6" sm="12">
+            <b-col lg="3" md="6" sm="12" v-if="mode !== 'remove'">
               <b-form-group
                 id="form-client-g-name"
                 :label="labelpage[4]"
@@ -29,7 +31,23 @@
                 />
               </b-form-group>
             </b-col>
-            <b-col lg="5" md="6" sm="12">
+            <b-col lg="6" md="6" sm="12" v-else>
+              <b-form-group
+                id="form-client-g-name"
+                :label="labelpage[4]"
+                label-for="input-client-name"
+              >
+                <b-form-input
+                  id="input-client-name"
+                  v-model="client.vc_name"
+                  required
+                  :placeholder="placeholderpage[0]"
+                  size="sm"
+                  v-uppercase
+                />
+              </b-form-group>
+            </b-col>
+            <b-col lg="5" md="6" sm="12" v-if="mode !== 'remove'">
               <b-form-group
                 id="form-client-g-lastname"
                 :label="labelpage[5]"
@@ -45,51 +63,42 @@
                 />
               </b-form-group>
             </b-col>
-            <b-col lg="4" md="12" sm="12">
+            <b-col lg="6" md="6" sm="12" v-else>
+              <b-form-group
+                id="form-client-g-lastname"
+                :label="labelpage[5]"
+                label-for="input-client-lastname"
+              >
+                <b-form-input
+                  id="input-client-lastname"
+                  v-model="client.vc_lastname"
+                  required
+                  :placeholder="placeholderpage[1]"
+                  v-uppercase
+                  size="sm"
+                />
+              </b-form-group>
+            </b-col>
+            <b-col lg="4" md="12" sm="12"  v-show="mode !== 'remove'">
               <b-form-group
                 id="form-client-g-birthday-day"
                 :label="labelpage[7]"
                 label-for="input-client-birthday-day"
               >
-                <b-row>
-                  <b-col lg="5" md="5" sm="12">
-                    <b-form-input
+                <b-form-input
                       class="mb-2"
                       id="input-client-birthday-day"
-                      v-model="birthdayDay"
+                      v-model="client.vc_birthday"
                       required
-                      :placeholder="placeholderpage[3]"
-                      type="number"
-                      v-min="1"
-                      v-max="31"
+                      :placeholder="placeholderpage[3] +'/'+ placeholderpage[4]"
+                      type="text"
+                      v-mask="'##/##'"
                       size="sm"
                     />
-                  </b-col>
-                  <div class="d-none d-sm-none d-md-block mt-1 mr-2 ml-2">
-                    <h5>/</h5>
-                  </div>
-                  <b-col lg="6" md="6" sm="12">
-                    <b-form-group
-                      id="form-client-g-birthday-month"
-                      label-for="input-client-birthday-month"
-                    >
-                      <b-form-input
-                        id="input-client-birthday-month"
-                        v-model="birthdayMonth"
-                        required
-                        :placeholder="placeholderpage[4]"
-                        type="number"
-                        v-min="1"
-                        v-max="12"
-                        size="sm"
-                      />
-                    </b-form-group>
-                  </b-col>
-                </b-row>
               </b-form-group>
             </b-col>
           </b-row>
-          <b-row>
+          <b-row v-show="mode !== 'remove'">
             <b-col lg="3" md="4" sm="12">
               <b-form-group
                 id="form-client-g-ss-code"
@@ -98,15 +107,15 @@
               >
                 <b-form-input
                   id="input-client-ss-code"
-                  v-model="client.nu_social_security_code"
+                  v-model="client.vc_social_security_code"
                   required
                   :placeholder="placeholderpage[5]"
                   v-mask="'###.###.###-##'"
                   size="sm"
                 />
               </b-form-group>
-            </b-col>
-            <b-col lg="5" md="7" sm="12">
+            </b-col >
+            <b-col lg="5" md="7" sm="12" >
               <b-form-group
                 id="form-client-g-c-area"
                 :label="labelpage[9]"
@@ -116,7 +125,7 @@
                   <b-col lg="3" md="4" sm="4" class="mb-2">
                     <b-form-input
                       id="input-client-c-area"
-                      v-model="client.nu_code_area"
+                      v-model="client.vc_code_area"
                       required
                       :placeholder="placeholderpage[6]"
                       v-mask="'(##)'"
@@ -127,7 +136,7 @@
                     <b-form-group id="form-client-g-c-mobile" label-for="input-client-c-mobile">
                       <b-form-input
                         id="input-client-c-mobile"
-                        v-model="client.nu_mobile"
+                        v-model="client.vc_mobile"
                         required
                         :placeholder="placeholderpage[7]"
                         v-mask="'# ####-####'"
@@ -138,7 +147,7 @@
                 </b-row>
               </b-form-group>
             </b-col>
-            <b-col lg="4" md="4" sm="12">
+            <b-col lg="4" md="4" sm="12"  v-show="mode !== 'remove'">
               <b-form-group
                 id="form-client-g-lastname"
                 :label="labelpage[10]"
@@ -155,7 +164,7 @@
             </b-col>
           </b-row>
           <b-row>
-            <b-col lg="8" md="8" sm="12">
+            <b-col lg="8" md="8" sm="12" v-if="mode !== 'remove'">
               <b-form-group
                 id="form-client-g-email"
                 :label="labelpage[6]"
@@ -171,7 +180,23 @@
                 />
               </b-form-group>
             </b-col>
-            <b-col>
+            <b-col lg="12" md="12" sm="12" v-else>
+              <b-form-group
+                id="form-client-g-email"
+                :label="labelpage[6]"
+                label-for="input-client-email"
+              >
+                <b-form-input
+                  id="input-client-email"
+                  v-model="client.vc_email"
+                  type="email"
+                  required
+                  :placeholder="placeholderpage[2]"
+                  size="sm"
+                />
+              </b-form-group>
+            </b-col>
+            <b-col  v-show="mode !== 'remove'">
               <b-form-group
                 id="form-client-g-zcode"
                 :label="labelpage[11]"
@@ -180,13 +205,14 @@
                 <b-input-group>
                   <b-form-input 
                     id="input-client-zcode"
-                    v-model="client.nu_zip_code"
+                    v-model="client.vc_zip_code"
                     type="text"
                     required
                     :placeholder="placeholderpage[9]"
                     v-mask="'#####-###'"
                     class="inp-z-code"
                     size="sm"
+                    v-on:keydown.enter="getZipCode"
                   />
                   <b-button 
                     :class="`b-zip-code ${visible ? 'visible' : 'collapsed' }`"
@@ -199,8 +225,8 @@
               </b-form-group>
             </b-col>
           </b-row>
-          <b-collapse id="address-collapse" v-model="visible">
-            <b-row>
+          <b-collapse id="address-collapse"  v-show="mode !== 'remove'" v-model="visible">
+            <b-row  v-show="mode !== 'remove'">
               <b-col lg="8" md="8" sm="12">
                 <b-form-group
                   id="form-client-g-address"
@@ -219,7 +245,7 @@
                   />
                 </b-form-group>
               </b-col>
-              <b-col lg="1" md="2" sm="6">
+              <b-col lg="1" md="2" sm="6"  v-show="mode !== 'remove'">
                 <b-form-group
                   id="form-client-g-a-number"
                   :label="labelpage[13]"
@@ -237,7 +263,7 @@
                   />
                 </b-form-group>
               </b-col>
-              <b-col lg="3" md="3" sm="6">
+              <b-col lg="3" md="3" sm="6"  v-show="mode !== 'remove'">
                 <b-form-group
                   id="form-client-g-a-compl"
                   :label="labelpage[17]"
@@ -257,7 +283,7 @@
               </b-col>
             </b-row>
             <b-row>
-              <b-col lg="4" md="4" sm="12">
+              <b-col lg="4" md="4" sm="12"  v-show="mode !== 'remove'">
                 <b-form-group
                   id="form-client-g-district"
                   :label="labelpage[14]"
@@ -275,7 +301,7 @@
                   />
                 </b-form-group>
               </b-col>
-              <b-col lg="4" md="4" sm="12">
+              <b-col lg="4" md="4" sm="12"  v-show="mode !== 'remove'">
                 <b-form-group
                   id="form-client-g-city"
                   :label="labelpage[15]"
@@ -293,7 +319,7 @@
                   />
                 </b-form-group>
               </b-col>
-              <b-col lg="4" md="4" sm="12">
+              <b-col lg="4" md="4" sm="12"  v-show="mode !== 'remove'">
                 <b-form-group
                   id="form-client-g-state"
                   :label="labelpage[16]"
@@ -314,7 +340,7 @@
             </b-row>
           </b-collapse>
           <b-row>
-            <b-col class="mb-3">
+            <b-col class="mb-3"  v-show="mode !== 'remove'">
               <b-form-checkbox
                 id="form-client-g-promotion"
                 v-model="client.bo_promotion"
@@ -327,7 +353,7 @@
           </b-row>
            <b-row>
             <b-col>
-              <div class="btn-group">
+              <div class="btn-group" >
                 <div id="btnl-save" v-if="mode === 'save'">
                   <b-button class="btn btnl-action btnl-save-stlyle" type="submit" size="sm">
                     <i :class="iconpage[1]"></i>
@@ -335,7 +361,7 @@
                   </b-button>
                 </div>
                 <div id="btnl-remove" v-if="mode === 'remove'">
-                  <b-button class="btn btnl-action btnl-remove-stlyle" size="sm">
+                  <b-button class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete" size="sm">
                     <i :class="iconpage[3]"></i>
                     <span style="color: #fff;">{{ labelpage[2] }}</span>
                   </b-button>
@@ -371,23 +397,41 @@
             </b-button>
           </template>
         </b-table>
+          <div class="paginator-box">
+            <b-pagination @click="loadClients" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
+            <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
+              <b-dropdown-item @click="limit=5" >5</b-dropdown-item>
+              <b-dropdown-item @click="limit=10">10</b-dropdown-item>
+              <b-dropdown-item @click="limit=20">20</b-dropdown-item>
+          </b-dropdown>
+        </div>
       </b-card-body>
       <template v-slot:footer>
-        <em></em>
+        <em>
+        </em>
       </template>
     </b-card>
+    <b-modal id="loadModal" :hide-header="true" :hide-footer="true" :centered="true">
+      <div class="d-flex justify-content-center mb-3 mt-3">
+        <b-spinner
+          variant="primary"
+          class="float-right"
+          type="grow"
+          style="width:50px; height: 50px;"
+        ></b-spinner> <h1 class="ml-3"> Loading...</h1>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
 import PageTitle from "@/components/template/PageTitle";
-// eslint-disable-next-line
 import { baseApiUrl, tolken, showError, showSuccess } from "@/global";
 import defLang from "@/config/factory/defLang";
 import axios from "axios";
 const myHeader = { headers: { authorization: tolken } };
 axios.create({ headers: { common: { Authentication: tolken } } });
 export default {
-  name: "Clientes",
+  name: "Clients",
   components: { PageTitle },
   computed: {
     changeLang() {
@@ -396,6 +440,11 @@ export default {
   },
   data() {
     return {
+      loading:false,
+      showErrors:false,
+      page: 1,
+      limit: 5,
+      count: 0,
       lang: null,
       renderComponent: true,
       mode: "save",
@@ -408,6 +457,7 @@ export default {
       labelpage: [],
       placeholderpage: [],
       client: {},
+      clientF: {},
       clients: [],
       obj: [],
       birthdayDay: null,
@@ -419,26 +469,97 @@ export default {
         { key: "vc_email", label: "E-mail", sortable: true },
         { key: "mobile", label: "Mobile", sortable: true },
         { key: "actions", label: "Actions" }
-      ]
+      ],
+      erros:[]
     };
   },
   methods: {
     loadClients() {
-      const url = `${baseApiUrl}/api/clients`;
-      // const url = `${baseApiUrl}/api/clients?page=${this.page}&limit=${this.limit}`;
+      const url = `${baseApiUrl}/api/clients?page=${this.page}&limit=${this.limit}`;
       axios.get(url, myHeader).then(res => {
-        // console.log(res.data)
-        this.clients = res.data;
-        this.joinData(res.data);
-        // this.count = res.data.count
-        // this.fullName(res.data.rows)
+        this.clients = res.data.rows;
+        this.count = res.data.count
+        this.joinData(res.data.rows);
       })
     },
+    saveClient(){
+      var errors = this.checkForm()
+      if(!errors){
+        const method = this.client.id_client ? 'put' : 'post'
+        const pathCall = this.client.id_client ? `/api/client/id/${this.client.id_client}` : `/api/client`
+        const query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
+        const pathRoute = baseApiUrl + pathCall + query
+        const config = {
+          method: method,
+          url: pathRoute,
+          headers: { authorization: tolken },
+          data: this.client
+        }
+          axios(config, this.client)
+            .then( res => {
+              showSuccess(res.data.info)  
+              this.cancelClient()
+              }
+            )
+            .catch(showError)
+      } else {
+        this.showErrors = true
+      }
+    },
+    checkForm(){
+      this.errors = []
+      if (!this.client.vc_name ) this.errors.push(0)
+      if (`${this.client.vc_name}`.length < 2 ) this.errors.push(1)
+      if (!this.client.vc_lastname ) this.errors.push(2)
+      if (`${this.client.vc_lastname}`.length < 5 ) this.errors.push(3)
+      if (!this.client.vc_email ) {
+          this.errors.push(4)
+        } else if (!this.validEmail(this.client.vc_email)) {
+          this.errors.push(5)
+        }
+      if(this.client.vc_birthday && !this.validBirthday(this.client.vc_birthday) ) this.errors.push(6)
+      if(!this.validZipCod(this.client.vc_zip_code, this.lang) ) this.errors.push(7)
+
+      if(this.errors.length){
+        return true
+      } else {
+        return false
+      }
+    },
+     validEmail(email) {
+      // eslint-disable-next-line
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(email);
+    },
+     validBirthday(birthday) {
+       // not accept 29/02 !
+       birthday = birthday + '/2019'
+       // eslint-disable-next-line
+       var re = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
+       return re.test(birthday)
+     },
+      validZipCod(zipcode, lang){
+        let re 
+        switch (lang) {
+            case 'en-US':
+              re = /^[0-9]{5}(?:-[0-9]{4})$/;
+              break;
+            default:
+              re = /^[0-9]{5}(?:-[0-9]{3})$/;
+        }
+        return re.test(zipcode)
+      }
+    ,
+    showZipCode(){
+      this.visible = this.client.vc_zip_code ? true : false
+      this.enableaddress = this.client.vc_zip_code ? false : true
+    },
     getZipCode() {
-      const zc = `${this.client.nu_zip_code}`.replace(/()-/g,'')
+      const zc = `${this.client.vc_zip_code}`.replace(/\D/g,'')
       const url = `${baseApiUrl}/api/zipcode?zipcode=${zc}`;
+      this.loading = true
       axios.get(url, myHeader)
-        .then(res => {
+        .then(res => { 
             document.getElementById("input-client-address").value = res.data[0].vc_address
             document.getElementById("input-client-district").value = res.data[0].vc_district
             document.getElementById("input-client-city").value = res.data[0].vc_city
@@ -451,11 +572,14 @@ export default {
             this.client.vc_state = res.data[0].vc_state
             this.enableaddress = false
             this.visible = true 
-            showSuccess( this.descriptionpage[2] )    
+            this.loading = false
+            showSuccess( this.descriptionpage[2] )
           })
         .catch(() => {
-            this.enableaddress = false   
-            return showError('Zip code not found!')
+            this.enableaddress = false
+            this.visible = true
+            this.loading = false
+            return showError(this.descriptionpage[3])
             });
     },
     joinData(clients) {
@@ -466,12 +590,8 @@ export default {
         return v;
       }
       for (var i in clients) {
-        this.clients[
-          i
-        ].fullname = `${clients[i].vc_name} ${clients[i].vc_lastname}`;
-        this.clients[i].mobile = mtel(
-          `${clients[i].nu_code_area}${clients[i].nu_mobile}`
-        );
+        this.clients[i].fullname = `${clients[i].vc_name} ${clients[i].vc_lastname}`;
+        this.clients[i].mobile = mtel(`${clients[i].vc_code_area}${clients[i].vc_mobile}`);
       }
     },
     fUppercase(e, obj, prop) {
@@ -481,13 +601,105 @@ export default {
       e.target.setSelectionRange(i, i);
     },
     loadClient(client, mode = "save") {
+      let re = []
+      switch (this.lang) {
+            case 'en-US':
+              re.push({index:[5], value:['-']}) //zipcode
+              re.push({index:[3,6], value:['-', '-']}) //mobile
+              re.push({index:[3,5], value:['-', '-']}) //mobile
+              break;
+            default:
+              re.push({index:[5], value:['-']}) //zipcode
+              re.push({index:[5], value:['-']}) //mobile
+              re.push({index:[3,6,9], value:['.','.','-']}) //mobile
+        }
       this.mode = mode;
-      this.client = { ...client };
+      var zipcode = this.insertStrMask(`${client.vc_zip_code}`,re[0].index, re[0].value )
+      var mobile = this.insertStrMask(`${client.vc_mobile}`,re[1].index, re[1].value )
+      var ssc =  this.insertStrMask(`${client.vc_social_security_code}`,re[2].index, re[2].value )
+      this.client = { 
+        id_client: client.id_client,
+        vc_name: client.vc_name,
+        vc_lastname: client.vc_lastname,
+        vc_code_area: `(${client.vc_code_area})`,
+        vc_zip_code: zipcode,
+        vc_mobile: mobile,
+        vc_email: client.vc_email,
+        vc_address: client.vc_address,
+        vc_address_complement: client.vc_address_complement,
+        vc_address_number: client.vc_address_number,
+        vc_birthday: client.vc_birthday,
+        vc_contact: client.vc_contact,
+        vc_district: client.vc_district,
+        vc_city: client.vc_city,
+        vc_state: client.vc_state,
+        vc_social_security_code: ssc
+      }
+      this.showZipCode()
     },
     cancelClient(){
       this.mode = 'save'
-      this.loadClient()
+      this.client = {}
+      this.clientF = {}
+      this.loadClients()
+      this.showZipCode()
     },
+    insertStrMask(str, ix, v) {
+    let strRpl = ''
+    var li = ix.length -1
+    var l = str.length
+    var iv = 0
+    for ( var i=0; i <= li; i++ ){
+      if (i == 0 && li > 0) {
+        strRpl = str.substr(i, ix[i]) + v[i]
+        iv = ix[i]
+      } else if ( i == 0 && li == 0) {
+        strRpl = str.substr(i, ix[i]) + v[i] + str.substr(ix[i]);
+        iv = ix[i]
+      } else if ( i < li && i > 0 ){
+        strRpl = strRpl + str.substr(iv, ix[i]-iv) + v[i]
+        iv = ix[i]
+      } else {
+        strRpl = strRpl + str.substr(iv, ix[i]-iv) + v[i] + str.substr(ix[i], l - ix[i]) 
+      }
+    }
+    return strRpl;
+  },
+  showModalDelete(){
+        this.$bvModal.msgBoxConfirm(this.descriptionpage[1], {
+          title: this.subtitlepage[2],
+          size: 'sm',
+          buttonSize: 'ld',
+          okVariant: 'warning',
+          okTitle: this.labelpage[25],
+          cancelTitle: this.labelpage[26],
+          hideHeaderClose: false,
+          centered: false
+        })
+          .then( value  => {
+            if (value) this.removeClient()
+          })
+          .catch(showError)
+    },
+      removeClient(){
+        const id = this.client.id_client
+        const method = 'delete'
+        const pathCall = `/api/client/id/${id}`
+        let query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
+        const pathRoute = baseApiUrl + pathCall + query
+        const config = {
+          method: method,
+          url: pathRoute,
+          headers: { authorization: tolken }
+        }
+        axios(config)
+          .then( res => {
+            showSuccess(res.data.info)
+            this.cancelClient()
+            this.cancelClient()
+          })
+          .catch(showError)
+      },
   },
   mounted() {
     this.$store.state.isMenuVisible = false
@@ -512,10 +724,23 @@ export default {
       this.placeholderpage = this.obj.placeholder;
       this.iconpage = this.obj.icon;
     },
+    page() {
+      this.loadClients()
+    },
+    limit() {
+      this.loadClients()
+    },
+    loading: function(val){
+      if (val) {
+        this.$bvModal.show('loadModal')
+      } else {
+        this.$bvModal.hide('loadModal')
+      }
+    }
   }
 };
 </script>
-<style>
+<style >
 
 .inp-z-code{
   border-top-right-radius: 0;

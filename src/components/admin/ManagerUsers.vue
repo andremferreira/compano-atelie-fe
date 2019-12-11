@@ -113,7 +113,7 @@
               </b-button>
           </template>
         </b-table>
-        <div id="paginator-box">
+        <div class="paginator-box">
             <b-pagination @click="loadUsers" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
             <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
               <b-dropdown-item @click="limit=5" >5</b-dropdown-item>
@@ -203,7 +203,7 @@ export default {
       saveUser(){
         const method = this.user.id_user ? 'put' : 'post'
         const pathCall =  this.user.id_user ? `/api/user/id/${this.user.id_user}` : `/api/user`
-        let query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
+        const query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
         const pathRoute = baseApiUrl + pathCall + query
         const config = {
           method: method,
@@ -254,7 +254,7 @@ export default {
           buttonSize: 'ld',
           okVariant: 'warning',
           okTitle: this.labelpage[18],
-          cantelTitle: this.labelpage[19],
+          cancelTitle: this.labelpage[19],
           hideHeaderClose: false,
           centered: false
         })
@@ -303,7 +303,7 @@ export default {
   flex-direction: row;
 }
 
-#paginator-box {
+.paginator-box {
   display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;

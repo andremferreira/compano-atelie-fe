@@ -109,7 +109,7 @@ export default {
   },
   data() {
     return {
-      currUser: 2,
+      currUser: 1,
       showAvatar: false,
       modifyAvatar: true,
       iconpage: [],
