@@ -200,7 +200,10 @@ export default {
       toBase64(this.file).then( result => {
         return this.user.tx_image = result  
       })
-    }
+    },
+    toggleLoading(){
+          this.$store.state.loading = !this.$store.state.loading
+      }   
   },
   mounted() {
     this.lang = this.$store.state.dLang;
@@ -212,9 +215,11 @@ export default {
     this.placeholderpage = this.obj.placeholder;
     this.iconpage = this.obj.icon;
     this.loadMyProfile();
+    this.toggleLoading();
     setTimeout(() => {
-      this.imgAvatar()
-      return this.showAvatar = true 
+      this.imgAvatar();
+      this.toggleLoading();
+      return this.showAvatar = true;
     }, 1000)
   },
   watch: {

@@ -164,4 +164,9 @@ export default {
 		height: 1fr;
 	}
 
+	.toasted-custom{
+		background-color:gold !important;
+		color:black !important;
+	}
+
 </style>

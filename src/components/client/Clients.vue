@@ -377,16 +377,28 @@
           </b-row>
         </b-form>
         <hr />
+          <b-row>
+              <div id="search-b-icon" class="btn" size="sm"><i class="fa fa-search"/></div>
+              <b-form class="search-client" v-on:keydown.enter.prevent="submit">
+                <b-form-input
+                  type="text"
+                  id="input-small"
+                  size="sm"
+                  v-model="search"
+                  v-uppercase
+                >
+                </b-form-input>
+              </b-form>
+          </b-row>
         <b-table
           sticky-header="stickyHeader"
           :no-border-collapse="true"
-          hover
           outlined
           striped
-          :items="clients"
+          :items="filterClients"
           :fields="fields"
-          responsive
           small="small"
+          responsive="true"
         >
           <template v-slot:cell(actions)="data">
             <b-button variant="warning" @click="loadClient(data.item)" class="mr-2 mt-1">
@@ -400,9 +412,9 @@
           <div class="paginator-box">
             <b-pagination @click="loadClients" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
             <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
-              <b-dropdown-item @click="limit=5" >5</b-dropdown-item>
-              <b-dropdown-item @click="limit=10">10</b-dropdown-item>
               <b-dropdown-item @click="limit=20">20</b-dropdown-item>
+              <b-dropdown-item @click="limit=50">50</b-dropdown-item>
+              <b-dropdown-item @click="limit=100">100</b-dropdown-item>
           </b-dropdown>
         </div>
       </b-card-body>
@@ -411,21 +423,11 @@
         </em>
       </template>
     </b-card>
-    <b-modal id="loadModal" :hide-header="true" :hide-footer="true" :centered="true">
-      <div class="d-flex justify-content-center mb-3 mt-3">
-        <b-spinner
-          variant="primary"
-          class="float-right"
-          type="grow"
-          style="width:50px; height: 50px;"
-        ></b-spinner> <h1 class="ml-3"> Loading...</h1>
-      </div>
-    </b-modal>
   </div>
 </template>
 <script>
 import PageTitle from "@/components/template/PageTitle";
-import { baseApiUrl, tolken, showError, showSuccess } from "@/global";
+import { baseApiUrl, tolken, showError, showWarning, showSuccess } from "@/global";
 import defLang from "@/config/factory/defLang";
 import axios from "axios";
 const myHeader = { headers: { authorization: tolken } };
@@ -437,13 +439,17 @@ export default {
     changeLang() {
       return this.$store.state.dLang;
     },
+    filterClients(){
+      return this.clients.filter((client) => {
+        return client.fullname.match(this.search)
+      })
+    }
   },
   data() {
     return {
-      loading:false,
       showErrors:false,
       page: 1,
-      limit: 5,
+      limit: 20,
       count: 0,
       lang: null,
       renderComponent: true,
@@ -470,7 +476,8 @@ export default {
         { key: "mobile", label: "Mobile", sortable: true },
         { key: "actions", label: "Actions" }
       ],
-      erros:[]
+      erros:[],
+      search:''
     };
   },
   methods: {
@@ -557,7 +564,7 @@ export default {
     getZipCode() {
       const zc = `${this.client.vc_zip_code}`.replace(/\D/g,'')
       const url = `${baseApiUrl}/api/zipcode?zipcode=${zc}`;
-      this.loading = true
+      this.$store.state.loading = true
       axios.get(url, myHeader)
         .then(res => { 
             document.getElementById("input-client-address").value = res.data[0].vc_address
@@ -572,14 +579,14 @@ export default {
             this.client.vc_state = res.data[0].vc_state
             this.enableaddress = false
             this.visible = true 
-            this.loading = false
+            this.$store.state.loading = false
             showSuccess( this.descriptionpage[2] )
           })
         .catch(() => {
             this.enableaddress = false
             this.visible = true
-            this.loading = false
-            return showError(this.descriptionpage[3])
+            this.$store.state.loading = false
+            return showWarning(this.descriptionpage[3])
             });
     },
     joinData(clients) {
@@ -730,13 +737,7 @@ export default {
     limit() {
       this.loadClients()
     },
-    loading: function(val){
-      if (val) {
-        this.$bvModal.show('loadModal')
-      } else {
-        this.$bvModal.hide('loadModal')
-      }
-    }
+    
   }
 };
 </script>
@@ -754,9 +755,39 @@ export default {
   border-bottom-left-radius: 0 !important;
 }
 
+#input-small{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-bottom: 5px;
+}
+
 .b-zip-code:hover {
   color: rgb(13, 26, 56);
   background-color: #a1cbf8;
   border-color: #9ec4ee;
 }
+
+#search-b-icon {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: stretch;
+  margin-left: 15px;
+  color: #004085;
+  background-color: #cce5ff;
+  border-color: #b8daff;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  width:31px;
+  margin-bottom: 5px;
+}
+
+/* #search-b-icon:hover {
+  color: rgb(13, 26, 56);
+  background-color: #a1cbf8;
+  border-color: #9ec4ee;
+} */
+
 </style>

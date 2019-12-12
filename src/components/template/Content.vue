@@ -1,12 +1,15 @@
 <template>
   <div class="content">
       <router-view />
+      <Loading />
   </div>
 </template>
 
 <script>
+import Loading from '@/components/template/Loading'
 export default {
-    name: 'Content'
+    name: 'Content',
+    components: { Loading }
 }
 </script>
 

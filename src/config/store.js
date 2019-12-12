@@ -12,7 +12,7 @@ export default new Vuex.Store({
             name: 'User Person',
             email: 'person@pers.com'
         },
-        
+        loading: false
     },
     mutations: {
         toggleMenu(state, isVisible) {
@@ -21,7 +21,7 @@ export default new Vuex.Store({
             } else {
                 state.isMenuVisible = isVisible
             }
-        }
+        },
     },
     modules: { langs },
 })
