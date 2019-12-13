@@ -219,7 +219,7 @@
                     "title": ["Gestão de Clientes", "Cadastro de Clientes"],
                     "subtitle": ["Cadastro & Cia", "Recomendações & Boas Práticas", "Confirmação de Remoção de Cliente"],
                     "description": ["Solicite documento oficial com foto atualizada, para realização do cadastro.", "Realmente deseja remover o cliente?", "Endereço encontrado com sucesso...", "Endereço não encontrado!"],
-                    "label": ["Adicionar", "Editar", "Remover", "Id", "Nome", "Sobrenome", "E-mail", "Aniversário (dia / mês)", "CPF", "Celular", "Indicação", "CEP", "Endereço","Nº","Bairro","Cidade","Estado","Complemento","Aceito receber ofertas e promoções.","Ações", "Selecione", "Senha", "Confirmar Senha", "Salvar", "Cancelar","Sim","Não"],
+                    "label": ["Adicionar", "Editar", "Remover", "Id", "Nome", "Sobrenome", "E-mail", "Aniversário (dia / mês)", "CPF", "Celular", "Indicação", "CEP", "Endereço","Nº","Bairro","Cidade","Estado","Complemento","Aceito receber ofertas e promoções.","Ações", "Selecione", "Senha", "Confirmar Senha", "Salvar", "Cancelar","Sim","Não", "Procurar..."],
                     "placeholder": [
                         "Informe o nome.",
                         "Informe o sobrenome.",
@@ -237,14 +237,23 @@
                         "Informe a cidade.",
                         "Informe o estado.",
                         "Apto, bloco, casa..."
-                     ]
+                     ],
+                     "errors": [
+                        "O campo \"Nome\" seve ser preenchido!", 
+                        "O campo \"Nome\" deve conter no mínimo três caracteres!", 
+                        "O campo \"Sobrenome\" seve ser preenchido!",
+                        "O campo \"Sobrenome\" deve conter no mínimo cinco caracteres!", 
+                        "O campo \"E-mail\" seve ser preenchido!",
+                        "O campo \"E-mail\" deve possuir um e-mail válido (xxx@xxx.xx)!", 
+                        "O campo \"Aniversário\" não possuí uma data válida do calendário (xx/xx)!" 
+                    ]
                 },
                 {
                     "type": "en-US",
                     "title": ["Clients Management","Clients Register"],
                     "subtitle": ["Registration & Purposes", "Recommendations & Best Practices","Client Removal Confirmation"],
                     "description": ["Request official document with recent photo to register the enroll.", "Are you sure you want to remove the client?", "Address find with success...", "Address not find!"],
-                    "label": ["Add", "Edit", "Remove", "Id", "Name", "Lastname", "E-mail", "Birthday (day / month)", "SSC" , "Mobile", "Indication", "Zip Code","Address","Nº","District","City","State","Address Compl.","I accept to receive offers and promotions.","Actions", "Select", "Password", "Confirm password", "Save", "Cancel", "Yes", "No"],
+                    "label": ["Add", "Edit", "Remove", "Id", "Name", "Lastname", "E-mail", "Birthday (day / month)", "SSC" , "Mobile", "Indication", "Zip Code","Address","Nº","District","City","State","Address Compl.","I accept to receive offers and promotions.","Actions", "Select", "Password", "Confirm password", "Save", "Cancel", "Yes", "No", "Search..."],
                     "placeholder": [
                         "Enter name.",
                         "Enter lastname.",
@@ -262,6 +271,15 @@
                         "Enter city.",
                         "Enter state.",
                         "Apto, bloc, ..."
+                    ],
+                    "errors": [
+                        "The field \"Name\" must be be completed!", 
+                        "The field \"Name\" must contain at least three filled-in characters!", 
+                        "The field \"Lastname\" seve ser preenchido!",
+                        "The field \"Lastname\" must contain at least five filled-in characters!", 
+                        "The field \"E-mail\" must be be completed!",
+                        "The field \"E-mail\" you entered is not valid (xxx@xxx.xx)!", 
+                        "The field \"Birthday\" field is not a valid calendar date (xx/xx)!" 
                     ]
                 }
             ]

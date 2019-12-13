@@ -341,5 +341,11 @@ export default {
 .btnl-remove-stlyle:hover,.btnl-remove-stlyle:focus,.btnl-remove-stlyle:active,.btnl-remove-stlyle.active,.open .dropdown-toggle.btnl-remove-stlyle{color:#fff;background-color:#ce4f39;border-color:rgba(0,0,0,0.2)}
 .btnl-remove-stlyle:active,.btnl-remove-stlyle.active,.open .dropdown-toggle.btnl-remove-stlyle{background-image:none}
 .btnl-remove-stlyle.disabled,.btnl-remove-stlyle[disabled],fieldset[disabled] .btnl-remove-stlyle,.btnl-remove-stlyle.disabled:hover,.btnl-remove-stlyle[disabled]:hover,fieldset[disabled] .btnl-remove-stlyle:hover,.btnl-remove-stlyle.disabled:focus,.btnl-remove-stlyle[disabled]:focus,fieldset[disabled] .btnl-remove-stlyle:focus,.btnl-remove-stlyle.disabled:active,.btnl-remove-stlyle[disabled]:active,fieldset[disabled] .btnl-remove-stlyle:active,.btnl-remove-stlyle.disabled.active,.btnl-remove-stlyle[disabled].active,fieldset[disabled] .btnl-remove-stlyle.active{background-color:#1087dd;border-color:rgba(0,0,0,0.2)}
+/*  BUTTON SEARCH */
+.btnl-action i.fa.fa-search { color: rgba(13, 26, 56,0.75); font-size: 1.2em; padding-top: 2px;}
+.btnl-search-style{color:#004085;background-color:#cce5ff;border-color:#b8daff}
+.btnl-search-style:hover,.btnl-search-style:focus,.btnl-search-style:active,.btnl-search-style.active,.open .dropdown-toggle.btnl-search-style{color:rgb(13, 26, 56);background-color:#a1cbf8;border-color:#9ec4ee}
+.btnl-search-style:active,.btnl-search-style.active,.open .dropdown-toggle.btnl-search-style{background-image:none}
+.btnl-search-style.disabled,.btnl-search-style[disabled],fieldset[disabled] .btnl-search-style,.btnl-search-style.disabled:hover,.btnl-search-style[disabled]:hover,fieldset[disabled] .btnl-search-style:hover,.btnl-search-style.disabled:focus,.btnl-search-style[disabled]:focus,fieldset[disabled] .btnl-search-style:focus,.btnl-search-style.disabled:active,.btnl-search-style[disabled]:active,fieldset[disabled] .btnl-search-style:active,.btnl-search-style.disabled.active,.btnl-search-style[disabled].active,fieldset[disabled] .btnl-search-style.active{background-color:#1087dd;border-color:rgba(0,0,0,0.2)}
 
 </style>

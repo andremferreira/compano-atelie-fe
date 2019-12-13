@@ -159,6 +159,7 @@
                   :placeholder="placeholderpage[8]"
                   v-uppercase
                   size="sm"
+                  v-restrict.alpha
                 />
               </b-form-group>
             </b-col>
@@ -256,10 +257,10 @@
                     v-model="client.vc_address_number"
                     type="text"
                     required
-                    v-uppercase
                     :placeholder="placeholderpage[11]"
                     :disabled="enableaddress"
                     size="sm"
+                    v-restrict.number
                   />
                 </b-form-group>
               </b-col>
@@ -298,6 +299,7 @@
                     :placeholder="placeholderpage[12]"
                     :disabled="enableaddress"
                     size="sm"
+                     v-restrict.alpha
                   />
                 </b-form-group>
               </b-col>
@@ -316,6 +318,7 @@
                     :placeholder="placeholderpage[13]"
                     :disabled="enableaddress"
                     size="sm"
+                    v-restrict.alpha
                   />
                 </b-form-group>
               </b-col>
@@ -334,6 +337,7 @@
                     :placeholder="placeholderpage[14]"
                     :disabled="enableaddress"
                     size="sm"
+                    v-restrict.alpha
                   />
                 </b-form-group>
               </b-col>
@@ -349,6 +353,26 @@
                 :unchecked-value="false"
                 size="sm"
               >{{ labelpage[18] }}</b-form-checkbox>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-alert show variant="danger" v-if="showErrors">
+                <div>
+                  <b-row>
+                    <b-col lg="1" md="1" sm="1">
+                      <div class="error-title-icon"><h2><b><i class="fa fa-exclamation-circle"></i></b></h2></div>
+                    </b-col>
+                    <b-col lg="11" md="11" sm="11">
+                      <ul>
+                        <li v-for="i in this.errors" :key="i">
+                        {{errorslist[i]}}
+                        </li>
+                      </ul>
+                    </b-col>
+                  </b-row>
+                </div>
+                </b-alert>
             </b-col>
           </b-row>
            <b-row>
@@ -377,19 +401,42 @@
           </b-row>
         </b-form>
         <hr />
+        <b-form class="search-client" v-on:keydown.enter.prevent="submit">
           <b-row>
-              <div id="search-b-icon" class="btn" size="sm"><i class="fa fa-search"/></div>
-              <b-form class="search-client" v-on:keydown.enter.prevent="submit">
-                <b-form-input
-                  type="text"
-                  id="input-small"
-                  size="sm"
-                  v-model="search"
-                  v-uppercase
-                >
-                </b-form-input>
-              </b-form>
+              <span class="ml-3">{{labelpage[4]}}:</span>
+                <b-col lg="3" md="3" sm="12">
+                  <b-form-input
+                    type="text"
+                    id="input-small"
+                    size="sm"
+                    v-model="searchname"
+                    v-uppercase
+                  >
+                  </b-form-input>
+              </b-col>
+              <span class="ml-3">{{labelpage[5]}}:</span>
+              <b-col lg="5" md="5" sm="12">
+                  <b-form-input
+                    type="text"
+                    id="input-small"
+                    size="sm"
+                    v-model="searchlastname"
+                    v-uppercase
+                  >
+                  </b-form-input>
+              </b-col>
+              <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-none d-md-block' : 'btn btnl-action btnl-remove-stlyle d-none d-md-block'" 
+                @click="loadClientsWithFilter" v-on:keydown.enter="loadClientsWithFilter" size="sm">
+                <i :class="!searchToggle ? 'fa fa-search': 'fa fa-times'"></i>
+                <span>{{labelpage[27]}}</span>
+              </b-button>
+              <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-block d-md-none mt-2 ml-3' : 'btn btnl-action btnl-remove-stlyle d-block d-md-none mt-2 ml-3'"  
+                @click="loadClientsWithFilter" v-on:keydown.enter="loadClientsWithFilter" size="sm">
+                <i :class="!searchToggle ? 'fa fa-search': 'fa fa-times'"></i>
+                <span>{{labelpage[27]}}</span>
+              </b-button>
           </b-row>
+        </b-form>
         <b-table
           sticky-header="stickyHeader"
           :no-border-collapse="true"
@@ -399,7 +446,15 @@
           :fields="fields"
           small="small"
           responsive="true"
+          class="mt-3"
+          :busy="tbIsBusy"
         >
+          <template v-slot:table-busy>
+            <div class="text-center text-primary my-2">
+              <b-spinner class="align-middle"></b-spinner>
+              <strong class="ml-3">Loading...</strong>
+            </div>
+          </template>
           <template v-slot:cell(actions)="data">
             <b-button variant="warning" @click="loadClient(data.item)" class="mr-2 mt-1">
               <i class="fa fa-pencil"></i>
@@ -412,9 +467,9 @@
           <div class="paginator-box">
             <b-pagination @click="loadClients" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
             <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
-              <b-dropdown-item @click="limit=20">20</b-dropdown-item>
-              <b-dropdown-item @click="limit=50">50</b-dropdown-item>
-              <b-dropdown-item @click="limit=100">100</b-dropdown-item>
+              <b-dropdown-item @click="limit=limit">{{limit}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=limit*2">{{limit * 2}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=limit*4">{{limit * 4}}</b-dropdown-item>
           </b-dropdown>
         </div>
       </b-card-body>
@@ -441,15 +496,29 @@ export default {
     },
     filterClients(){
       return this.clients.filter((client) => {
-        return client.fullname.match(this.search)
+        return client.fullname.match(this.searchFields)
       })
+    },
+    searchFields(){
+      const spa = !this.searchlastname ? '' : ' '
+      return this.searchname + spa + this.searchlastname
+    },
+    searchReqQuery(){
+      let strValue = ''
+      if (!this.searchname && this.searchlastname) {
+         strValue = `&lastname=%${this.searchlastname}%`
+      } else if (this.searchname && !this.searchlastname) {
+         strValue = `&name=%${this.searchname}%`
+      } else if (this.searchname && this.searchlastname) {
+         strValue = `&name=%${this.searchname}%&lastname=%${this.searchlastname}%`
+      }
+      return strValue
     }
   },
   data() {
     return {
-      showErrors:false,
       page: 1,
-      limit: 20,
+      limit: 5,
       count: 0,
       lang: null,
       renderComponent: true,
@@ -476,20 +545,47 @@ export default {
         { key: "mobile", label: "Mobile", sortable: true },
         { key: "actions", label: "Actions" }
       ],
+      showErrors:false,
       erros:[],
-      search:''
+      errorslist:[],
+      searchname:'',
+      searchlastname:'',
+      searchToggle:false,
+      tbIsBusy:false,
+      startLoad:false,
+      strQuery:''
     };
   },
   methods: {
     loadClients() {
-      const url = `${baseApiUrl}/api/clients?page=${this.page}&limit=${this.limit}`;
+      this.toggleBusy();
+      const url = `${baseApiUrl}/api/clients?page=${this.page}&limit=${this.limit}${this.strQuery}`;
       axios.get(url, myHeader).then(res => {
         this.clients = res.data.rows;
-        this.count = res.data.count
+        this.count = res.data.count;
         this.joinData(res.data.rows);
+        this.toggleBusy();
       })
     },
+    loadClientsWithFilter(){
+      if (this.searchname || this.searchlastname ) {
+        this.startLoad = !this.startLoad
+        if (this.searchToggle) {
+          this.searchToggle=!this.searchToggle
+          this.searchname = ''
+          this.searchlastname = ''
+          this.strQuery = this.searchReqQuery
+          this.loadClients()
+        } else{ 
+          this.searchToggle=!this.searchToggle
+          this.strQuery = this.searchReqQuery
+          this.loadClients()
+        }
+      }
+    }
+    ,
     saveClient(){
+      this.showErrors = false
       var errors = this.checkForm()
       if(!errors){
         const method = this.client.id_client ? 'put' : 'post'
@@ -516,7 +612,7 @@ export default {
     checkForm(){
       this.errors = []
       if (!this.client.vc_name ) this.errors.push(0)
-      if (`${this.client.vc_name}`.length < 2 ) this.errors.push(1)
+      if (`${this.client.vc_name}`.length < 3 ) this.errors.push(1)
       if (!this.client.vc_lastname ) this.errors.push(2)
       if (`${this.client.vc_lastname}`.length < 5 ) this.errors.push(3)
       if (!this.client.vc_email ) {
@@ -707,6 +803,10 @@ export default {
           })
           .catch(showError)
       },
+      toggleBusy() {
+        this.startLoad = !this.startLoad
+        this.tbIsBusy = !this.tbIsBusy
+      }
   },
   mounted() {
     this.$store.state.isMenuVisible = false
@@ -718,6 +818,7 @@ export default {
     this.labelpage = this.obj.label;
     this.placeholderpage = this.obj.placeholder;
     this.iconpage = this.obj.icon;
+    this.errorslist =  this.obj.errorsList;
     this.loadClients();
   },
   watch: {
@@ -730,6 +831,7 @@ export default {
       this.labelpage = this.obj.label;
       this.placeholderpage = this.obj.placeholder;
       this.iconpage = this.obj.icon;
+      this.errorslist =  this.obj.errorsList;
     },
     page() {
       this.loadClients()
@@ -755,10 +857,14 @@ export default {
   border-bottom-left-radius: 0 !important;
 }
 
-#input-small{
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  margin-bottom: 5px;
+#i-fa-search {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: stretch;
+  width:25%;
 }
 
 .b-zip-code:hover {
@@ -774,20 +880,32 @@ export default {
 	justify-content: center;
 	align-items: center;
 	align-content: stretch;
-  margin-left: 15px;
   color: #004085;
   background-color: #cce5ff;
   border-color: #b8daff;
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-  width:31px;
-  margin-bottom: 5px;
+  width:100%;
 }
 
-/* #search-b-icon:hover {
+.error-title-icon {
+  display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: stretch;
+}
+
+#search-b-icon:hover {
   color: rgb(13, 26, 56);
   background-color: #a1cbf8;
   border-color: #9ec4ee;
-} */
+}
+
+.search-label{
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin:0;
+  padding:0;
+}
 
 </style>

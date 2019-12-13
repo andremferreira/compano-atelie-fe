@@ -17,6 +17,7 @@ function langFind(lang, page, code) {
                     objL.description = sLang[j].description
                     objL.label = sLang[j].label
                     objL.placeholder = sLang[j].placeholder
+                    objL.errorsList = sLang[j].errors || []
                 }
             }
         }
