@@ -1,13 +1,11 @@
 <template>
-  <header class="header" :style='`style="${header_img}"`'>
-      <!-- <router-link to="/">
-        <img src="../../assets/ComPano.jpg" class="logo" alt="Logo">
-      </router-link> -->
+  <header class="header">
+      <!-- :style="!this.$store.state.user ? `style='${header_img}'` : `style='background-color:blue;'`" -->
       <a @click="toggleMenu" class="toggle" v-if="!hideToggle">
           <i class="fa fa-bars" :class="icon"></i>
       </a>
       <h1 class="title">
-          <router-link to="/">
+          <router-link to="/" v-if="this.$store.state.user">
             <div class="title-box">{{ title }}</div>
           </router-link>
       </h1>

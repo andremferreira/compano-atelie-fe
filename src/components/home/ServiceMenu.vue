@@ -1,6 +1,6 @@
 <template>
     <router-link :to="this.path" class="rlink">
-        <div class="service ">
+        <div class="service" >
             <div class="service-box-icon" id="service-ic">
                 <b-row sm="12" > 
                     <b-col sm="12" >
@@ -43,19 +43,24 @@ export default {
         align-content: center;
         text-align: center;
         border-radius: 8px;
-        margin-right: 16px;
+        margin-left: 16px;
         margin-bottom: 16px;
         background: #f7f6f3;  
         background: -webkit-linear-gradient(to bottom, #fdfdfd, #e6e2d8);
         background: linear-gradient(to bottom, #fdfdfd, #e6e2d8);
         width: 90%;
-        min-width: 214px;
+        min-width: 228px;
         height: 160px;
         border: 1px solid rgba(255,255,255,0.8);
         box-shadow: 0px 1px 1px rgba(0,0,0,0.5),
             0 0 1em rgba(0,0,0,0.22),
             inset 0 0 1em rgba(0,0,0,0.22);
     }
+
+    .service .fa .fa-address-book-op {
+        margin-left: 0px !important;
+    }
+
     .service-box-icon{
         padding-top:10px;
         height:50%;
@@ -79,13 +84,13 @@ export default {
         align-content: center;
         text-align: center;
         border-radius: 8px;
-        margin-right: 16px;
+        margin-left: 16px;
         margin-bottom: 16px;
         background: #d8da9c;  
         background: -webkit-linear-gradient(to bottom, #eefcff, #faeadc);
         background: linear-gradient(to bottom, #eefcff, #faeadc);
         width: 90%;
-        min-width: 214px;
+        min-width: 228px;
         height: 160px;
         border: 1px solid rgba(255,255,255,0.4);
         box-shadow: 0px 1px 1px rgba(0,0,0,0.7),

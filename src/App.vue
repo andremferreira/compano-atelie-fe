@@ -1,14 +1,15 @@
 <template>
 		<div class="dv-bg-image">
 			<div class="master">
-				<div id="app" :class="{'hide-menu': !isMenuVisible}">
+				<div id="app" :class="{ 'hide-menu': !isMenuVisible || !user }">
 					<Header 
 					:title="parameters.app_title" 
 					:header_img="parameters.header_img"
-					:hideToggle="false"
-					:hideUserDropdown="false" />
-					<Menu :bg="parameters.bg_menu"/>
-					<Content />
+					:hideToggle="!user"
+					:hideUserDropdown="!user" />
+					<Menu v-if="user" :bg="parameters.bg_menu"/>
+					<Loading v-if="!authUsr"/>
+					<Content v-else />
 					<Footer />
 				</div>
 			</div>
@@ -16,18 +17,23 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { baseApiUrl, userKey } from '@/global'
 import { mapState } from 'vuex'
 import Header from '@/components/template/Header'
 import Menu from '@/components/template/Menu'
 import Content from '@/components/template/Content'
 import Footer from '@/components/template/Footer'
+import Loading from '@/components/template/Loading'
 export default {
 	name: "App",
-	components: { Header, Menu, Content, Footer },
-	computed: mapState(['isMenuVisible']),
+	components: { Header, Menu, Content, Footer, Loading },
+	computed: mapState(['isMenuVisible', 'user']),
 	data() {
 		return {
-			parameters: []
+			parameters: [],
+			showMenuAuth: false,
+			authUsr: false
 		}
 	},
 	methods:{
@@ -38,7 +44,36 @@ export default {
 		defBg(){
 			var imgNew = 'url("' + require('@/assets/' + this.parameters.body_img) + '")'
 			document.getElementsByTagName('body')[0].style.backgroundImage = imgNew
-		}
+		},
+		async validateToken() {
+			this.$store.state.loading = true
+			this.authUsr = false
+			const json = localStorage.getItem(userKey)
+			const userData = JSON.parse(json)
+			this.$store.state.user = null
+			this.$store.state.token = null
+
+			if(userData === null) {
+				this.authUsr = true
+				this.$router.push({ name: 'auth' })
+				this.$store.state.loading = false
+				return
+			}
+
+			const res = await axios.post(`${baseApiUrl}/oapi/vToken`, userData)
+
+			if (res.data){
+				this.$store.commit('setUser', userData)
+			} else {
+				localStorage.removeItem(userKey)
+				this.$router.push({ name: 'auth'})
+			}
+			this.authUsr = true
+			this.$store.state.loading = false
+		},
+	},
+	created(){
+		this.validateToken()
 	},
 	mounted(){
 		this.getInterface()
@@ -133,6 +168,7 @@ export default {
 		align-items: center;
 		align-content: center;
 	}
+
 	#app {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
@@ -145,14 +181,14 @@ export default {
 			"menu content"
 			"footer footer";
 		width: 100%;
-		max-width: 1200px;
+		max-width: 1300px;
 	}
 
 	#app.hide-menu {
-		display: grid;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		height: 100vh;
+		display: grid;
 		grid-template-rows: 60px 1fr 30px;
 		grid-template-columns: 1fr;
 		grid-template-areas: 
@@ -160,6 +196,20 @@ export default {
 			"content content"
 			"footer footer";
 	}
+
+	.singin {
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		height: 100vh;
+		width: 100vw;
+		display: grid;
+		grid-template-rows: 1fr 30px !important;
+		grid-template-columns: 1fr !important;
+		grid-template-areas:
+			"content content"
+			"footer footer";
+	}
+
 	.content {
 		height: 1fr;
 	}

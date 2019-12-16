@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import Auth from '@/components/auth/Auth'
 import Home from '@/components/home/Home'
 import AdminPages from '@/components/admin/AdminPages'
 import Services from '@/components/service/Services'
@@ -12,6 +13,10 @@ const routes = [{
     name: 'home',
     path: '/',
     component: Home
+}, {
+    name: 'auth',
+    path: '/auth',
+    component: Auth
 }, {
     name: 'clients',
     path: '/clients',

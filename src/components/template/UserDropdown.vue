@@ -12,21 +12,31 @@
             <router-link to="/admin" id="admin-page-show">
                 <i class="fa fa-cogs grip-lines-vertical"></i> Administração
             </router-link>
-            <router-link to="/singout" id="singout-page-show">
+            <a href @click="logout" id="singout-page-show">
                 <i class="fa fa-sign-out"></i> Sair
-            </router-link>
+            </a>
         </div>
       </transition>
   </div>
 </template>
 
 <script>
+import { userKey } from '@/global'
 import { mapState } from 'vuex'
 import Gravatar from 'vue-gravatar'
 export default {
     name: 'UserDropdown',
     components: { Gravatar },
-    computed: mapState(['user'])
+    computed: mapState(['user']),
+    methods: {
+        logout() {
+            this.$store.state.loading = true
+            localStorage.removeItem(userKey)
+            this.$store.commit('setUser', null)
+            this.$route.push({ name: 'auth' })
+            this.$store.state.loading = false
+        }
+    }
 }
 </script>
 
@@ -47,6 +57,7 @@ export default {
         align-items: center;
         font-weight: 200;
         height: 100%;
+        width:193px;
         padding: 0px 20px;
         color:azure;
 

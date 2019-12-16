@@ -1,6 +1,7 @@
 import Vue from 'vue'
+
+export const userKey = '__compano_user'
 export const baseApiUrl = 'http://127.0.0.1:4000'
-export const tolken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIwIjoicyIsIjEiOiJ5IiwiMiI6InMiLCIzIjoiYSIsIjQiOiJkIiwiNSI6Im0iLCI2IjoiQCIsIjciOiJlIiwiOCI6Im0iLCI5IjoiYSIsIjEwIjoiaSIsIjExIjoibCIsIjEyIjoiLiIsIjEzIjoiYyIsIjE0IjoibyIsIjE1IjoibSIsImlhdCI6MTU3NjI0MjY0MiwiZXhwIjoxNTc2MzI5MDQyfQ.4dwqSfXVid-vRzuIjCGGNu2dxwfwnR9hQ-74Zovhtzc'
 
 export function showError(e){
     if(e && e.response && e.response.data ){
@@ -38,4 +39,4 @@ export function showWarning(e){
     }
 }
 
-export default { baseApiUrl, tolken, showError, showWarning, showSuccess }
+export default { baseApiUrl, showError, showWarning, showSuccess, userKey }

@@ -130,16 +130,17 @@
 </template>
 
 <script>
-import { baseApiUrl, tolken, showError, showSuccess } from "@/global";
+import { baseApiUrl, showError, showSuccess } from "@/global";
 import axios from "axios";
 import defLang from "@/config/factory/defLang"
-const myHeader = { headers: { authorization: tolken } };
-axios.create({ headers: { common: { Authentication: tolken } } });
 export default {
     name: "ManagerUsers",
     computed:{
       changeLang() {
         return this.$store.state.dLang;
+      },
+      usrToken(){
+        return this.$store.state.token;
       }
     },
     data: function() {
@@ -171,7 +172,7 @@ export default {
     methods: {
       loadUsers() {
         const url = `${baseApiUrl}/api/users/small?page=${this.page}&limit=${this.limit}`;
-        axios.get(url, myHeader).then(res => {
+        axios.get(url, { headers: { authorization: this.usrToken } }).then(res => {
             this.users = res.data.rows
             this.count = res.data.count 
             this.fullName(res.data.rows)
@@ -208,7 +209,7 @@ export default {
         const config = {
           method: method,
           url: pathRoute,
-          headers: { authorization: tolken },
+          headers: { authorization: this.usrToken },
           data: this.user
         }
         axios(config, this.user)
@@ -229,7 +230,7 @@ export default {
         const config = {
           method: method,
           url: pathRoute,
-          headers: { authorization: tolken }
+          headers: { authorization: this.usrToken }
         }
         axios(config)
           .then( res => {

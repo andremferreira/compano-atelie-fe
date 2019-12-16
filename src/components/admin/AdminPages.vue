@@ -11,7 +11,7 @@
           <b-tab :title="labelpage[0]" active>
             <MyProfile />
           </b-tab>
-          <b-tab :title="labelpage[1]">
+          <b-tab v-if="currProfile < 3 " :title="labelpage[1]">
             <ManagerUsers />
           </b-tab>
         </b-tabs>
@@ -30,6 +30,9 @@ export default {
   computed:{
     changeLang() {
       return this.$store.state.dLang;
+    },
+    currProfile(){
+      return this.$store.state.user.profile;
     }
   },
   data() {

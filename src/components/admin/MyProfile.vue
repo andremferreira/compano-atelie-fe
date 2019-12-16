@@ -10,7 +10,7 @@
         <b-form class="form-my-profile" @submit="onSubmit">
           <b-row>
             <b-col lg="2" md="3"  sm="12" id="box-avatar">
-                <img id="avatar" src="" @click="modifyAvatar=!modifyAvatar" v-show="showAvatar" alt="Picture of item"/>
+                <img id="avatar" src="@/assets/noimg.jpg" @click="modifyAvatar=!modifyAvatar" v-show="showAvatar" alt=""/>
                 <b-spinner variant="primary" v-if="!showAvatar" label="Spinning" />
             </b-col>
             <b-col lg="10" md="10" sm="12" v-if="modifyAvatar">
@@ -95,21 +95,27 @@
 
 <script>
 // eslint-disable-next-line
-import { baseApiUrl, tolken, showError, showSuccess } from "@/global";
+import { baseApiUrl, showError, showSuccess } from "@/global";
 import defLang from "@/config/factory/defLang"
 import axios from "axios";
-const myHeader = { headers: { authorization: tolken } };
-axios.create({ headers: { common: { Authentication: tolken } } });
 export default {
   name: "MyProfile",
   computed: {
     changeLang() {
       return this.$store.state.dLang;
+    },
+    usrToken(){
+        return this.$store.state.token;
+    },
+    currUser(){
+      return this.$store.state.user.id;
+    },
+    currProfile(){
+      return this.$store.state.user.profile;
     }
   },
   data() {
     return {
-      currUser: 1,
       showAvatar: false,
       modifyAvatar: true,
       iconpage: [],
@@ -130,7 +136,7 @@ export default {
   methods: {
     loadMyProfile() {
       const url = `${baseApiUrl}${this.obj.path}${this.currUser}`;
-      axios.get(url, myHeader).then(res => {
+      axios.get(url,{headers: { authorization: this.usrToken }}).then(res => {
         this.user = res.data;
       });
     },
@@ -140,13 +146,13 @@ export default {
     },
     saveUser(){
         const method = 'put'
-        const pathCall = `/api/user/id/${this.user.id_user}`
+        const pathCall = `/api/myProfile/id/${this.user.id_user}`
         let query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
         const pathRoute = baseApiUrl + pathCall + query
         const config = {
           method: method,
           url: pathRoute,
-          headers: { authorization: tolken },
+          headers: { authorization: this.usrToken },
           data: this.user
         }
         axios(config, this.user)

@@ -2,10 +2,10 @@
   <div class="home">
     <div class="service-menu-box" v-if="!this.$store.state.isMenuVisible">
       <PageTitle :icon="iconpage[0]" :main="titlepage[0]"
-              :sub="subtitlepage[0]"/>
+              :sub="subtitlepage[0]" />
       <div class="service-menu">
           <ServiceMenu v-for="(s,i) in labelpage" :key="i" :title="labelpage[i]" :path="subpath[i]" 
-            :icon="subicon[i]" :color="subiconcolor[i]"/>
+            :icon="subicon[i]" :color="subiconcolor[i]" />
       </div>
     </div>
     <PageTitle :icon="iconpage[1]" :main="titlepage[1]"
@@ -24,10 +24,8 @@ import PageTitle from '@/components/template/PageTitle'
 import Stat from './Stat'
 import ServiceMenu from './ServiceMenu'
 import axios from 'axios'
-import { baseApiUrl, tolken } from '@/global'
+import { baseApiUrl } from '@/global'
 import defLang from "@/config/factory/defLang";
-const myHeader = { headers: {"authorization": tolken }}
-axios.create({ headers:{ common: { 'Authentication': tolken }}})
 export default {
     name: 'Home',
     components: { PageTitle, Stat, ServiceMenu },
@@ -35,6 +33,9 @@ export default {
       changeLang() {
         return this.$store.state.dLang;
       },
+      usrToken(){
+        return this.$store.state.token;
+      }
     },
     data: function() {
       return {
@@ -67,7 +68,7 @@ export default {
     },
     methods: {
       getClients() {
-        axios.get(`${baseApiUrl}/api/clients/count`, myHeader )
+        axios.get(`${baseApiUrl}/api/clients/count`, { headers: {"authorization": this.usrToken } })
           .then(res => { 
               return this.clients = res.data }
             ).catch(e => {
@@ -76,7 +77,7 @@ export default {
                  })
       },
       getBudgets() {
-        axios.get(`${baseApiUrl}/api/budgets/count`, myHeader)
+        axios.get(`${baseApiUrl}/api/budgets/count`, { headers: {"authorization": this.usrToken } })
           .then(res => this.budgets = res.data
             ).catch(e => {
               this.budgets = { count: 999 }
@@ -84,7 +85,7 @@ export default {
                 })
       },
       getServices() {
-          axios.get(`${baseApiUrl}/api/services/count`, myHeader)
+          axios.get(`${baseApiUrl}/api/services/count`, { headers: {"authorization": this.usrToken } })
             .then(res => this.services = res.data
                 ).catch(e => {
                   this.services = { count: 999 }
@@ -92,7 +93,7 @@ export default {
                 })
       },
       getUsers() {
-          axios.get(`${baseApiUrl}/api/users/count`, myHeader)
+          axios.get(`${baseApiUrl}/api/users/count`, { headers: {"authorization": this.usrToken } })
             .then(res => this.users = res.data
                 ).catch(e =>{ 
                   this.users = {count: 999}
@@ -100,7 +101,7 @@ export default {
                 })
       },
       getServOrders() {
-         axios.get(`${baseApiUrl}/api/servOrders/count`, myHeader)
+         axios.get(`${baseApiUrl}/api/servOrders/count`, { headers: {"authorization": this.usrToken } })
             .then(res => this.servOrders = res.data 
                ).catch(e => {
                  this.servOrders = { count: 999 }
@@ -124,7 +125,6 @@ export default {
       this.getBudgets()
       this.getServices()
       this.getServOrders()
-      // if (this.error.length > 0) alert("Conection error!!!")
     },
       watch: {
         changeLang() {

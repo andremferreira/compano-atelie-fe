@@ -379,7 +379,7 @@
             <b-col>
               <div class="btn-group" >
                 <div id="btnl-save" v-if="mode === 'save'">
-                  <b-button class="btn btnl-action btnl-save-stlyle" type="submit" size="sm">
+                  <b-button class="btn btnl-action btnl-save-stlyle" v-on:keyup.enter="submit" type="submit" size="sm">
                     <i :class="iconpage[1]"></i>
                     <span style="color: #fff;">{{ labelpage[23] }}</span>
                   </b-button>
@@ -482,17 +482,24 @@
 </template>
 <script>
 import PageTitle from "@/components/template/PageTitle";
-import { baseApiUrl, tolken, showError, showWarning, showSuccess } from "@/global";
+import { baseApiUrl, showError, showWarning, showSuccess } from "@/global";
 import defLang from "@/config/factory/defLang";
 import axios from "axios";
-const myHeader = { headers: { authorization: tolken } };
-axios.create({ headers: { common: { Authentication: tolken } } });
 export default {
   name: "Clients",
   components: { PageTitle },
   computed: {
     changeLang() {
       return this.$store.state.dLang;
+    },
+    usrToken(){
+        return this.$store.state.token;
+    },
+    currUser(){
+      return this.$store.state.user.id;
+    },
+    currProfile(){
+      return this.$store.state.user.profile;
     },
     filterClients(){
       return this.clients.filter((client) => {
@@ -560,7 +567,7 @@ export default {
     loadClients() {
       this.toggleBusy();
       const url = `${baseApiUrl}/api/clients?page=${this.page}&limit=${this.limit}${this.strQuery}`;
-      axios.get(url, myHeader).then(res => {
+      axios.get(url, { headers: { authorization: this.usrToken } }).then(res => {
         this.clients = res.data.rows;
         this.count = res.data.count;
         this.joinData(res.data.rows);
@@ -595,7 +602,7 @@ export default {
         const config = {
           method: method,
           url: pathRoute,
-          headers: { authorization: tolken },
+          headers: { authorization: this.usrToken },
           data: this.client
         }
           axios(config, this.client)
@@ -661,7 +668,7 @@ export default {
       const zc = `${this.client.vc_zip_code}`.replace(/\D/g,'')
       const url = `${baseApiUrl}/api/zipcode?zipcode=${zc}`;
       this.$store.state.loading = true
-      axios.get(url, myHeader)
+      axios.get(url, { headers: { authorization: this.usrToken } })
         .then(res => { 
             document.getElementById("input-client-address").value = res.data[0].vc_address
             document.getElementById("input-client-district").value = res.data[0].vc_district
@@ -793,7 +800,7 @@ export default {
         const config = {
           method: method,
           url: pathRoute,
-          headers: { authorization: tolken }
+          headers: { authorization: this.usrToken }
         }
         axios(config)
           .then( res => {
