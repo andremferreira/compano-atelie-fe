@@ -11,7 +11,8 @@
       <b-card-text>{{ descriptionpage[0] }}</b-card-text>
       <b-card-body>
         <b-form class="form-client-edit" 
-        v-on:keydown.enter.prevent="submit"
+        v-on:keyup="checkForm"
+        v-on:keydown.enter.prevent="saveClient"
         @submit.prevent="saveClient" @reset.prevent="cancelClient">
           <input id="form-client-id" type="hidden" v-model="client.id_client" />
           <b-row>
@@ -213,7 +214,7 @@
                     v-mask="'#####-###'"
                     class="inp-z-code"
                     size="sm"
-                    v-on:keydown.enter="getZipCode"
+                    v-on:keyup.enter.prevent="getZipCode"
                   />
                   <b-button 
                     :class="`b-zip-code ${visible ? 'visible' : 'collapsed' }`"
@@ -274,7 +275,6 @@
                     id="input-client-a-compl"
                     v-model="client.vc_address_complement"
                     type="text"
-                    required
                     v-uppercase
                     :placeholder="placeholderpage[15]"
                     :disabled="enableaddress"
@@ -365,8 +365,8 @@
                     </b-col>
                     <b-col lg="11" md="11" sm="11">
                       <ul>
-                        <li v-for="i in this.errors" :key="i">
-                        {{errorslist[i]}}
+                        <li v-for="erro in this.errors" :key="erro">
+                        {{errorslist[erro]}}
                         </li>
                       </ul>
                     </b-col>
@@ -520,6 +520,14 @@ export default {
          strValue = `&name=%${this.searchname}%&lastname=%${this.searchlastname}%`
       }
       return strValue
+    },
+    formErr(){
+      if (this.showError){
+        return this.checkForm()
+      }
+    },
+    clientChange() {
+      return this.client
     }
   },
   data() {
@@ -616,6 +624,45 @@ export default {
         this.showErrors = true
       }
     },
+      validCpf(cpf)  {	
+        cpf = cpf.replace(/[^\d]+/g,'');	
+        if(cpf == '') return false;	
+        // Elimina CPFs invalidos conhecidos	
+        if (cpf.length != 11 || 
+          cpf == "00000000000" || 
+          cpf == "11111111111" || 
+          cpf == "22222222222" || 
+          cpf == "33333333333" || 
+          cpf == "44444444444" || 
+          cpf == "55555555555" || 
+          cpf == "66666666666" || 
+          cpf == "77777777777" || 
+          cpf == "88888888888" || 
+          cpf == "99999999999")
+            return false;		
+        // Valida 1o digito	
+        var add = 0;	
+        var rev;
+        var i;
+        for (i=0; i < 9; i ++)		
+          add += parseInt(cpf.charAt(i)) * (10 - i);	
+          rev = 11 - (add % 11);	
+          if (rev == 10 || rev == 11)		
+            rev = 0;	
+          if (rev != parseInt(cpf.charAt(9)))		
+            return false;		
+        // Valida 2o digito	
+        add = 0;	
+        for (i = 0; i < 10; i ++)		
+          add += parseInt(cpf.charAt(i)) * (11 - i);	
+        rev = 11 - (add % 11);	
+        if (rev == 10 || rev == 11)	
+          rev = 0;	
+        if (rev != parseInt(cpf.charAt(10)))
+          return false;		
+        return true;   
+      }
+    ,
     checkForm(){
       this.errors = []
       if (!this.client.vc_name ) this.errors.push(0)
@@ -628,11 +675,17 @@ export default {
           this.errors.push(5)
         }
       if(this.client.vc_birthday && !this.validBirthday(this.client.vc_birthday) ) this.errors.push(6)
-      if(!this.validZipCod(this.client.vc_zip_code, this.lang) ) this.errors.push(7)
-
+      if(!this.validZipCod(this.client.vc_zip_code)) this.errors.push(7)
+      if(!this.client.vc_address ) this.errors.push(8)
+      if(!this.client.vc_address_number ) this.errors.push(9)
+      if(!this.client.vc_district ) this.errors.push(10)
+      if(!this.client.vc_city ) this.errors.push(11)
+      if(!this.client.vc_state ) this.errors.push(12)
+      if(!this.validCpf(this.client.vc_social_security_code)) this.errors.push(13)
       if(this.errors.length){
         return true
       } else {
+        this.showErrors = false
         return false
       }
     },
@@ -648,15 +701,8 @@ export default {
        var re = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
        return re.test(birthday)
      },
-      validZipCod(zipcode, lang){
-        let re 
-        switch (lang) {
-            case 'en-US':
-              re = /^[0-9]{5}(?:-[0-9]{4})$/;
-              break;
-            default:
-              re = /^[0-9]{5}(?:-[0-9]{3})$/;
-        }
+      validZipCod(zipcode){
+        const re = /^[0-9]{5}(?:-[0-9]{3})$/
         return re.test(zipcode)
       }
     ,
@@ -712,17 +758,9 @@ export default {
     },
     loadClient(client, mode = "save") {
       let re = []
-      switch (this.lang) {
-            case 'en-US':
-              re.push({index:[5], value:['-']}) //zipcode
-              re.push({index:[3,6], value:['-', '-']}) //mobile
-              re.push({index:[3,5], value:['-', '-']}) //mobile
-              break;
-            default:
-              re.push({index:[5], value:['-']}) //zipcode
-              re.push({index:[5], value:['-']}) //mobile
-              re.push({index:[3,6,9], value:['.','.','-']}) //mobile
-        }
+      re.push({index:[5], value:['-']}) //zipcode
+      re.push({index:[5], value:['-']}) //mobile
+      re.push({index:[3,6,9], value:['.','.','-']}) //CPF
       this.mode = mode;
       var zipcode = this.insertStrMask(`${client.vc_zip_code}`,re[0].index, re[0].value )
       var mobile = this.insertStrMask(`${client.vc_mobile}`,re[1].index, re[1].value )
@@ -749,6 +787,8 @@ export default {
     },
     cancelClient(){
       this.mode = 'save'
+      this.erros = []
+      this.showErrors = false
       this.client = {}
       this.clientF = {}
       this.loadClients()
@@ -846,6 +886,9 @@ export default {
     limit() {
       this.loadClients()
     },
+    client(){
+      this.checkForm()
+    }
     
   }
 };

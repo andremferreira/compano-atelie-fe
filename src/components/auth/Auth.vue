@@ -12,7 +12,7 @@
           <b-input v-model="user.email" placeholder="Informe o e-mail." type="email" />
           <b-input v-model="user.password" placeholder="Informe a senha." type="password" />
           <b-input v-if="showSingUp" v-model="user.repassword" placeholder="Confirme a senha." type="password" />
-
+          <input v-if="showSingUp" type="hidden" value="4" v-model="user.in_profile" />
           <b-button v-if="showSingUp" @click="signup">Registrar</b-button>
           <b-button v-else @click="singin">Entrar</b-button>
           <a href @click.prevent="showSingUp = !showSingUp" >

@@ -3,7 +3,7 @@
       <div class="user-button">
           <span class="d-none d-sm-block">{{ user.name }} </span>
           <div class="user-dropdown-img">
-              <Gravatar :email="user.email" alt="User" />
+              <Gravatar id="img-usr-avatar" :email="user.email" alt="User" />
           </div>
           <i class="fa fa-angle-down" />
       </div>
@@ -29,6 +29,34 @@ export default {
     components: { Gravatar },
     computed: mapState(['user']),
     methods: {
+      imgAvatar(){
+      const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+      const byteCharacters = atob(b64Data);
+      const byteArrays = [];
+
+      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+
+      const blob = new Blob(byteArrays, {type: contentType});
+      return blob;
+      }
+      
+      let contentType = 'image/png';
+      let b64Data = this.$store.state.user.avatar
+      let blob = b64toBlob(b64Data, contentType);
+      let blobUrl = URL.createObjectURL(blob);
+      let elementAvatar = document.getElementById("img-usr-avatar");
+      elementAvatar.src = blobUrl
+    },
         logout() {
             this.$store.state.loading = true
             localStorage.removeItem(userKey)
@@ -36,6 +64,9 @@ export default {
             this.$route.push({ name: 'auth' })
             this.$store.state.loading = false
         }
+    },
+    mounted(){
+        this.imgAvatar()
     }
 }
 </script>

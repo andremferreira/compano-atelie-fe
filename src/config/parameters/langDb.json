@@ -245,7 +245,14 @@
                         "O campo \"Sobrenome\" deve conter no mínimo cinco caracteres!", 
                         "O campo \"E-mail\" seve ser preenchido!",
                         "O campo \"E-mail\" deve possuir um e-mail válido (xxx@xxx.xx)!", 
-                        "O campo \"Aniversário\" não possuí uma data válida do calendário (xx/xx)!" 
+                        "O campo \"Aniversário\" não possuí uma data válida do calendário (xx/xx)!",
+                        "O campo \"CEP\" deve ser preenchido!",
+                        "O campo \"Endereço\" deve ser preenchido!",
+                        "O campo \"Número\" deve ser preenchido!",
+                        "O campo \"Bairro\" deve ser preenchido!",
+                        "O campo \"Cidade\" deve ser preenchido!",
+                        "O campo \"Estado\" deve ser preenchido!",
+                        "O campo \"CPF\" não é válido!"
                     ]
                 },
                 {
@@ -279,7 +286,14 @@
                         "The field \"Lastname\" must contain at least five filled-in characters!", 
                         "The field \"E-mail\" must be be completed!",
                         "The field \"E-mail\" you entered is not valid (xxx@xxx.xx)!", 
-                        "The field \"Birthday\" field is not a valid calendar date (xx/xx)!" 
+                        "The field \"Birthday\" field is not a valid calendar date (xx/xx)!",
+                        "The field \"Zipcode\" must be be completed!",
+                        "The field \"Address\" must be be completed!", 
+                        "The field \"Address Number\" must be be completed!", 
+                        "The field \"District\" must be be completed!", 
+                        "The field \"City\" must be be completed!", 
+                        "The field \"State\" must be be completed!",
+                        "The field \"SSN\" you entered is not valid!"
                     ]
                 }
             ]
