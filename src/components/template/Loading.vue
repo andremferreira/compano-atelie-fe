@@ -1,5 +1,5 @@
 <template>
-    <div class="loading-modal">
+    <div class="loading-modal" :style="!changeLoading || `style='overflow: none;'`">
         <b-modal id="loadModal" :hide-header="true" :hide-footer="true" :centered="true">
             <div class="d-flex justify-content-center mb-3 mt-3">
                 <b-spinner id="spinner-loading"
@@ -35,5 +35,8 @@ export default {
     #spinner-loading {
         width:50px;
         height: 50px;
+    }
+    .loading-modal {
+        overflow:-moz-hidden-unscrollable !important;
     }
 </style>

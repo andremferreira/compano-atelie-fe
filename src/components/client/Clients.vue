@@ -1,5 +1,5 @@
 <template>
-  <div class="my-profile">
+  <div class="client">
     <PageTitle :icon="iconpage[0]" :main="titlepage[0]" :sub="subtitlepage[0]" />
     <b-card>
       <template v-slot:header>
@@ -403,22 +403,20 @@
         <hr />
         <b-form class="search-client" v-on:keydown.enter.prevent="submit">
           <b-row>
-              <span class="ml-3">{{labelpage[4]}}:</span>
+              <span class="ml-3 pt-1">{{labelpage[4]}}:</span>
                 <b-col lg="3" md="3" sm="12">
                   <b-form-input
                     type="text"
-                    id="input-small"
                     size="sm"
                     v-model="searchname"
                     v-uppercase
                   >
                   </b-form-input>
               </b-col>
-              <span class="ml-3">{{labelpage[5]}}:</span>
+              <span class="ml-3 pt-1" >{{labelpage[5]}}:</span>
               <b-col lg="5" md="5" sm="12">
                   <b-form-input
                     type="text"
-                    id="input-small"
                     size="sm"
                     v-model="searchlastname"
                     v-uppercase
