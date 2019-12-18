@@ -5,20 +5,66 @@
              <h1 class="title">{{ title }}</h1>
           </div>
           <hr>
-          <div class="auth-title">
+          <div class="auth-title ">
               {{ showSingUp ? 'Cadastro' : 'Login'}}
           </div>
-          <b-input v-if="showSingUp" v-model="user.name" placeholder="Informe o nome." type="text" />
-          <b-input v-model="user.email" placeholder="Informe o e-mail." type="email" />
-          <b-input v-model="user.password" placeholder="Informe a senha." type="password" />
-          <b-input v-if="showSingUp" v-model="user.repassword" placeholder="Confirme a senha." type="password" />
-          <input v-if="showSingUp" type="hidden" value="4" v-model="user.in_profile" />
-          <b-button v-if="showSingUp" @click="signup">Registrar</b-button>
-          <b-button v-else @click="singin">Entrar</b-button>
-          <a href @click.prevent="showSingUp = !showSingUp" >
-              <span v-if="showSingUp">Já possuí cadastro? Acesse o Login!</span>
-              <span v-else >Não possuí cadastro? Registre-se Aqui!</span>
-          </a>
+          <b-form class="form-service-edit" v-on:keydown.enter.prevent="submit" @submit.prevent="singExec">
+              <b-row v-if="showSingUp">
+                <div class="box-cost-group"  style="width:100%;">
+                    <div class="icon-input-right login-auth-icon mb-3"><i class="fa fa-user"/></div>
+                    <b-input  
+                        v-model="user.name" 
+                        class="input-left-no-radius mb-3"
+                        placeholder="Informe o nome." type="text" />
+                </div>
+              </b-row>
+              <b-row>
+                <div class="box-cost-group"  style="width:100%;">
+                    <div class="icon-input-right login-auth-icon mb-3"><i class="fa fa-envelope"/></div>
+                    <b-input 
+                        v-model="user.email" 
+                        class="input-left-no-radius mb-3"
+                        request
+                        placeholder="Informe o e-mail." type="email" />
+                </div>
+              </b-row>
+              <b-row>
+                <div class="box-cost-group" style="width:100%;">
+                    <div class="icon-input-right login-auth-icon mb-3"><i class="fa fa-key"/></div>
+                    <b-input 
+                        class="input-left-no-radius mb-3"
+                        v-model="user.password"  
+                        v-on:keyup.enter="singExec" 
+                        request
+                        placeholder="Informe a senha." type="password" />
+                </div>
+             </b-row>
+             <b-row v-if="showSingUp">
+                <div class="box-cost-group" style="width:100%;">
+                    <div class="icon-input-right login-auth-icon mb-3"><i class="fa fa-check-square-o"/></div>
+                    <b-input 
+                        v-model="user.repassword" 
+                        class="input-left-no-radius mb-3"
+                        request
+                        placeholder="Confirme a senha." type="password" />
+                    <input type="hidden" value="4" v-model="user.in_profile" />
+               </div>
+             </b-row>
+             <b-row>
+                  <div class="btn-form-sub">
+                    <b-button v-if="showSingUp" class="btn-cadastro" type="submit">Registrar</b-button>
+                    <b-button v-else type="submit">Entrar</b-button>
+                  </div>
+              </b-row>
+              <b-row>
+                  <div class="lnk-form-toggle">
+                    <a href @click.prevent="showSingUp = !showSingUp" >
+                        <span v-if="showSingUp">Já possuí cadastro? Acesse o Login!</span>
+                        <span v-else >Não possuí cadastro? Registre-se Aqui!</span>
+                    </a>
+                  </div>
+              </b-row>
+          </b-form>
       </div>
   </div>
 </template>
@@ -53,6 +99,10 @@ export default {
                     this.showSingUp = false
                 })
                 .catch(showError)
+        },
+        singExec(){
+            if (!this.showSingUp) return this.singin();
+            else return this.singin();
         }
     }
 }
@@ -79,14 +129,16 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        border-radius: 8px;
     }
 
     .auth-title {
-        font-size: 1.2rem;
-        font-weight: 200;
+        font-size: 1.8rem;
+        font-weight: 600;
         margin-top: 10px;
         margin-bottom: 15px;
+        font-family: 'Allura', cursive, 'Nothing You Could Do', cursive;
+        color:black;
+        text-shadow: #DDD 3px 1px 1px
     }
 
     .auth-modal input {
@@ -147,6 +199,45 @@ export default {
         margin:0;
         padding:0;
         width:100%;
-        background-color:chartreuse;
+    }
+
+    .btn-form-sub {
+        margin:0;
+        padding:0;
+        width:100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: stretch;
+        align-content: stretch;
+    }
+    .lnk-form-toggle {
+        margin:0;
+        padding:0;
+        width:100%;
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        align-content: stretch;
+    }
+
+    .login-auth-icon {
+        background-color: #007bff;
+        border: solid 1px;
+        border-color: #0051ff;
+        border-right: 0px;
+    }
+
+    .form-service-edit {
+        width: 100%;
+    }
+
+    .btn-cadastro {
+        background-color: gold !important;
+        border-color: goldenrod !important;
+        color: black !important;
     }
 </style>

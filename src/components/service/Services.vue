@@ -10,7 +10,7 @@
       </b-card-title>
       <b-card-text>{{ descriptionpage[0] }}</b-card-text>
       <b-card-body>
-        <b-form class="form-service-edit">
+        <b-form class="form-service-edit" @submit.prevent="saveService" @reset.prevent="cancelService">
             <input id="form-service-id" type="hidden" v-model="service.id_service" />
             <input id="form-service-id-user" type="hidden" v-model="service.id_user" />
             <b-row>
@@ -63,7 +63,7 @@
                                         id="input-service-c-material"
                                         class="input-left-no-radius mb-2"
                                         v-model="service.nu_material_cost"
-                                        v-money="this.money()"
+                                        v-money="money"
                                         size="sm"
                                     />
                                     <b-tooltip target="input-service-c-material" :title="placeholderpage[3]" />
@@ -76,7 +76,7 @@
                                         id="input-service-c-third"
                                         class="input-left-no-radius mb-2"
                                         v-model="service.nu_third_party_cost"
-                                        v-money="this.money()"
+                                        v-money="money"
                                         size="sm"
                                     />
                                     <b-tooltip target="input-service-c-third" :title="placeholderpage[4]" />
@@ -89,7 +89,7 @@
                                         id="input-service-c-money"
                                         class="input-left-no-radius mb-2"
                                         v-model="service.nu_service_cost"
-                                        v-money="this.money()"
+                                        v-money="money"
                                         size="sm"
                                     />
                                     <b-tooltip target="input-service-c-money" :title="placeholderpage[5]" />
@@ -101,22 +101,50 @@
             </b-row>
             <b-row>
                 <b-col lg="2" md="2" sm="6" v-show="mode !== 'remove'">
-                    <b-form-checkbox switch
-                        id="form-service-g-active"
-                        v-model="service.bo_active"
-                        name="service-active">
-                            {{ labelpage[9] }}
-                    </b-form-checkbox>
+                    <b-form-group id="form-service-g-active">
+                        <b-form-checkbox switch
+                            id="form-service-active"
+                            v-model="service.bo_active"
+                            name="service-active">
+                                {{ labelpage[9] }}
+                        </b-form-checkbox>
+                    </b-form-group>
                 </b-col>
                 <b-col lg="2" md="2" sm="6" v-show="mode !== 'remove'">
-                    <b-form-checkbox switch
-                        id="form-service-g-critical-service"
-                        v-model="service.bo_critical_service"
-                        name="service-active">
-                            {{ labelpage[10] }}
-                    </b-form-checkbox>
+                    <b-form-group id="form-service-g-critical-service">
+                        <b-form-checkbox switch
+                            id="form-service-critical-service"
+                            v-model="service.bo_critical_service"
+                            name="service-critical-service">
+                                {{ labelpage[10] }}
+                        </b-form-checkbox>
+                    </b-form-group>
                 </b-col>
             </b-row>
+            <b-row>
+                <b-col class="mt-3">
+                <div class="btn-group" >
+                    <div id="btnl-save" v-if="mode === 'save'">
+                    <b-button class="btn btnl-action btnl-save-stlyle" v-on:keyup.enter="submit" type="submit" size="sm">
+                        <i :class="iconpage[1]"></i>
+                        <span style="color: #fff;">{{ labelpage[12] }}</span>
+                    </b-button>
+                    </div>
+                    <div id="btnl-remove" v-if="mode === 'remove'">
+                    <b-button class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete" size="sm">
+                        <i :class="iconpage[3]"></i>
+                        <span style="color: #fff;">{{ labelpage[17] }}</span>
+                    </b-button>
+                    </div>
+                    <div id="btnl-cancel">
+                    <b-button class="btn ml-2 btnl-action btnl-cancel-stlyle" size="sm" type="reset">
+                        <i :class="iconpage[2]"></i>
+                        <span style="color: #fff;">{{ labelpage[13] }}</span>
+                    </b-button>
+                    </div>
+                </div>
+            </b-col>
+          </b-row>
         </b-form>
         <hr>
         <b-table
@@ -136,6 +164,14 @@
               <b-spinner class="align-middle"></b-spinner>
               <strong class="ml-3">Loading...</strong>
             </div>
+          </template>
+          <template v-slot:cell(actions)="data">
+              <b-button size="sm" variant="warning" @click="loadService(data.item, 'save')" class="mr-2 mt-1">
+                <i class="fa fa-pencil"></i>
+              </b-button>
+              <b-button size="sm" variant="danger" @click="loadService(data.item, 'remove')" class="mr-2 mt-1">
+                <i class="fa fa-trash"></i>
+              </b-button>
           </template>
         </b-table>
       </b-card-body>
@@ -180,14 +216,17 @@ export default {
             obj: [],
             services: [],
             service: {},
+            switch: {value: true, disabled: false },
             fields: [
                 { key: "vc_service_mnemonic", label: "Mnemonic", sortable: true },
                 { key: "tx_service_description", label: "Description", sortable: true },
                 { key: "bo_active", label: "Active", sortable: true },
+                { key: "bo_critical_service", label: "Critical", sortable: true },
                 { key: "actions", label: "Actions" }
             ],
             tbIsBusy:false,
             startLoad:false,
+            strQuery:'',
         }
     },
     methods: {
@@ -196,8 +235,8 @@ export default {
             const url = `${baseApiUrl}/api/services?page=${this.page}&limit=${this.limit}${this.strQuery}`;
             axios.get(url, { headers: { authorization: this.usrToken } })
             .then(res => {
-                this.services = res.data;
-                // this.count = res.data.count;
+                this.services = res.data.rows;
+                this.count = res.data.count;
                 // this.joinData(res.data.rows);
                 
             })
@@ -224,10 +263,56 @@ export default {
                 }
             }
         },
+        showModalDelete(){
+            this.$bvModal.msgBoxConfirm(this.descriptionpage[1], {
+            title: this.subtitlepage[2],
+            size: 'sm',
+            buttonSize: 'ld',
+            okVariant: 'warning',
+            okTitle: this.labelpage[25],
+            cancelTitle: this.labelpage[26],
+            hideHeaderClose: false,
+            centered: false
+            })
+            .then( value  => {
+                if (value) this.removeService()
+            })
+            .catch(showError)
+        },
         toggleBusy() {
             this.startLoad = !this.startLoad
             this.tbIsBusy = !this.tbIsBusy
-        }
+        },
+        saveService() {
+            const method = this.service.id_service ? 'put' : 'post'
+            const pathCall = this.service.id_service ? `/api/service/id/${this.service.id_service}` : `/api/service`
+            const query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
+            const pathRoute = baseApiUrl + pathCall + query
+            const config = {
+                method: method,
+                url: pathRoute,
+                headers: { authorization: this.usrToken },
+                data: this.service
+            }
+            axios(config, this.service)
+                .then( res => {
+                    showSuccess(res.data.info)  
+                    this.cancelService()
+                    }
+                )
+                .catch(showError)
+        },
+        loadService(service, mode = 'save') {
+            this.mode = mode
+            setTimeout(()=>{
+                this.service = { ...service }
+            }, 100) 
+        },
+        cancelService() {
+            this.mode = 'save'
+            this.service = {}
+            this.loadServices()
+        },
     },
     mounted(){
         this.$store.state.isMenuVisible = false

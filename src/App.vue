@@ -1,12 +1,13 @@
 <template>
 		<div class="dv-bg-image">
 			<div class="master">
-				<div id="app" :class="{ 'hide-menu': !isMenuVisible || !user }">
-					<Header 
+				<div id="app" :class="user ? {'hide-menu': !isMenuVisible || !user} : {'singin': !user }">
+					<Header v-if="user"
 					:title="parameters.app_title" 
 					:header_img="parameters.header_img"
 					:hideToggle="!user"
 					:hideUserDropdown="!user" />
+					<div v-if="!user" :class="{ 'singin': !user }" ></div>
 					<Menu v-if="user" :bg="parameters.bg_menu"/>
 					<Loading v-if="!authUsr"/>
 					<Content v-else />
@@ -70,7 +71,7 @@ export default {
 			}
 			this.authUsr = true
 			this.$store.state.loading = false
-		},
+		}
 	},
 	created(){
 		this.validateToken()
@@ -79,6 +80,7 @@ export default {
 		this.getInterface()
 		this.defBg()
 	}
+	
 }
 </script>
 
@@ -109,7 +111,7 @@ export default {
 		font-style: normal;
 		font-size: 13px;
 		line-height: 1.5;
-		overflow: scroll;
+		overflow-y: scroll;
 		margin: 0 auto;
 		font: 100%/1.4 serif;
 	}
@@ -125,7 +127,7 @@ export default {
 	}
 
 	.modal-open {
-		overflow: scroll !important;
+		overflow-y: scroll !important;
 	}
 
 	body::-webkit-scrollbar-track
@@ -197,15 +199,15 @@ export default {
 			"footer footer";
 	}
 
-	.singin {
+	#app.singin {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		height: 100vh;
-		width: 100vw;
 		display: grid;
-		grid-template-rows: 1fr 30px !important;
-		grid-template-columns: 1fr !important;
+		grid-template-rows: 0px 1fr 30px;
+		grid-template-columns: 1fr;
 		grid-template-areas:
+			"header header"
 			"content content"
 			"footer footer";
 	}

@@ -329,7 +329,7 @@
         {
             "page": "Services",
             "cod": "SERVEC01",
-            "icon": ["fa fa-inbox"],
+            "icon": ["fa fa-inbox","fa fa-floppy-o", "fa fa-undo", "fa fa-times", "fa fa-search"],
             "subicon": [],
             "subiconcolor":[],
             "path": ["/services"],
@@ -341,7 +341,7 @@
                     "title": ["Homologação de Serviços","Cadastro de Serviços"],
                     "subtitle": ["Cadastro & Cia.", "Recomendações & Boas Práticas", "Confirmação de Remoção de Serviço."],
                     "description": ["Verifique todas as informações referentes ao serviço antes de cadastrar."],
-                    "label": ["Cod","Mnemônio", "Descrição", "Estimativa", "Custos (materiais, terceiros e serviços)", "Material", "Terceiros", "Serviço", "Contato", "Ativo", "Crítico", "Usuário"],
+                    "label": ["Cod","Mnemônio", "Descrição", "Estimativa", "Custos (materiais, terceiros e serviços)", "Material", "Terceiros", "Serviço", "Contato", "Ativo", "Crítico", "Usuário","Salvar", "Cancelar","Sim","Não", "Procurar...", "Remover"],
                     "placeholder": ["Informe o Mnemônio.", "Descreva detalhadamente o serviço.", "Informe estimativa de tempo.", "Custo de materiais (R$ 0,00)", "Custo de terceiros (R$ 0,00)", "Custo do serviço (R$ 0,00)"]
                 },
                 {
@@ -349,7 +349,7 @@
                     "title": ["Homologation of Services","Services Register"],
                     "subtitle": ["Registration & Purposes", "Recommendations & Best Practices","Service Exclude Confirmation"],
                     "description": ["Please, check all information about the service before register.", "Are you sure to remove the service?", "Address find with success...", "Address not find!"],
-                    "label": ["Id", "Mnemonic", "Description", "Estimate", "Costs (material, third party and service)", "Material", "Third Party", "Service", "Contact", "Active", "Critical", "User"],
+                    "label": ["Id", "Mnemonic", "Description", "Estimate", "Costs (material, third party and service)", "Material", "Third Party", "Service", "Contact", "Active", "Critical", "User", "Save", "Cancel", "Yes", "No", "Search...", "Remove"],
                     "placeholder": ["Enter Mnemonic.", "Enter service description.", "Enter estimate time.", "Material cost ($ 0.00)", "Third party cost ($ 0.00)", "Service ($ 0.00)"]
                 }
             ]
