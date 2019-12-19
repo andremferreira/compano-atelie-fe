@@ -1,11 +1,11 @@
 <template>
   <div class="user-dropdown">
       <div class="user-button">
-          <span class="d-none d-sm-block">{{ user.name }} </span>
+          <span class="usr-text-dropdown "> {{ user.name }}</span>
           <div class="user-dropdown-img">
               <Gravatar id="img-usr-avatar" :email="user.email" alt="User" />
           </div>
-          <i class="fa fa-angle-down" />
+          <i class="fa fa-angle-down pr-2" />
       </div>
       <transition>
         <div class="user-dropdown-content">
@@ -90,7 +90,7 @@ export default {
         align-items: center;
         font-weight: 200;
         height: 100%;
-        width:140px;
+        width:150px;
         padding: 0px 14px;
         color:azure;
 
@@ -123,7 +123,7 @@ export default {
         position: absolute;
         right: 0px;
         background-color: linear-gradient(to left, #4BC0C8, rgb(23, 66, 206));
-        width:140px;
+        width:150px;
         height: 120px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 10px;
@@ -136,6 +136,11 @@ export default {
         visibility: hidden;
         opacity: 0;
         transition: visibility 0s, opacity 0.5s ease;
+    }
+
+    .usr-text-dropdown{
+        font-size: 0.7rem;
+        font-weight: 500;
     }
 
     .user-dropdown:hover .user-dropdown-content {
