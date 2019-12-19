@@ -10,7 +10,7 @@
       </b-card-title>
       <b-card-text>{{ descriptionpage[0] }}</b-card-text>
       <b-card-body>
-        <b-form class="form-client-edit" 
+        <b-form id="form-client" class="form-client-edit" 
         v-on:keyup="checkForm"
         v-on:keydown.enter.prevent="saveClient"
         @submit.prevent="saveClient" @reset.prevent="cancelClient">
@@ -401,7 +401,7 @@
           </b-row>
         </b-form>
         <hr />
-        <b-form class="search-client" v-on:keydown.enter.prevent="submit">
+        <b-form id="form-search-client-table" class="search-client" @submit.prevent="loadClientsWithFilter">
           <b-row>
               <span class="ml-3 pt-1">{{labelpage[4]}}:</span>
                 <b-col lg="3" md="3" sm="12">
@@ -424,12 +424,12 @@
                   </b-form-input>
               </b-col>
               <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-none d-md-block' : 'btn btnl-action btnl-remove-stlyle d-none d-md-block'" 
-                @click="loadClientsWithFilter" v-on:keydown.enter="loadClientsWithFilter" size="sm">
+                type="submit" size="sm">
                 <i :class="!searchToggle ? 'fa fa-search': 'fa fa-times'"></i>
                 <span>{{labelpage[27]}}</span>
               </b-button>
               <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-block d-md-none mt-2 ml-3' : 'btn btnl-action btnl-remove-stlyle d-block d-md-none mt-2 ml-3'"  
-                @click="loadClientsWithFilter" v-on:keydown.enter="loadClientsWithFilter" size="sm">
+                type="submit" size="sm">
                 <i :class="!searchToggle ? 'fa fa-search': 'fa fa-times'"></i>
                 <span>{{labelpage[27]}}</span>
               </b-button>
@@ -623,6 +623,7 @@ export default {
       }
     },
       validCpf(cpf)  {	
+        if (!cpf) return
         cpf = cpf.replace(/[^\d]+/g,'');	
         if(cpf == '') return false;	
         // Elimina CPFs invalidos conhecidos	

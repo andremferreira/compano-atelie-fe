@@ -8,7 +8,7 @@
           <div class="auth-title ">
               {{ showSingUp ? 'Cadastro' : 'Login'}}
           </div>
-          <b-form class="form-service-edit" v-on:keydown.enter.prevent="submit" @submit.prevent="singExec">
+          <b-form class="form-service-edit" v-on:keydown.enter.prevent="singExec" @submit.prevent="singExec">
               <b-row v-if="showSingUp">
                 <div class="box-cost-group"  style="width:100%;">
                     <div class="icon-input-right login-auth-icon mb-3"><i class="fa fa-user"/></div>

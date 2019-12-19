@@ -22,6 +22,7 @@
                             :placeholder="placeholderpage[1]"
                             rows="3"
                             max-rows="6"
+                            required
                         >
                         </b-form-textarea>
                     </b-form-group>
@@ -36,6 +37,7 @@
                             required
                             :placeholder="placeholderpage[0]"
                             size="sm"
+                            v-mask="'AAAAA'"
                             v-uppercase
                         />
                     </b-form-group>
@@ -63,7 +65,7 @@
                                         id="input-service-c-material"
                                         class="input-left-no-radius mb-2"
                                         v-model="service.nu_material_cost"
-                                        v-money="money"
+                                        v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn"
                                         size="sm"
                                     />
                                     <b-tooltip target="input-service-c-material" :title="placeholderpage[3]" />
@@ -76,7 +78,7 @@
                                         id="input-service-c-third"
                                         class="input-left-no-radius mb-2"
                                         v-model="service.nu_third_party_cost"
-                                        v-money="money"
+                                        v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn"
                                         size="sm"
                                     />
                                     <b-tooltip target="input-service-c-third" :title="placeholderpage[4]" />
@@ -89,7 +91,7 @@
                                         id="input-service-c-money"
                                         class="input-left-no-radius mb-2"
                                         v-model="service.nu_service_cost"
-                                        v-money="money"
+                                        v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn"
                                         size="sm"
                                     />
                                     <b-tooltip target="input-service-c-money" :title="placeholderpage[5]" />
@@ -100,7 +102,7 @@
                 </b-col>
             </b-row>
             <b-row>
-                <b-col lg="2" md="2" sm="6" v-show="mode !== 'remove'">
+                <b-col v-show="mode !== 'remove'">
                     <b-form-group id="form-service-g-active">
                         <b-form-checkbox switch
                             id="form-service-active"
@@ -110,7 +112,7 @@
                         </b-form-checkbox>
                     </b-form-group>
                 </b-col>
-                <b-col lg="2" md="2" sm="6" v-show="mode !== 'remove'">
+                <b-col v-show="mode !== 'remove'">
                     <b-form-group id="form-service-g-critical-service">
                         <b-form-checkbox switch
                             id="form-service-critical-service"
@@ -153,7 +155,7 @@
           outlined
           striped
           :items="services"
-          :fields="fields"
+          :fields="lang=='pt-BR' || !lang ? fieldsPt : fieldsEn"
           small="small"
           responsive="true"
           class="mt-3"
@@ -173,6 +175,30 @@
                 <i class="fa fa-trash"></i>
               </b-button>
           </template>
+          <template v-slot:cell(bo_active)="data">
+               <div class="table-status-action">
+                    <span v-if="data.item.bo_active" class="fa-stack">
+                        <i class="fa fa-circle fa-stack-2x" style="color:#333;"/>
+                        <i class="fa fa-check fa-stack-1x fa-inverse forest" style="color:#28a745;"/>
+                    </span>
+                    <span v-else class="fa-stack">
+                        <i class="fa fa-circle fa-stack-2x" style="color:#333;"/>
+                        <i class="fa fa-times fa-stack-1x fa-inverse flame" style="color:tomato;"/>
+                    </span>
+               </div>
+          </template>
+          <template v-slot:cell(bo_critical_service)="data">
+               <div class="table-status-action">
+                    <span v-if="data.item.bo_critical_service" class="fa-stack">
+                            <i class="fa fa-circle fa-stack-2x" style="color:#333;"/>
+                            <i class="fa fa-free-code-camp fa-stack-1x fa-inverse flame"/>
+                    </span>
+                    <span v-else class="fa-stack">
+                        <i class="fa fa-circle fa-stack-2x" style="color:#333;"/>
+                            <i class="fa fa-snowflake-o fa-stack-1x fa-inverse snoll"/>                        
+                    </span>
+               </div>
+          </template>          
         </b-table>
       </b-card-body>
       <template v-slot:footer>
@@ -196,7 +222,10 @@ export default {
         },
       usrToken(){
             return this.$store.state.token;
-        }
+        },
+      changeLang() {
+            return this.$store.state.dLang;
+        },
     },
     data() {
         return {
@@ -217,13 +246,22 @@ export default {
             services: [],
             service: {},
             switch: {value: true, disabled: false },
-            fields: [
+            fieldsEn: [
                 { key: "vc_service_mnemonic", label: "Mnemonic", sortable: true },
                 { key: "tx_service_description", label: "Description", sortable: true },
                 { key: "bo_active", label: "Active", sortable: true },
                 { key: "bo_critical_service", label: "Critical", sortable: true },
                 { key: "actions", label: "Actions" }
             ],
+            fieldsPt: [
+                { key: "vc_service_mnemonic", label: "Mnemônio", sortable: true },
+                { key: "tx_service_description", label: "Descrição", sortable: true },
+                { key: "bo_active", label: "Situação", sortable: true },
+                { key: "bo_critical_service", label: "Criticidade", sortable: true},
+                { key: "actions", label: "Ações" }
+            ],
+            moneyEn: {decimal: ",",thousands: ".",prefix: "$ ",precision: 2,masked: false},
+            moneyPt: {decimal: ",",thousands: ".",prefix: "R$ ",precision: 2,masked: false},     
             tbIsBusy:false,
             startLoad:false,
             strQuery:'',
@@ -242,26 +280,6 @@ export default {
             })
             .catch(showError);
             this.toggleBusy();
-        },
-        money() {
-            if (this.$store.state.dLang == 'en-US') 
-            {   
-                return {
-                    decimal: '.',
-                    thousands: ',',
-                    prefix: '$ ',
-                    precision: 2,
-                    masked: false
-                }
-            } else {
-                return {
-                    decimal: ',',
-                    thousands: '.',
-                    prefix: 'R$ ',
-                    precision: 2,
-                    masked: false
-                }
-            }
         },
         showModalDelete(){
             this.$bvModal.msgBoxConfirm(this.descriptionpage[1], {
@@ -284,6 +302,7 @@ export default {
             this.tbIsBusy = !this.tbIsBusy
         },
         saveService() {
+            if (!this.service.id_user) this.service.id_user = this.currUser
             const method = this.service.id_service ? 'put' : 'post'
             const pathCall = this.service.id_service ? `/api/service/id/${this.service.id_service}` : `/api/service`
             const query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
@@ -304,6 +323,7 @@ export default {
         },
         loadService(service, mode = 'save') {
             this.mode = mode
+            this.service = { ...service }
             setTimeout(()=>{
                 this.service = { ...service }
             }, 100) 
@@ -326,6 +346,19 @@ export default {
             this.iconpage = this.obj.icon;
             this.errorslist =  this.obj.errorsList;
             this.loadServices();
+    },
+    watch:{
+        changeLang() {
+        this.lang = this.$store.state.dLang;
+        this.obj = defLang.langFind(this.lang, this.pagename, this.codename);
+        this.titlepage = this.obj.title;
+        this.subtitlepage = this.obj.subtitle;
+        this.descriptionpage = this.obj.description;
+        this.labelpage = this.obj.label;
+        this.placeholderpage = this.obj.placeholder;
+        this.iconpage = this.obj.icon;
+        // this.errorslist =  this.obj.errorsList;
+        }
     }
 }
 </script>
@@ -364,12 +397,49 @@ export default {
     .service-cost {
         background-color: #20c997;
         border: solid 1px;
-        border-color: #1f8f6d
+        border-color: #1f8f6d;
+        background-image: linear-gradient(to right gold, tomato, gold);
     }
 
     .input-left-no-radius{
         border-top-left-radius: 0px;
         border-bottom-left-radius: 0px;
         border-left: 0px;
+    }
+    .table-status-action {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        align-content: flex-start;
+        padding-left: 15px;
+    }
+    .snoll {
+        background-clip: -webkit-radial-gradient(center, 16px 16px, deepskyblue, darkblue);
+        background: -o-linear-gradient(top, darkblue, deepskyblue, darkblue);
+        background: -moz-linear-gradient(top, darkblue, deepskyblue, darkblue);
+        background: linear-gradient(to top, darkblue, deepskyblue, darkblue); 
+        background: linear-gradient(to top, darkblue, deepskyblue, darkblue); 
+         -webkit-background-clip: text;
+         -webkit-text-fill-color: transparent;
+    }
+    .flame {
+        background-clip: -webkit-radial-gradient(center, 8px 8px, red, gold);
+        background: -o-linear-gradient(left, gold, red, gold);
+        background: -moz-linear-gradient(left, gold, red, gold);
+        background: linear-gradient(to right,  gold, red, gold); 
+        background: linear-gradient(to right,  gold, red, gold); 
+         -webkit-background-clip: text;
+         -webkit-text-fill-color: transparent;
+    }
+    .forest {
+        background-clip: -webkit-radial-gradient(center, 16px 16px, yellowGreen, forestGreen);
+        background: -o-linear-gradient(top, forestGreen, yellowGreen, forestGreen);
+        background: -moz-linear-gradient(top, forestGreen, yellowGreen, forestGreen);
+        background: linear-gradient(to top, forestGreen, yellowGreen, forestGreen); 
+        background: linear-gradient(to top, forestGreen, yellowGreen, forestGreen); 
+         -webkit-background-clip: text;
+         -webkit-text-fill-color: transparent;
     }
 </style>

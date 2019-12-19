@@ -83,7 +83,6 @@ export default {
         text-decoration: none;
     }
 
-
     .title:houver > a {
         color:azure !important;;
         text-decoration: none;

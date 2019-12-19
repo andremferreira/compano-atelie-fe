@@ -10,7 +10,7 @@
       <transition>
         <div class="user-dropdown-content">
             <router-link to="/admin" id="admin-page-show">
-                <i class="fa fa-cogs grip-lines-vertical"></i> Administração
+                <i class="fa fa-cogs grip-lines-vertical"></i> Admin
             </router-link>
             <a href @click="logout" id="singout-page-show">
                 <i class="fa fa-sign-out"></i> Sair
@@ -85,17 +85,20 @@ export default {
 
     .user-button {
         display: flex;
+        flex-direction: row-reverse;
+        align-content: flex-end;
         align-items: center;
         font-weight: 200;
         height: 100%;
-        width:193px;
-        padding: 0px 20px;
+        width:140px;
+        padding: 0px 14px;
         color:azure;
 
     }
 
     .user-button:hover{
         color:black;
+        cursor: pointer;
     }
     .user-dropdown:hover {
         text-shadow: none;
@@ -120,7 +123,7 @@ export default {
         position: absolute;
         right: 0px;
         background-color: linear-gradient(to left, #4BC0C8, rgb(23, 66, 206));
-        width: 193px;
+        width:140px;
         height: 120px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         padding: 10px;

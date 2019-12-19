@@ -195,6 +195,8 @@ export default {
       let blobUrl = URL.createObjectURL(blob);
       let elementAvatar = document.getElementById("avatar");
       elementAvatar.src = blobUrl
+      elementAvatar =  document.getElementById("img-usr-avatar")
+      elementAvatar.src = blobUrl
     },
     convertImage(){
       const toBase64 = file => new Promise((resolve, reject) => {

@@ -25,12 +25,12 @@
                     "subtitle": [],
                     "description": [],
                     "label": [
-                        "Início",
-                        "Clientes",
-                        "Orçamentos",
+                        "  Início",
+                        "  Clientes",
+                        "  Orçamentos",
                         "Ordem/Serviços",
-                        "Serviços",
-                        "Idioma"
+                        "  Hom./Serviços",
+                        "  Idioma"
                     ],
                     "placeholder": []
                 },
@@ -40,12 +40,12 @@
                     "subtitle": [],
                     "description": [],
                     "label": [
-                        "Home",
-                        "Clients",
-                        "Budgets",
+                        " Home",
+                        " Clients",
+                        " Budgets",
                         "Service/Orders",
-                        "Services",
-                        "Lang"
+                        " Hom./Services",
+                        " Lang"
                     ],
                     "placeholder": []
                 }
