@@ -102,32 +102,34 @@
                 </b-col>
             </b-row>
             <b-row>
-                <b-col v-show="mode !== 'remove'">
+                <b-col lg="2" md="2" sm="3" v-show="mode !== 'remove'">
                     <b-form-group id="form-service-g-active">
                         <b-form-checkbox switch
                             id="form-service-active"
                             v-model="service.bo_active"
-                            name="service-active">
+                            name="service-active"
+                            size="lg">
                                 {{ labelpage[9] }}
                         </b-form-checkbox>
                     </b-form-group>
                 </b-col>
-                <b-col v-show="mode !== 'remove'">
+                <b-col lg="2" md="2" sm="3" v-show="mode !== 'remove'">
                     <b-form-group id="form-service-g-critical-service">
                         <b-form-checkbox switch
                             id="form-service-critical-service"
                             v-model="service.bo_critical_service"
-                            name="service-critical-service">
+                            name="service-critical-service"
+                            size="lg">
                                 {{ labelpage[10] }}
                         </b-form-checkbox>
                     </b-form-group>
                 </b-col>
             </b-row>
             <b-row>
-                <b-col class="mt-3">
+                <b-col lg="2" md="4" sm="12" class="mt-3 mr-5">
                 <div class="btn-group" >
                     <div id="btnl-save" v-if="mode === 'save'">
-                    <b-button class="btn btnl-action btnl-save-stlyle" v-on:keyup.enter="submit" type="submit" size="sm">
+                    <b-button class="btn btnl-action btnl-save-stlyle" v-on:keyup.enter="saveService" type="submit" size="sm">
                         <i :class="iconpage[1]"></i>
                         <span style="color: #fff;">{{ labelpage[12] }}</span>
                     </b-button>
@@ -146,9 +148,41 @@
                     </div>
                 </div>
             </b-col>
+            <b-col lg="9" md="6" sm="12" class="mt-2" v-if="mode !== 'remove'">
+                <b-row>
+                    <b-col lg="12" md="12" sm="12" class="total-box">
+                        <input class="pl-5 total-value" v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn" :value="parseFloat(this.totalCalc()/1).toFixed(2)" />
+                        <span style="padding-top:2px; color:#1f628f;" class="mr-5"><i class="fa fa-money" style="font-size:3rem;"></i></span>
+                    </b-col>
+                </b-row>
+            </b-col>
           </b-row>
         </b-form>
         <hr>
+        <b-form id="form-search-service-table" class="search-service" @submit.prevent="searchService">
+        <b-row>
+            <span class="ml-3 pt-1">{{labelpage[1]}}:</span>
+                <b-col lg="3" md="3" sm="12">
+                    <b-form-input
+                        name="search-mne-service"
+                        type="text"
+                        size="sm"
+                        v-model="searchmne"
+                        v-mask="'AAAAA'"
+                         />
+                </b-col>
+            <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-none d-md-block' : 'btn btnl-action btnl-remove-stlyle d-none d-md-block'" 
+                type="submit" size="sm">
+                <i :class="!searchToggle ? 'fa fa-search': 'fa fa-times'"></i>
+                <span>{{labelpage[16]}}</span>
+            </b-button>
+            <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-block d-md-none mt-2 ml-3' : 'btn btnl-action btnl-remove-stlyle d-block d-md-none mt-2 ml-3'"  
+                type="submit" size="sm">
+                <i :class="!searchToggle ? 'fa fa-search': 'fa fa-times'"></i>
+                <span>{{labelpage[16]}}</span>
+            </b-button>
+        </b-row>
+        </b-form>
         <b-table
           sticky-header="stickyHeader"
           :no-border-collapse="true"
@@ -190,11 +224,11 @@
           <template v-slot:cell(bo_critical_service)="data">
                <div class="table-status-action">
                     <span v-if="data.item.bo_critical_service" class="fa-stack">
-                            <i class="fa fa-circle fa-stack-2x" style="color:#333;"/>
+                            <i class="fa fa-circle fa-stack-2x" style="color:#222;"/>
                             <i class="fa fa-free-code-camp fa-stack-1x fa-inverse flame"/>
                     </span>
                     <span v-else class="fa-stack">
-                        <i class="fa fa-circle fa-stack-2x" style="color:#333;"/>
+                        <i class="fa fa-circle fa-stack-2x" style="color:#222;"/>
                             <i class="fa fa-snowflake-o fa-stack-1x fa-inverse snoll"/>                        
                     </span>
                </div>
@@ -260,11 +294,14 @@ export default {
                 { key: "bo_critical_service", label: "Criticidade", sortable: true},
                 { key: "actions", label: "Ações" }
             ],
-            moneyEn: {decimal: ",",thousands: ".",prefix: "$ ",precision: 2,masked: false},
+            moneyEn: {decimal: ".",thousands: ",",prefix: "$ ",precision: 2,masked: false},
             moneyPt: {decimal: ",",thousands: ".",prefix: "R$ ",precision: 2,masked: false},     
-            tbIsBusy:false,
-            startLoad:false,
-            strQuery:'',
+            tbIsBusy: false,
+            startLoad: false,
+            strQuery: '',
+            searchToggle: false,
+            searchmne: '',
+            total: 0
         }
     },
     methods: {
@@ -275,13 +312,35 @@ export default {
             .then(res => {
                 this.services = res.data.rows;
                 this.count = res.data.count;
-                // this.joinData(res.data.rows);
                 
             })
             .catch(showError);
             this.toggleBusy();
         },
-        showModalDelete(){
+        totalCalc() {
+            const calc = ( this.formatValue(this.service.nu_material_cost) + this.formatValue(this.service.nu_third_party_cost) + this.formatValue(this.service.nu_service_cost)) * (!this.service.bo_critical_service ? 1 : 1.2)
+            return calc
+        },
+        formatValue(strValue){
+            const onlyNumber= /\D/g;
+            var value = `${strValue}`.replace(onlyNumber,'');
+                value = `${value.substr(0, value.length - 2 )}.${value.substr(value.length - 2, 2)}`;
+            return Number(value);
+        }
+        ,
+        searchService() {
+            if (!this.searchmne) return
+                this.strQuery = `&mne=${this.searchmne}`;
+                this.searchToggle = !this.searchToggle;
+                if (this.searchToggle) {
+                    this.loadServices()
+                } else {
+                    this.strQuery = ''
+                    this.searchmne = ''
+                    this.loadServices()
+                }
+        },
+        showModalDelete() {
             this.$bvModal.msgBoxConfirm(this.descriptionpage[1], {
             title: this.subtitlepage[2],
             size: 'sm',
@@ -326,7 +385,8 @@ export default {
             this.service = { ...service }
             setTimeout(()=>{
                 this.service = { ...service }
-            }, 100) 
+            }, 100)
+            this.totalCalc() 
         },
         cancelService() {
             this.mode = 'save'
@@ -398,7 +458,12 @@ export default {
         background-color: #20c997;
         border: solid 1px;
         border-color: #1f8f6d;
-        background-image: linear-gradient(to right gold, tomato, gold);
+    }
+
+    .total {
+        background-color: #2473ce;
+        border: solid 1px;
+        border-color: #1f628f;
     }
 
     .input-left-no-radius{
@@ -419,17 +484,15 @@ export default {
         background-clip: -webkit-radial-gradient(center, 16px 16px, deepskyblue, darkblue);
         background: -o-linear-gradient(top, darkblue, deepskyblue, darkblue);
         background: -moz-linear-gradient(top, darkblue, deepskyblue, darkblue);
-        background: linear-gradient(to top, darkblue, deepskyblue, darkblue); 
-        background: linear-gradient(to top, darkblue, deepskyblue, darkblue); 
+        background: linear-gradient(to right, darkblue, deepskyblue,rgb(0, 247, 255), deepskyblue, darkblue); 
          -webkit-background-clip: text;
          -webkit-text-fill-color: transparent;
     }
     .flame {
-        background-clip: -webkit-radial-gradient(center, 8px 8px, red, gold);
-        background: -o-linear-gradient(left, gold, red, gold);
-        background: -moz-linear-gradient(left, gold, red, gold);
-        background: linear-gradient(to right,  gold, red, gold); 
-        background: linear-gradient(to right,  gold, red, gold); 
+        background-clip: -webkit-radial-gradient(center, 2px 2px, rgb(255, 230, 0), rgb(252, 18, 1));
+        background: -o-linear-gradient(left, rgb(255, 230, 0), rgb(252, 18, 1));
+        background: -moz-linear-gradient(left, rgb(255, 230, 0), rgb(252, 18, 1));
+        background: linear-gradient(to right,  goldenrod,gold, rgb(255, 4, 4), gold, goldenrod); 
          -webkit-background-clip: text;
          -webkit-text-fill-color: transparent;
     }
@@ -441,5 +504,26 @@ export default {
         background: linear-gradient(to top, forestGreen, yellowGreen, forestGreen); 
          -webkit-background-clip: text;
          -webkit-text-fill-color: transparent;
+    }
+
+    .total-value {
+        border: none;
+        font-size: 1.6rem;
+        width: 180px;
+        background-color:transparent;
+        margin-right: 10px;
+        padding-top: 5px;
+    }
+
+    .total-box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: flex-start;
+        align-content: stretch;
+        background: linear-gradient(to right, rgba(0,0,0,0),rgba(0,0,0,0.05), rgba(0,0,0,0.1), rgba(0,0,0,0.05), rgba(0,0,0,0.0) ) ;
+        border: 1px solid linear-gradient(to right, rgba(0,0,0,0),rgba(0,0,0,0.05), rgba(0,0,0,0.1), rgba(0,0,0,0.05), rgba(0,0,0,0.0) ) ;;
+        border-radius: 8px;
     }
 </style>
