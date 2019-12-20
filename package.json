@@ -12,6 +12,7 @@
     "bootstrap-vue": "^2.1.0",
     "font-awesome": "^4.7.0",
     "highlightjs": "^9.16.2",
+    "jspdf": "^1.5.3",
     "liquor-tree": "^0.2.69",
     "v-mask": "^2.0.2",
     "v-money": "^0.8.1",

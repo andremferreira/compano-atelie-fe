@@ -553,10 +553,10 @@ export default {
       enableaddress: true,
       visible: false,
       fields: [
+        { key: "actions", label: "Actions" },
         { key: "fullname", label: "Name", sortable: true },
-        { key: "vc_email", label: "E-mail", sortable: true },
         { key: "mobile", label: "Mobile", sortable: true },
-        { key: "actions", label: "Actions" }
+        
       ],
       showErrors:false,
       erros:[],
@@ -573,12 +573,17 @@ export default {
     loadClients() {
       this.toggleBusy();
       const url = `${baseApiUrl}/api/clients?page=${this.page}&limit=${this.limit}${this.strQuery}`;
-      axios.get(url, { headers: { authorization: this.usrToken } }).then(res => {
-        this.clients = res.data.rows;
-        this.count = res.data.count;
-        this.joinData(res.data.rows);
-        this.toggleBusy();
-      })
+      axios.get(url, { headers: { authorization: this.usrToken } })
+        .then(res => {
+          this.clients = res.data.rows;
+          this.count = res.data.count;
+          this.joinData(res.data.rows);
+          this.toggleBusy();
+        })
+        .catch(() => {
+          this.toggleBusy();
+          return showError;
+          });
     },
     loadClientsWithFilter(){
       if (this.searchname || this.searchlastname ) {

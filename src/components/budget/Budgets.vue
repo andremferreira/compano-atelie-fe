@@ -1,5 +1,5 @@
 <template>
-    <div class="services-pages">
+    <div class="budgets-pages">
     <PageTitle :icon="iconpage[0]" :main="titlepage[0]" :sub="subtitlepage[0]" />
     <b-card>
       <template v-slot:header>
@@ -10,130 +10,28 @@
       </b-card-title>
       <b-card-text>{{ descriptionpage[0] }}</b-card-text>
       <b-card-body>
-        <b-form class="form-service-edit" @submit.prevent="saveService" @reset.prevent="cancelService">
-            <input id="form-service-id" type="hidden" v-model="service.id_service" />
-            <input id="form-service-id-user" type="hidden" v-model="service.id_user" />
+        <b-form class="form-budget-edit" @submit.prevent="savebudget" @reset.prevent="cancelbudget">
+            <input id="form-budget-id" type="hidden" v-model="budget.id_budget" />
+            <input id="form-budget-id-user" type="hidden" v-model="budget.id_user" />
             <b-row>
-                <b-col lg="12" md="12" sm="12">
-                        <b-form-group id="form-service-g-s-description" :label="labelpage[2]" label-for="input-service-description">
-                        <b-form-textarea
-                            id="textarea-service-description"
-                            v-model="service.tx_service_description"
-                            :placeholder="placeholderpage[1]"
-                            rows="3"
-                            max-rows="6"
-                            required
-                        >
-                        </b-form-textarea>
+                <b-col lg="2">
+                <b-form-group id="form-service-g-client" :label="labelpage[1]" label-for="input-budget-client">
+                    <b-form-input list="op-list-client" v-model="idClient" @blur="modifyClient(idClient)"></b-form-input>
+                        <datalist id="op-list-client">
+                            <option v-for="(client, i ) in clients" :key="i" :value="i"
+                            >{{ `${clients[i].vc_name} ${clients[i].vc_lastname}`}}
+                            </option>
+                        </datalist>
+                </b-form-group>
+                </b-col>
+                <b-col lg="7">
+                    <b-form-group :label="labelpage[3]" label-for="client-name">
+                        <b-form-input disabled v-model="client.fullname"/>
                     </b-form-group>
                 </b-col>
-            </b-row>            
-            <b-row>
-                <b-col lg="2" md="2" sm="6" v-if="mode !== 'remove'">
-                    <b-form-group id="form-service-g-mne" :label="labelpage[1]" label-for="input-service-mne">
-                        <b-form-input
-                            id="input-service-mne"
-                            v-model="service.vc_service_mnemonic"
-                            required
-                            :placeholder="placeholderpage[0]"
-                            size="sm"
-                            v-mask="'AAAAA'"
-                            v-uppercase
-                        />
-                    </b-form-group>
-                </b-col>
-                <b-col lg="2" md="3" sm="6" v-if="mode !== 'remove'">
-                    <b-form-group id="form-service-g-stime" :label="labelpage[3]" label-for="input-service-stime">
-                        <b-form-input
-                            id="input-service-stime"
-                            v-model="service.tm_estimate_time_service"
-                            type="time"
-                            required
-                            :placeholder="placeholderpage[2]"
-                            size="sm"
-                            v-uppercase
-                        />
-                    </b-form-group>
-                </b-col>
-                <b-col lg="8" md="6" sm="12" v-if="mode !== 'remove'">
-                    <b-form-group id="form-service-g-cost" :label="labelpage[4]" label-for="input-service-co">
-                        <b-row>
-                            <b-col lg="4" md="4" sm="4">
-                                <div class="box-cost-group">
-                                <div class="icon-input-right material mb-2"><i class="fa fa-scissors"/></div>
-                                    <b-form-input
-                                        id="input-service-c-material"
-                                        class="input-left-no-radius mb-2"
-                                        v-model="service.nu_material_cost"
-                                        v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn"
-                                        size="sm"
-                                    />
-                                    <b-tooltip target="input-service-c-material" :title="placeholderpage[3]" />
-                                </div>
-                            </b-col>
-                            <b-col lg="4" md="4" sm="4">
-                                <div class="box-cost-group">
-                                <div class="icon-input-right third-party mb-2"><i class="fa fa-code-fork"/></div>
-                                    <b-form-input
-                                        id="input-service-c-third"
-                                        class="input-left-no-radius mb-2"
-                                        v-model="service.nu_third_party_cost"
-                                        v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn"
-                                        size="sm"
-                                    />
-                                    <b-tooltip target="input-service-c-third" :title="placeholderpage[4]" />
-                                </div>
-                            </b-col>
-                            <b-col lg="4" md="4" sm="4">
-                                <div class="box-cost-group">
-                                <div class="icon-input-right service-cost mb-2"><i class="fa fa-usd"/></div>
-                                    <b-form-input
-                                        id="input-service-c-money"
-                                        class="input-left-no-radius mb-2"
-                                        v-model="service.nu_service_cost"
-                                        v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn"
-                                        size="sm"
-                                    />
-                                    <b-tooltip target="input-service-c-money" :title="placeholderpage[5]" />
-                                </div>
-                            </b-col>
-                        </b-row>
-                    </b-form-group>
-                </b-col>
-            </b-row>
-            <b-row>
-                <b-col lg="12" md="12" sm="12" class="mb-3 pr-4" v-if="mode !== 'remove'">
-                <b-row>
-                    <b-col lg="2"><h5 style="text-align: right;">{{labelpage[18]}}</h5></b-col>
-                    <b-col lg="10" class="total-box">
-                        <input style="padding-left: 80px;" class="total-value d-none d-sm-block" v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn" :value="parseFloat(this.totalCalc()/1).toFixed(2)" />
-                        <input style="padding-left: 80px;" class="total-value d-block d-sm-none" v-money="lang=='pt-BR' || !lang ? moneyPt : moneyEn" :value="parseFloat(this.totalCalc()/1).toFixed(2)" />
-                        <span style="padding-top:2px; color:rgba(255,255,255,0.3);" class="mr-3 d-none d-sm-block"><i class="fa fa-money d-none d-sm-block" style="font-size:3rem;"></i></span>
-                    </b-col>
-                </b-row>
-            </b-col>
-            </b-row>
-            <b-row>
-                <b-col lg="2" md="2" sm="3" v-show="mode !== 'remove'">
-                    <b-form-group id="form-service-g-active">
-                        <b-form-checkbox switch
-                            id="form-service-active"
-                            v-model="service.bo_active"
-                            name="service-active"
-                            size="lg">
-                                {{ labelpage[9] }}
-                        </b-form-checkbox>
-                    </b-form-group>
-                </b-col>
-                <b-col lg="2" md="2" sm="3" v-show="mode !== 'remove'">
-                    <b-form-group id="form-service-g-critical-service">
-                        <b-form-checkbox switch
-                            id="form-service-critical-service"
-                            v-model="service.bo_critical_service"
-                            name="service-critical-service"
-                            size="lg">
-                                {{ labelpage[10] }}
-                        </b-form-checkbox>
+                <b-col lg="3">
+                    <b-form-group :label="labelpage[4]" label-for="client-ssc">
+                        <b-form-input disabled v-model="client.vc_social_security_code" v-mask="'###.###.###-##'"/>
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -141,22 +39,22 @@
                 <b-col lg="2" md="4" sm="12" class="mt-3 mr-5">
                 <div class="btn-group" >
                     <div id="btnl-save" v-if="mode === 'save'">
-                    <b-button class="btn btnl-action btnl-save-stlyle" v-on:keyup.enter="saveService" type="submit" size="sm">
+                    <b-button class="btn btnl-action btnl-save-stlyle" type="submit" size="sm">
                         <i :class="iconpage[1]"></i>
-                        <span style="color: #fff;">{{ labelpage[12] }}</span>
+                        <span style="color: #fff;">{{ labelpage[13] }}</span>
                     </b-button>
                     </div>
                     <div id="btnl-remove" v-if="mode === 'remove'">
-                    <b-button class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete" size="sm">
+                    <b-button class="btn btnl-action btnl-remove-stlyle" size="sm">
                         
                         <i :class="iconpage[3]"></i>
-                        <span style="color: #fff;">{{ labelpage[17] }}</span>
+                        <span style="color: #fff;">{{ labelpage[18] }}</span>
                     </b-button>
                     </div>
                     <div id="btnl-cancel">
                     <b-button class="btn ml-2 btnl-action btnl-cancel-stlyle" size="sm" type="reset">
                         <i :class="iconpage[2]"></i>
-                        <span style="color: #fff;">{{ labelpage[13] }}</span>
+                        <span style="color: #fff;">{{ labelpage[14] }}</span>
                     </b-button>
                     </div>
                 </div>
@@ -164,12 +62,12 @@
           </b-row>
         </b-form>
         <hr>
-        <b-form id="form-search-service-table" class="search-service" @submit.prevent="searchService">
+        <b-form id="form-search-budget-table" class="search-budget" @submit.prevent="searchbudget">
         <b-row>
-            <span class="ml-3 pt-1">{{labelpage[1]}}:</span>
+            <span class="ml-3 pt-1">{{labelpage[2]}}:</span>
                 <b-col lg="3" md="3" sm="12">
                     <b-form-input
-                        name="search-mne-service"
+                        name="search-mne-budget"
                         type="text"
                         size="sm"
                         v-model="searchmne"
@@ -179,12 +77,12 @@
             <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-none d-md-block' : 'btn btnl-action btnl-remove-stlyle d-none d-md-block'" 
                 type="submit" size="sm">
                 <i :class="!searchToggle ? 'fa fa-search': 'fa fa-times'"></i>
-                <span>{{labelpage[16]}}</span>
+                <span>{{labelpage[17]}}</span>
             </b-button>
             <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-block d-md-none mt-2 ml-3' : 'btn btnl-action btnl-remove-stlyle d-block d-md-none mt-2 ml-3'"  
                 type="submit" size="sm">
                 <i :class="!searchToggle ? 'fa fa-search': 'fa fa-times'"></i>
-                <span>{{labelpage[16]}}</span>
+                <span>{{labelpage[17]}}</span>
             </b-button>
         </b-row>
         </b-form>
@@ -193,8 +91,8 @@
           :no-border-collapse="true"
           outlined
           striped
-          :items="services"
-          :fields="lang=='pt-BR' || !lang ? fieldsPt : fieldsEn"
+          :items="budgets"
+          :fields="['aaaa','bbbbb','ccccc']"
           small="small"
           responsive="true"
           class="mt-3"
@@ -207,10 +105,10 @@
             </div>
           </template>
           <template v-slot:cell(actions)="data">
-              <b-button size="sm" variant="warning" @click="loadService(data.item, 'save')" class="mr-2 mt-1">
+              <b-button size="sm" variant="warning" @click="loadbudget(data.item, 'save')" class="mr-2 mt-1">
                 <i class="fa fa-pencil"></i>
               </b-button>
-              <b-button size="sm" variant="danger" @click="loadService(data.item, 'remove')" class="mr-2 mt-1">
+              <b-button size="sm" variant="danger" @click="loadbudget(data.item, 'remove')" class="mr-2 mt-1">
                 <i class="fa fa-trash"></i>
               </b-button>
           </template>
@@ -226,9 +124,9 @@
                     </span>
                </div>
           </template>
-          <template v-slot:cell(bo_critical_service)="data">
+          <template v-slot:cell(bo_critical_budget)="data">
                <div class="table-status-action">
-                    <span v-if="data.item.bo_critical_service" class="fa-stack">
+                    <span v-if="data.item.bo_critical_budget" class="fa-stack">
                             <i class="fa fa-circle fa-stack-2x" style="color:#222;"/>
                             <i class="fa fa-free-code-camp fa-stack-1x fa-inverse flame"/>
                     </span>
@@ -240,7 +138,7 @@
           </template>          
         </b-table>
         <div class="paginator-box">
-            <b-pagination @click="loadServices" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
+            <b-pagination @click="loadbudgets" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
             <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
               <b-dropdown-item @click="limit=limit">{{limit}}</b-dropdown-item>
               <b-dropdown-item @click="limit=limit*2">{{limit * 2}}</b-dropdown-item>
@@ -261,7 +159,7 @@ import { baseApiUrl, showError, showSuccess } from "@/global";
 import defLang from "@/config/factory/defLang";
 import axios from "axios";
 export default {
-    name: 'Services',
+    name: 'budgets',
     components: { PageTitle },
     computed:{
       currUser() {
@@ -282,29 +180,32 @@ export default {
             lang: null,
             mode: "save",
             iconpage: [],
-            pagename: "Services",
-            codename: "SERVEC01",
+            pagename: "Budgets",
+            codename: "BUDGET01",
             titlepage: [],
             subtitlepage: [],
             descriptionpage: [],
             labelpage: [],
             placeholderpage: [],
             obj: [],
-            services: [],
-            service: {},
+            budgets: [],
+            clients: [],
+            client: {},
+            idClient: null,
+            budget: {},
             switch: {value: true, disabled: false },
             fieldsEn: [
-                { key: "vc_service_mnemonic", label: "Mnemonic", sortable: true },
-                { key: "tx_service_description", label: "Description", sortable: true },
+                { key: "vc_budget_mnemonic", label: "Mnemonic", sortable: true },
+                { key: "tx_budget_description", label: "Description", sortable: true },
                 { key: "bo_active", label: "Active", sortable: true },
-                { key: "bo_critical_service", label: "Critical", sortable: true },
+                { key: "bo_critical_budget", label: "Critical", sortable: true },
                 { key: "actions", label: "Actions" }
             ],
             fieldsPt: [
-                { key: "vc_service_mnemonic", label: "Mnemônio", sortable: true },
-                { key: "tx_service_description", label: "Descrição", sortable: true },
+                { key: "vc_budget_mnemonic", label: "Mnemônio", sortable: true },
+                { key: "tx_budget_description", label: "Descrição", sortable: true },
                 { key: "bo_active", label: "Situação", sortable: true },
-                { key: "bo_critical_service", label: "Criticidade", sortable: true},
+                { key: "bo_critical_budget", label: "Criticidade", sortable: true},
                 { key: "actions", label: "Ações" }
             ],
             moneyEn: {decimal: ".",thousands: ",",prefix: "$ ",precision: 2,masked: false},
@@ -318,13 +219,14 @@ export default {
         }
     },
     methods: {
-        loadServices(){
+        loadbudgets(){
             this.toggleBusy();
-            const url = `${baseApiUrl}/api/services?page=${this.page}&limit=${this.limit}${this.strQuery}`;
+            const url = `${baseApiUrl}/api/budgets?page=${this.page}&limit=${this.limit}${this.strQuery}`;
             axios.get(url, { headers: { authorization: this.usrToken } })
             .then(res => {
-                this.services = res.data.rows;
+                this.budgets = res.data.rows;
                 this.count = res.data.count;
+                this.getClientsList();
                 this.toggleBusy();
                 
             })
@@ -334,8 +236,16 @@ export default {
                 });
             
         },
+        getClientsList(){
+            const url = `${baseApiUrl}/api/lstbClients`;
+            axios.get(url, { headers: { authorization: this.usrToken } })
+            .then(res => {
+                this.clients = res.data.rows;
+            })
+            .catch(showError);
+        },
         totalCalc() {
-            const calc = ( this.formatValue(this.service.nu_material_cost) + this.formatValue(this.service.nu_third_party_cost) + this.formatValue(this.service.nu_service_cost)) * (!this.service.bo_critical_service ? 1 : 1.2)
+            const calc = ( this.formatValue(this.budget.nu_material_cost) + this.formatValue(this.budget.nu_third_party_cost) + this.formatValue(this.budget.nu_budget_cost)) * (!this.budget.bo_critical_budget ? 1 : 1.2)
             return calc
         },
         formatValue(strValue){
@@ -345,16 +255,16 @@ export default {
             return Number(value);
         }
         ,
-        searchService() {
+        searchbudget() {
             if (!this.searchmne) return
                 this.strQuery = `&mne=${this.searchmne}`;
                 this.searchToggle = !this.searchToggle;
                 if (this.searchToggle) {
-                    this.loadServices()
+                    this.loadbudgets()
                 } else {
                     this.strQuery = ''
                     this.searchmne = ''
-                    this.loadServices()
+                    this.loadbudgets()
                 }
         },
         showModalDelete(){
@@ -369,50 +279,50 @@ export default {
                 centered: false
                 })
                 .then( value  => {
-                    if (value) this.removeService()
+                    if (value) this.removebudget()
                 })
                 .catch(showError)
         },
         toggleBusy() {
             this.tbIsBusy = !this.tbIsBusy
         },
-        saveService() {
-            if (!this.service.id_user) this.service.id_user = this.currUser
-            const method = this.service.id_service ? 'put' : 'post'
-            const pathCall = this.service.id_service ? `/api/service/id/${this.service.id_service}` : `/api/service`
+        savebudget() {
+            if (!this.budget.id_user) this.budget.id_user = this.currUser
+            const method = this.budget.id_budget ? 'put' : 'post'
+            const pathCall = this.budget.id_budget ? `/api/budget/id/${this.budget.id_budget}` : `/api/budget`
             const query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
             const pathRoute = baseApiUrl + pathCall + query
             const config = {
                 method: method,
                 url: pathRoute,
                 headers: { authorization: this.usrToken },
-                data: this.service
+                data: this.budget
             }
-            axios(config, this.service)
+            axios(config, this.budget)
                 .then( res => {
                     showSuccess(res.data.info)  
-                    this.cancelService()
+                    this.cancelbudget()
                     }
                 )
                 .catch(showError)
         },
-        loadService(service, mode = 'save') {
+        loadbudget(budget, mode = 'save') {
             this.mode = mode
-            this.service = { ...service }
+            this.budget = { ...budget }
             setTimeout(()=>{
-                this.service = { ...service }
+                this.budget = { ...budget }
             }, 100)
             this.totalCalc() 
         },
-        cancelService() {
+        cancelbudget() {
             this.mode = 'save'
-            this.service = {}
-            this.loadServices()
+            this.budget = {}
+            this.loadbudgets()
         },
-        removeService(){
-        const id = this.service.id_service
+        removebudget(){
+        const id = this.budget.id_budget
         const method = 'delete'
-        const pathCall = `/api/service/id/${id}`
+        const pathCall = `/api/budget/id/${id}`
         let query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
         const pathRoute = baseApiUrl + pathCall + query
         const config = {
@@ -423,10 +333,15 @@ export default {
         axios(config)
           .then( res => {
             showSuccess(res.data.info)
-            this.cancelService()
+            this.cancelbudget()
           })
           .catch(showError)
       },
+      modifyClient(value){
+          this.client = this.clients[value]
+          this.client.fullname = this.client.vc_name  + ' ' + this.client.vc_lastname
+          console.log(this.client)
+      }
     },
     mounted(){
         this.$store.state.isMenuVisible = false
@@ -439,7 +354,8 @@ export default {
         this.placeholderpage = this.obj.placeholder;
         this.iconpage = this.obj.icon;
         this.errorslist =  this.obj.errorsList;
-        this.loadServices();
+        this.loadbudgets();
+        
     },
     watch: {
         changeLang() {
@@ -453,10 +369,10 @@ export default {
         this.iconpage = this.obj.icon;
         },
         page() {
-            this.loadServices()
+            this.loadbudgets()
         },
         limit() {
-            this.loadServices()
+            this.loadbudgets()
         },
     }
 }
@@ -493,7 +409,7 @@ export default {
         border: solid 1px;
         border-color: #523883
     }
-    .service-cost {
+    .budget-cost {
         background-color: #20c997;
         border: solid 1px;
         border-color: #1f8f6d;

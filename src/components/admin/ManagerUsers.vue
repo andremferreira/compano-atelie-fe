@@ -92,7 +92,7 @@
                       <i :class="pageicon[4]" ></i> <span style="color: #fff;">{{ labelpage[17] }}</span>
                     </b-button>
                   </div>
-                  <div id="btnl-cancel" class="d-none d-md-block ml-3">
+                  <div id="btnl-cancel" class="d-none d-md-block ml-2">
                     <b-button size="sm" style=" text-align:center;" class="btn btnl-action btnl-cancel-stlyle" type="reset">
                       <i :class="pageicon[4]" ></i> <span style="color: #fff;">{{ labelpage[17] }}</span>
                     </b-button>

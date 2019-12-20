@@ -340,16 +340,44 @@
                     "type": "pt-BR",
                     "title": ["Homologação de Serviços","Cadastro de Serviços"],
                     "subtitle": ["Cadastro & Cia.", "Recomendações & Boas Práticas", "Confirmação de Remoção de Serviço."],
-                    "description": ["Verifique todas as informações referentes ao serviço antes de cadastrar."],
-                    "label": ["Cod","Mnemônio", "Descrição", "Estimativa", "Custos (materiais, terceiros e serviços)", "Material", "Terceiros", "Serviço", "Contato", "Ativo", "Crítico", "Usuário","Salvar", "Cancelar","Sim","Não", "Procurar...", "Remover"],
+                    "description": ["Verifique todas as informações referentes ao serviço antes de cadastrar.", "Realmente deseja remover o Serviço?"],
+                    "label": ["Cod","Mnemônio", "Descrição", "Estimativa", "Custos (materiais, terceiros e serviços)", "Material", "Terceiros", "Serviço", "Contato", "Ativo", "Crítico", "Usuário","Salvar", "Cancelar","Sim","Não", "Procurar...", "Remover", "Valor total do serviço:"],
                     "placeholder": ["Informe o Mnemônio.", "Descreva detalhadamente o serviço.", "Informe estimativa de tempo.", "Custo de materiais (R$ 0,00)", "Custo de terceiros (R$ 0,00)", "Custo do serviço (R$ 0,00)"]
                 },
                 {
                     "type": "en-US",
                     "title": ["Homologation of Services","Services Register"],
                     "subtitle": ["Registration & Purposes", "Recommendations & Best Practices","Service Exclude Confirmation"],
-                    "description": ["Please, check all information about the service before register.", "Are you sure to remove the service?", "Address find with success...", "Address not find!"],
-                    "label": ["Id", "Mnemonic", "Description", "Estimate", "Costs (material, third party and service)", "Material", "Third Party", "Service", "Contact", "Active", "Critical", "User", "Save", "Cancel", "Yes", "No", "Search...", "Remove"],
+                    "description": ["Please, check all information about the service before register.", "Are you sure to remove the service?"],
+                    "label": ["Id", "Mnemonic", "Description", "Estimate", "Costs (material, third party and service)", "Material", "Third Party", "Service", "Contact", "Active", "Critical", "User", "Save", "Cancel", "Yes", "No", "Search...", "Remove", "Total value of service:"],
+                    "placeholder": ["Enter Mnemonic.", "Enter service description.", "Enter estimate time.", "Material cost ($ 0.00)", "Third party cost ($ 0.00)", "Service ($ 0.00)"]
+                }
+            ]
+        },
+        {
+            "page": "Budgets",
+            "cod": "BUDGET01",
+            "icon": ["fa fa-pencil","fa fa-floppy-o", "fa fa-undo", "fa fa-times", "fa fa-search"],
+            "subicon": [],
+            "subiconcolor":[],
+            "path": ["/budgets"],
+            "subpath": [],
+            "alert": [],
+            "variation": [
+                {
+                    "type": "pt-BR",
+                    "title": ["Gestão de Orçamentos","Cadastro de Orçamentos"],
+                    "subtitle": ["Cadastro & Cia.", "Recomendações & Boas Práticas", "Confirmação de Remoção de Orçamento."],
+                    "description": ["Verifique todas as informações do orçamento, antes de registrar (quantidade e valor de cada item).", "Realmente deseja remover o Serviço?"],
+                    "label": ["Cod","Cód. Cliente", "Cód. Orçamento", "Nome do cliente", "CPF", "Custos (materiais, terceiros e serviços)", "Material", "Terceiros", "Serviço", "Contato", "Ativo", "Crítico", "Usuário","Salvar", "Cancelar","Sim","Não", "Procurar...", "Remover", "Valor total do serviço:"],
+                    "placeholder": ["Informe o Mnemônio.", "Descreva detalhadamente o serviço.", "Informe estimativa de tempo.", "Custo de materiais (R$ 0,00)", "Custo de terceiros (R$ 0,00)", "Custo do serviço (R$ 0,00)"]
+                },
+                {
+                    "type": "en-US",
+                    "title": ["Budgets Management","Budget Register"],
+                    "subtitle": ["Registration & Purposes", "Recommendations & Best Practices","Service Exclude Confirmation"],
+                    "description": ["Please, check all information about the budget before register.", "Are you sure to remove the service?"],
+                    "label": ["Id", "Client Id", "Budget Id", "Client name","S.Security Code", "Costs (material, third party and service)", "Material", "Third Party", "Service", "Contact", "Active", "Critical", "User", "Save", "Cancel", "Yes", "No", "Search...", "Remove", "Total value of service:"],
                     "placeholder": ["Enter Mnemonic.", "Enter service description.", "Enter estimate time.", "Material cost ($ 0.00)", "Third party cost ($ 0.00)", "Service ($ 0.00)"]
                 }
             ]
