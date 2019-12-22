@@ -10,6 +10,10 @@ import store from './config/store'
 import router from './config/router'
 Vue.config.productionTip = false
 
+Vue.filter('inverter', function(valor) {
+	return valor.split('').reverse().join('')
+})
+
 Vue.directive('uppercase',
   {
     inserted: function(el, _, vnode) {

@@ -31,8 +31,78 @@
                 </b-col>
                 <b-col lg="3">
                     <b-form-group :label="labelpage[4]" label-for="client-ssc">
-                        <b-form-input disabled v-model="client.vc_social_security_code" v-mask="'###.###.###-##'"/>
+                        <b-form-input type="text" disabled :value="client.vc_social_security_code | cpf " />
                     </b-form-group>
+                </b-col>
+            </b-row>
+            <b-row>
+              <b-col lg="2">
+                <b-form-group id="form-budget-g-service" :label="labelpage[5]" label-for="input-budget-services">
+                    <b-form-input list="op-list-services" v-model="idService" @blur="modifyService(idService)"></b-form-input>
+                        <datalist id="op-list-services">
+                            <option v-for="(service, i ) in services" :key="i" :value="i"
+                            >{{ `${services[i].vc_service_mnemonic} ${services[i].total}`}}
+                            </option>
+                        </datalist>
+                </b-form-group>
+               </b-col>
+               <b-col lg="7">
+                    <b-form-group :label="labelpage[7]" label-for="service-description">
+                        <b-form-input disabled v-model="service.tx_service_description"/>
+                    </b-form-group>
+                </b-col>
+               <b-col lg="2">
+                   <b-form-group id="form-budget-g-qtd-service" :label="labelpage[6]" label-for="input-budget-qtd-service">
+                       <b-form-input 
+                            type="number"
+                            v-model="qtd"
+                            min=1
+                            max=50
+                       />
+                   </b-form-group>
+               </b-col>
+               <b-col lg="1" >
+                   <b-button variant="success" class="d-none d-md-block mb-3" @click="addBudgetService" style="margin-top:32px;width:100%;">
+                       <i class="fa fa-plus" ></i>
+                   </b-button>
+                   <b-button variant="success" class="d-block d-md-none mb-3" @click="addBudgetService" style="margin-top:8px;width:100%;">
+                       <i class="fa fa-plus" ></i>
+                   </b-button>
+               </b-col>
+            </b-row>
+            <b-row>
+                <b-col lg="12" md="12" sm="12">
+                    <div class="carrinho" style="width:100%;">
+                        <table 
+                            id="budget-table-add" 
+                            sticky-header="stickyHeader"
+                            :no-border-collapse="true"
+                            outlined
+                            striped
+                            responsive="true">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Descrição</th>
+                                    <th>Qtd.</th>
+                                    <th>Val.</th>
+                                    <th>Del.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(js,i) in budget.js_budget_service" :key="i" style="margin-bottom:10px;">
+                                    <td><span class="pl-2">{{ js.id }}</span></td>
+                                    <td><span class="pl-2">{{ js.dsc }}</span></td>
+                                    <td><span class="pl-2">{{ js.qtd }}</span></td>
+                                    <td><span class="pl-2">{{ js.val }}</span></td>
+                                    <td><b-button variant="danger" size="sm" class="mt-1 mb-1"><i class="fa fa-trash"></i></b-button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="total pr-3 pt-2">
+                            <h5>Total: <strong> R$ {{ total }} </strong ></h5>
+                        </div>
+                    </div>
                 </b-col>
             </b-row>
             <b-row>
@@ -58,7 +128,7 @@
                     </b-button>
                     </div>
                 </div>
-            </b-col>
+                </b-col>
           </b-row>
         </b-form>
         <hr>
@@ -91,10 +161,10 @@
           :no-border-collapse="true"
           outlined
           striped
-          :items="budgets"
-          :fields="['aaaa','bbbbb','ccccc']"
-          small="small"
           responsive="true"
+          :items="budgets"
+          :fields="fieldsPt"
+          small="small"
           class="mt-3"
           :busy="tbIsBusy"
         >
@@ -172,12 +242,23 @@ export default {
             return this.$store.state.dLang;
         },
     },
+    filters: {
+		cpf(valor) {
+            if(!valor) return
+			const arr = valor.split('')
+			arr.splice(3, 0, '.')
+			arr.splice(7, 0, '.')
+			arr.splice(11, 0, '-')
+			return arr.join('')
+        }
+    },
     data() {
         return {
             page: 1,
             limit: 5,
             count: 0,
             lang: null,
+            seq: 1,
             mode: "save",
             iconpage: [],
             pagename: "Budgets",
@@ -191,7 +272,10 @@ export default {
             budgets: [],
             clients: [],
             client: {},
+            services: [],
+            service: {},
             idClient: null,
+            idService: null,
             budget: {},
             switch: {value: true, disabled: false },
             fieldsEn: [
@@ -202,10 +286,10 @@ export default {
                 { key: "actions", label: "Actions" }
             ],
             fieldsPt: [
-                { key: "vc_budget_mnemonic", label: "Mnemônio", sortable: true },
-                { key: "tx_budget_description", label: "Descrição", sortable: true },
-                { key: "bo_active", label: "Situação", sortable: true },
-                { key: "bo_critical_budget", label: "Criticidade", sortable: true},
+                { key: "id_budget", label: "Cód.", sortable: true },
+                { key: "id_user", label: "Usuário", sortable: true },
+                { key: "id_client", label: "Cliente", sortable: true },
+                { key: "ts_update", label: "Dt. Criação", sortable: true},
                 { key: "actions", label: "Ações" }
             ],
             moneyEn: {decimal: ".",thousands: ",",prefix: "$ ",precision: 2,masked: false},
@@ -215,7 +299,8 @@ export default {
             strQuery: '',
             searchToggle: false,
             searchmne: '',
-            total: 0
+            total: 0,
+            qtd: 1
         }
     },
     methods: {
@@ -224,9 +309,10 @@ export default {
             const url = `${baseApiUrl}/api/budgets?page=${this.page}&limit=${this.limit}${this.strQuery}`;
             axios.get(url, { headers: { authorization: this.usrToken } })
             .then(res => {
-                this.budgets = res.data.rows;
+                this.budgets = res.data;
                 this.count = res.data.count;
                 this.getClientsList();
+                this.getServicesList();
                 this.toggleBusy();
                 
             })
@@ -244,9 +330,12 @@ export default {
             })
             .catch(showError);
         },
-        totalCalc() {
-            const calc = ( this.formatValue(this.budget.nu_material_cost) + this.formatValue(this.budget.nu_third_party_cost) + this.formatValue(this.budget.nu_budget_cost)) * (!this.budget.bo_critical_budget ? 1 : 1.2)
-            return calc
+        getServicesList(){
+            const url = `${baseApiUrl}/api/lstbServices`;
+            axios.get(url, { headers: { authorization: this.usrToken } })
+            .then(res => {
+                this.services = res.data
+            })
         },
         formatValue(strValue){
             const onlyNumber= /\D/g;
@@ -309,14 +398,12 @@ export default {
         loadbudget(budget, mode = 'save') {
             this.mode = mode
             this.budget = { ...budget }
-            setTimeout(()=>{
-                this.budget = { ...budget }
-            }, 100)
-            this.totalCalc() 
+            this.calcBudget()
         },
         cancelbudget() {
             this.mode = 'save'
             this.budget = {}
+            this.total = 0
             this.loadbudgets()
         },
         removebudget(){
@@ -338,10 +425,48 @@ export default {
           .catch(showError)
       },
       modifyClient(value){
+          if (!value || !this.clients[value]) {
+              this.client = {}
+              this.idClient = null
+              return
+          }
           this.client = this.clients[value]
           this.client.fullname = this.client.vc_name  + ' ' + this.client.vc_lastname
-          console.log(this.client)
-      }
+          this.budget.id_client = this.client.id_client
+      },
+      modifyService(value){
+          if (!value || !this.services[value]) {
+              this.service = {}
+              this.idService = null
+              return
+          }
+          this.service = this.services[value]
+      },
+      addBudgetService(){
+          if ( !this.qtd || !this.idService || !this.idClient) return
+          let objAdd = this.budget.js_budget_service || []
+          const serviceAdd = { 
+              id: this.seq,
+              mne: this.service.vc_service_mnemonic,
+              dsc: this.service.tx_service_description,
+              qtd: this.qtd,
+              val: this.service.total * this.qtd
+          } 
+          this.seq++
+          this.service = {}
+          objAdd.push(serviceAdd)
+          this.budget.js_budget_service = objAdd
+          this.qtd = 1
+          this.idService = null
+          this.calcBudget()
+      },
+      calcBudget(){
+        let soma = 0
+        for (var i in this.budget.js_budget_service) {
+            soma = soma + this.budget.js_budget_service[i].val
+            }
+        this.total = soma
+        }
     },
     mounted(){
         this.$store.state.isMenuVisible = false
@@ -355,6 +480,7 @@ export default {
         this.iconpage = this.obj.icon;
         this.errorslist =  this.obj.errorsList;
         this.loadbudgets();
+        
         
     },
     watch: {
@@ -484,7 +610,32 @@ export default {
         border-image-slice: 1;
         border-left: 0px;
         border-right: 0px;
-        box-shadow: 20px 8px 20px 0px rgba(86, 103, 161, 0.1), 20px 14px 20px 0px rgba(73, 92, 153, 0.2) ;
-        
+        box-shadow: 20px 8px 20px 0px rgba(86, 103, 161, 0.1), 20px 14px 20px 0px rgba(73, 92, 153, 0.2) ;   
     }
+
+    #budget-table-add {
+        width:100%;
+    }
+
+    #budget-table-add td {
+        border-top: 1px solid #EEE;
+    }
+
+    #budget-table-add hr {
+        margin-top: 20px;
+    }
+
+    .total {
+        display: flex;
+        justify-content: flex-end;
+        background: linear-gradient(to right, rgba(100, 0, 255, 0), rgba(132, 160, 255, 0.2), rgba(126, 156, 255, 0.3), rgba(50, 98, 255,0.4),rgba(50, 98, 255,0.2)) ;
+        border: 1px solid;
+        border-image-source: linear-gradient(to right, rgba(100, 0, 255, 0), rgba(50, 98, 255,0.3), rgba(50, 98, 255,0.6), rgba(50, 98, 255,0.4), rgba(50, 98, 255,0.0)) ;
+        border-radius: 8px;
+        border-image-slice: 1;
+        border-left: 0px;
+        border-right: 0px;
+        box-shadow: 20px 8px 20px 0px rgba(86, 103, 161, 0.1), 20px 14px 20px 0px rgba(73, 92, 153, 0.2) ;           
+    }
+
 </style>

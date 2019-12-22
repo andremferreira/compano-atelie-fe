@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        isMenuVisible: true,
+        isMenuVisible: false,
         dLang: 'pt-BR',
         user: null,
         token: null,

@@ -109,6 +109,9 @@ export default {
                })
         }
     },
+    created(){
+      this.$store.state.isMenuVisible = false
+    },
     mounted() {
       this.lang = this.$store.state.dLang;
       this.obj = defLang.langFind(this.lang, this.pagename, this.codename);
