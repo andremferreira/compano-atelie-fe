@@ -12,11 +12,11 @@
       <b-card-body>
         <b-form class="form-budget-edit" @submit.prevent="savebudget" @reset.prevent="cancelbudget">
             <input id="form-budget-id" type="hidden" v-model="budget.id_budget" />
-            <input id="form-budget-id-user" type="hidden" v-model="budget.id_user" />
+            <input id="form-budget-id-user" type="hidden" v-model="budget.id_user" /> 
             <b-row>
                 <b-col lg="2">
                 <b-form-group id="form-service-g-client" :label="labelpage[1]" label-for="input-budget-client">
-                    <b-form-input list="op-list-client" v-model="idClient" @blur="modifyClient(idClient)"></b-form-input>
+                     <b-form-input list="op-list-client" requered v-model="idClient" @blur="modifyClient(idClient)"></b-form-input> 
                         <datalist id="op-list-client">
                             <option v-for="(client, i ) in clients" :key="i" :value="i"
                             >{{ `${clients[i].vc_name} ${clients[i].vc_lastname}`}}
@@ -26,19 +26,19 @@
                 </b-col>
                 <b-col lg="7">
                     <b-form-group :label="labelpage[3]" label-for="client-name">
-                        <b-form-input disabled v-model="client.fullname"/>
+                        <b-form-input disabled v-model="client.fullname"/> 
                     </b-form-group>
                 </b-col>
                 <b-col lg="3">
                     <b-form-group :label="labelpage[4]" label-for="client-ssc">
-                        <b-form-input type="text" disabled :value="client.vc_social_security_code | cpf " />
+                         <b-form-input type="text" disabled :value="client.vc_social_security_code | cpf " /> 
                     </b-form-group>
                 </b-col>
             </b-row>
             <b-row>
               <b-col lg="2">
                 <b-form-group id="form-budget-g-service" :label="labelpage[5]" label-for="input-budget-services">
-                    <b-form-input list="op-list-services" v-model="idService" @blur="modifyService(idService)"></b-form-input>
+                     <b-form-input list="op-list-services" v-model="idService" @blur="modifyService(idService)"></b-form-input> 
                         <datalist id="op-list-services">
                             <option v-for="(service, i ) in services" :key="i" :value="i"
                             >{{ `${services[i].vc_service_mnemonic} ${services[i].total}`}}
@@ -48,7 +48,7 @@
                </b-col>
                <b-col lg="7">
                     <b-form-group :label="labelpage[7]" label-for="service-description">
-                        <b-form-input disabled v-model="service.tx_service_description"/>
+                         <b-form-input disabled v-model="service.tx_service_description"/> 
                     </b-form-group>
                 </b-col>
                <b-col lg="2">
@@ -62,49 +62,51 @@
                    </b-form-group>
                </b-col>
                <b-col lg="1" >
-                   <b-button variant="success" class="d-none d-md-block mb-3" @click="addBudgetService" style="margin-top:32px;width:100%;">
+                   <b-button class="d-none d-md-block mb-3 budget-cost" @click="addBudgetService" style="margin-top:32px;width:100%;">
                        <i class="fa fa-plus" ></i>
                    </b-button>
-                   <b-button variant="success" class="d-block d-md-none mb-3" @click="addBudgetService" style="margin-top:8px;width:100%;">
+                   <b-button class="d-block d-md-none mb-3 budget-cost" @click="addBudgetService" style="margin-top:8px;width:100%;">
                        <i class="fa fa-plus" ></i>
                    </b-button>
                </b-col>
             </b-row>
-            <b-row>
-                <b-col lg="12" md="12" sm="12">
-                    <div class="carrinho" style="width:100%;">
-                        <table 
-                            id="budget-table-add" 
-                            sticky-header="stickyHeader"
-                            :no-border-collapse="true"
-                            outlined
-                            striped
-                            responsive="true">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Descrição</th>
-                                    <th>Qtd.</th>
-                                    <th>Val.</th>
-                                    <th>Del.</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(js,i) in budget.js_budget_service" :key="i" style="margin-bottom:10px;">
-                                    <td><span class="pl-2">{{ js.id }}</span></td>
-                                    <td><span class="pl-2">{{ js.dsc }}</span></td>
-                                    <td><span class="pl-2">{{ js.qtd }}</span></td>
-                                    <td><span class="pl-2">{{ js.val }}</span></td>
-                                    <td><b-button variant="danger" size="sm" class="mt-1 mb-1"><i class="fa fa-trash"></i></b-button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="total pr-3 pt-2">
-                            <h5>Total: <strong> R$ {{ total }} </strong ></h5>
+            <b-collapse id="itens-table-collapse"  v-show="mode !== 'remove'" v-model="showItens">
+                <b-row>
+                    <b-col lg="12" md="12" sm="12">
+                        <div class="carrinho" style="width:100%;">
+                            <table 
+                                id="budget-table-add" 
+                                sticky-header="stickyHeader"
+                                :no-border-collapse="true">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th class="pl-1">{{labelpage[9]}}</th>
+                                        <th class="pl-1">{{labelpage[10]}}</th>
+                                         <th class="pl-1">Val.</th> 
+                                        <th >{{labelpage[11]}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(js,i) in budget.js_budget_service" :key="i" style="margin-bottom:10px;">
+                                        <td style="width:7.5%;"><span class="pl-2">{{ i+1 }}</span></td>
+                                        <td style="width:45%;"><span>{{ js.dsc }}</span></td>
+                                        <td style="width:7.5%;"><span class="pl-2">{{ js.qtd }}</span></td>
+                                        <td style="width:15%;"><span class="pl-2">{{ fMoney(js.val) }}</span></td>
+                                        <td style="width:15%;">
+                                            <b-button variant="warning" size="sm" class="mt-1 mb-1 ml-1" @click="editServiceItens(i, js.id, js.qtd)"><i class="fa fa-pencil"></i></b-button>
+                                            <b-button variant="danger" size="sm" class="mt-1 mb-1 ml-1" @click="popItem(i)"><i class="fa fa-trash"></i></b-button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="total mt-2">
+                                 <h5 class="pr-3 pt-2">Total:</h5><span class="pr-3 pt-2"><strong>{{ fMoney(total) }}</strong></span>
+                            </div>
                         </div>
-                    </div>
-                </b-col>
-            </b-row>
+                    </b-col>
+                </b-row>
+            </b-collapse>
             <b-row>
                 <b-col lg="2" md="4" sm="12" class="mt-3 mr-5">
                 <div class="btn-group" >
@@ -115,8 +117,7 @@
                     </b-button>
                     </div>
                     <div id="btnl-remove" v-if="mode === 'remove'">
-                    <b-button class="btn btnl-action btnl-remove-stlyle" size="sm">
-                        
+                    <b-button class="btn btnl-action btnl-remove-stlyle" @click="showModalDelete" size="sm">
                         <i :class="iconpage[3]"></i>
                         <span style="color: #fff;">{{ labelpage[18] }}</span>
                     </b-button>
@@ -132,16 +133,16 @@
           </b-row>
         </b-form>
         <hr>
-        <b-form id="form-search-budget-table" class="search-budget" @submit.prevent="searchbudget">
+        <b-form id="form-search-budget-table" class="search-budget" @submit.prevent="search">
         <b-row>
-            <span class="ml-3 pt-1">{{labelpage[2]}}:</span>
+            <span class="ml-3 pt-1">{{ labelpage[2] }}:</span>
                 <b-col lg="3" md="3" sm="12">
                     <b-form-input
                         name="search-mne-budget"
                         type="text"
                         size="sm"
-                        v-model="searchmne"
-                        v-mask="'AAAAA'"
+                        v-model="searchbudget"
+                        v-mask="'#######'"
                          />
                 </b-col>
             <b-button :class="!searchToggle ? 'btn btnl-action btnl-search-style d-none d-md-block' : 'btn btnl-action btnl-remove-stlyle d-none d-md-block'" 
@@ -175,6 +176,9 @@
             </div>
           </template>
           <template v-slot:cell(actions)="data">
+              <b-button size="sm" class="mr-2 mt-1 budget-cost">
+                <i class="fa fa-plus"></i>
+              </b-button>
               <b-button size="sm" variant="warning" @click="loadbudget(data.item, 'save')" class="mr-2 mt-1">
                 <i class="fa fa-pencil"></i>
               </b-button>
@@ -182,30 +186,7 @@
                 <i class="fa fa-trash"></i>
               </b-button>
           </template>
-          <template v-slot:cell(bo_active)="data">
-               <div class="table-status-action">
-                    <span v-if="data.item.bo_active" class="fa-stack">
-                        <i class="fa fa-circle fa-stack-2x" style="color:#333;"/>
-                        <i class="fa fa-check fa-stack-1x fa-inverse forest" style="color:#28a745;"/>
-                    </span>
-                    <span v-else class="fa-stack">
-                        <i class="fa fa-circle fa-stack-2x" style="color:#333;"/>
-                        <i class="fa fa-times fa-stack-1x fa-inverse flame" style="color:tomato;"/>
-                    </span>
-               </div>
-          </template>
-          <template v-slot:cell(bo_critical_budget)="data">
-               <div class="table-status-action">
-                    <span v-if="data.item.bo_critical_budget" class="fa-stack">
-                            <i class="fa fa-circle fa-stack-2x" style="color:#222;"/>
-                            <i class="fa fa-free-code-camp fa-stack-1x fa-inverse flame"/>
-                    </span>
-                    <span v-else class="fa-stack">
-                        <i class="fa fa-circle fa-stack-2x" style="color:#222;"/>
-                            <i class="fa fa-snowflake-o fa-stack-1x fa-inverse snoll"/>                        
-                    </span>
-               </div>
-          </template>          
+      
         </b-table>
         <div class="paginator-box">
             <b-pagination @click="loadbudgets" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
@@ -250,7 +231,7 @@ export default {
 			arr.splice(7, 0, '.')
 			arr.splice(11, 0, '-')
 			return arr.join('')
-        }
+        },
     },
     data() {
         return {
@@ -274,22 +255,23 @@ export default {
             client: {},
             services: [],
             service: {},
+            users: [],
             idClient: null,
             idService: null,
             budget: {},
-            switch: {value: true, disabled: false },
+            showItens: false,
             fieldsEn: [
-                { key: "vc_budget_mnemonic", label: "Mnemonic", sortable: true },
-                { key: "tx_budget_description", label: "Description", sortable: true },
-                { key: "bo_active", label: "Active", sortable: true },
-                { key: "bo_critical_budget", label: "Critical", sortable: true },
+                { key: "id_budget", label: "Id", sortable: true },
+                { key: "id_user", label: "User", sortable: true, formatter: (value) =>  { return this.getUser(value) } },
+                { key: "id_client", label: "Client", sortable: true, formatter: (value) =>  { return this.getClient(value) }},
+                { key: "ts_update", label: "Create Dt.", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } },
                 { key: "actions", label: "Actions" }
             ],
             fieldsPt: [
                 { key: "id_budget", label: "Cód.", sortable: true },
-                { key: "id_user", label: "Usuário", sortable: true },
-                { key: "id_client", label: "Cliente", sortable: true },
-                { key: "ts_update", label: "Dt. Criação", sortable: true},
+                { key: "id_user", label: "Usuário", sortable: true , formatter: (value) =>  { return this.getUser(value) } },
+                { key: "id_client", label: "Cliente", sortable: true, formatter: (value) =>  { return this.getClient(value) } },
+                { key: "ts_update", label: "Dt. Criação", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } },
                 { key: "actions", label: "Ações" }
             ],
             moneyEn: {decimal: ".",thousands: ",",prefix: "$ ",precision: 2,masked: false},
@@ -298,28 +280,57 @@ export default {
             startLoad: false,
             strQuery: '',
             searchToggle: false,
-            searchmne: '',
+            searchbudget: '',
             total: 0,
-            qtd: 1
+            qtd: 1,
         }
     },
     methods: {
+        cpfFormat(valor) {
+            if(!valor) return
+			const arr = valor.split('')
+			arr.splice(3, 0, '.')
+			arr.splice(7, 0, '.')
+			arr.splice(11, 0, '-')
+			return arr.join('').toString()
+        },
+        getUser(val){
+            let user;
+            for (var i in this.users) {
+                    if (val == this.users[i].id_user) {
+                        user = this.users[i].vc_name;
+                        return user;
+                }
+            }
+            return user;
+        },
+        getClient(val){
+            let client;
+            for (var i in this.clients) {
+                    if (val == this.clients[i].id_client) {
+                        client = this.cpfFormat(this.clients[i].vc_social_security_code)
+                        return client;
+                }
+            }
+            return client;
+        },
         loadbudgets(){
             this.toggleBusy();
             const url = `${baseApiUrl}/api/budgets?page=${this.page}&limit=${this.limit}${this.strQuery}`;
             axios.get(url, { headers: { authorization: this.usrToken } })
             .then(res => {
-                this.budgets = res.data;
-                this.count = res.data.count;
                 this.getClientsList();
                 this.getServicesList();
+                this.getUsersList()
+                this.budgets = res.data.rows;
+                this.count = res.data.count;
                 this.toggleBusy();
                 
             })
             .catch(() => {
                 this.toggleBusy();
                 return showError;
-                });
+            });
             
         },
         getClientsList(){
@@ -337,22 +348,22 @@ export default {
                 this.services = res.data
             })
         },
-        formatValue(strValue){
-            const onlyNumber= /\D/g;
-            var value = `${strValue}`.replace(onlyNumber,'');
-                value = `${value.substr(0, value.length - 2 )}.${value.substr(value.length - 2, 2)}`;
-            return Number(value);
-        }
-        ,
-        searchbudget() {
-            if (!this.searchmne) return
-                this.strQuery = `&mne=${this.searchmne}`;
+        getUsersList() {
+            const url = `${baseApiUrl}/api/lstbUsers`;
+            axios.get(url, { headers: { authorization: this.usrToken } })
+            .then(res => {
+                this.users = res.data
+            })
+        },
+        search() {
+            if (!this.searchbudget) return
+                this.strQuery = `&budget=${this.searchbudget}`;
                 this.searchToggle = !this.searchToggle;
                 if (this.searchToggle) {
                     this.loadbudgets()
                 } else {
                     this.strQuery = ''
-                    this.searchmne = ''
+                    this.searchbudget = ''
                     this.loadbudgets()
                 }
         },
@@ -362,8 +373,8 @@ export default {
                 size: 'sm',
                 buttonSize: 'ld',
                 okVariant: 'warning',
-                okTitle: this.labelpage[14],
-                cancelTitle: this.labelpage[15],
+                okTitle: this.labelpage[15],
+                cancelTitle: this.labelpage[16],
                 hideHeaderClose: false,
                 centered: false
                 })
@@ -376,7 +387,10 @@ export default {
             this.tbIsBusy = !this.tbIsBusy
         },
         savebudget() {
+            //todo ajustar msg erro
             if (!this.budget.id_user) this.budget.id_user = this.currUser
+            if (!this.idClient) return showError('Informe o código do cliente!');
+            if (!this.budget.js_budget_service) return showError('Adicione um serviço!');
             const method = this.budget.id_budget ? 'put' : 'post'
             const pathCall = this.budget.id_budget ? `/api/budget/id/${this.budget.id_budget}` : `/api/budget`
             const query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
@@ -398,12 +412,22 @@ export default {
         loadbudget(budget, mode = 'save') {
             this.mode = mode
             this.budget = { ...budget }
+            this.idClient = this.budget.id_client
+            this.modifyClient(this.idClient)
             this.calcBudget()
+            this.seq = this.budget.js_budget_service.length
+            this.showItens = true
+
         },
         cancelbudget() {
             this.mode = 'save'
             this.budget = {}
+            this.client = {}
+            this.idClient = null
+            this.idService = null
+            this.seq = 0
             this.total = 0
+            this.showItens = false
             this.loadbudgets()
         },
         removebudget(){
@@ -446,7 +470,7 @@ export default {
           if ( !this.qtd || !this.idService || !this.idClient) return
           let objAdd = this.budget.js_budget_service || []
           const serviceAdd = { 
-              id: this.seq,
+              id: this.idService,
               mne: this.service.vc_service_mnemonic,
               dsc: this.service.tx_service_description,
               qtd: this.qtd,
@@ -459,14 +483,51 @@ export default {
           this.qtd = 1
           this.idService = null
           this.calcBudget()
+          this.showItens = true
       },
-      calcBudget(){
+      calcBudget() {
         let soma = 0
         for (var i in this.budget.js_budget_service) {
-            soma = soma + this.budget.js_budget_service[i].val
+            soma = soma + this.budget.js_budget_service[i].val;
             }
         this.total = soma
-        }
+        },
+      popItem(val) {
+          this.budget.js_budget_service.splice(val,1);
+          this.seq--
+      },
+      editServiceItens(val, idS, qtdS) {
+          this.modifyService(idS)
+          this.idService = idS;
+          this.qtd = qtdS;
+          this.popItem(val);
+      },
+        fMoney(valor) {
+            const lang = this.lang
+            const decimal = lang === 'pt-BR' ? ',' : '.';
+            const thousand = lang === 'pt-BR' ? '.' : ',';
+            const places = 2;
+            const symbol = lang === 'pt-BR' ? 'R$ ' : '$ ';
+            let number = valor
+            var negative = number < 0 ? "-" : "";
+            var i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "";
+            var j = (j = i.length) > 3 ? j % 3 : 0;
+            valor = (symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "")).toString();
+            return valor
+             
+        },
+        fDateTime(dt){
+            const lang = this.lang
+            const date_ob = new Date(dt)
+            const day = ("0" + date_ob.getDate()).slice(-2);
+            const month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+            const year = date_ob.getFullYear();
+            const hours = ("0" + date_ob.getHours()).slice(-2);
+            const minutes = ("0" + date_ob.getMinutes()).slice(-2);
+            const seconds = ("0" + date_ob.getSeconds()).slice(-2);
+            const dateTime = lang === 'pt-BR' ? day + '/' + month + '/' + year + ' ' + hours + ':'+ minutes + ':' + seconds : month + '/' + day + '/' + year + ' ' + hours + ':'+ minutes + ':' + seconds
+            return dateTime
+     }
     },
     mounted(){
         this.$store.state.isMenuVisible = false
@@ -536,9 +597,14 @@ export default {
         border-color: #523883
     }
     .budget-cost {
-        background-color: #20c997;
+        background-color: #1bb184;
         border: solid 1px;
-        border-color: #1f8f6d;
+        border-color: #22a17b;
+    }
+    .budget-cost:hover {
+        background-color: #199b74;
+        border: solid 1px;
+        border-color: #22a17b;
     }
 
     .total {
@@ -635,7 +701,8 @@ export default {
         border-image-slice: 1;
         border-left: 0px;
         border-right: 0px;
-        box-shadow: 20px 8px 20px 0px rgba(86, 103, 161, 0.1), 20px 14px 20px 0px rgba(73, 92, 153, 0.2) ;           
+        box-shadow: 20px 8px 20px 0px rgba(86, 103, 161, 0.1), 20px 14px 20px 0px rgba(73, 92, 153, 0.2) ;
+        width: 100%;        
     }
 
 </style>

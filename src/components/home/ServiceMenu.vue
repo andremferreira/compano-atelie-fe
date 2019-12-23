@@ -45,9 +45,9 @@ export default {
         border-radius: 8px;
         margin-left: 16px;
         margin-bottom: 16px;
-        background: #f7f6f3;  
-        background: -webkit-linear-gradient(to bottom, #fdfdfd, #e6e2d8);
-        background: linear-gradient(to bottom, #fdfdfd, #e6e2d8);
+        background: #fafaf9;  
+        background: -webkit-linear-gradient(to bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.5));
+        background: linear-gradient(to bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.5));
         width: 90%;
         min-width: 228px;
         height: 160px;
@@ -55,6 +55,7 @@ export default {
         box-shadow: 0px 1px 1px rgba(0,0,0,0.5),
             0 0 1em rgba(0,0,0,0.22),
             inset 0 0 1em rgba(0,0,0,0.22);
+        transition: all 1000ms ease-in-out;
     }
 
     .service .fa .fa-address-book-op {
@@ -86,9 +87,9 @@ export default {
         border-radius: 8px;
         margin-left: 16px;
         margin-bottom: 16px;
-        background: #d8da9c;  
-        background: -webkit-linear-gradient(to bottom, #eefcff, #faeadc);
-        background: linear-gradient(to bottom, #eefcff, #faeadc);
+        background: #fafaf9;  
+        background: -webkit-linear-gradient(to bottom, rgba(255,255,255, 0.9), rgba(255,255,255, 0.5));
+        background: linear-gradient(to bottom, rgba(255,255,255, 1), rgba(255,255,255, 0.));
         width: 90%;
         min-width: 228px;
         height: 160px;
@@ -96,6 +97,8 @@ export default {
         box-shadow: 0px 1px 1px rgba(0,0,0,0.7),
             0 0 1em rgba(0,0,0,0.22),
             inset 0 0 1em rgba(0,0,0,0.22);
+        opacity: 0.9;
+        transition: all 1000ms ease-in-out;
     }
     .service:hover i{
         text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
@@ -103,6 +106,8 @@ export default {
     .service:hover .service-title {
         font-weight: 300;
         font-size: 1.1rem;
+        transition-property: font-size;
+        transition-duration: 1s;
     }
     .service-icon i {
         font-size: 4rem;

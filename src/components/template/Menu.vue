@@ -108,6 +108,7 @@ export default {
     width: 200px;
     text-shadow: 0px 1px 2px rgba(0,0,0,0.4);
     font-size: 1.1rem !important;
+    transition: all 300ms ease-in-out;
 }
 
 .item-menu:hover {
@@ -117,6 +118,7 @@ export default {
     box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.2);
     font-weight: 500;
     font-size: 1.1rem !important;
+    transition: all 300ms ease-in-out;
 }
 
 .nav a:hover{

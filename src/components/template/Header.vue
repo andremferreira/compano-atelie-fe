@@ -1,6 +1,5 @@
 <template>
   <header class="header">
-      <!-- :style="!this.$store.state.user ? `style='${header_img}'` : `style='background-color:blue;'`" -->
       <a @click="toggleMenu" class="toggle" v-if="!hideToggle">
           <i class="fa fa-bars" :class="icon"></i>
       </a>
