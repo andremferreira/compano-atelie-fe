@@ -65,6 +65,9 @@ export default {
 
 			if (res.data){
 				this.$store.commit('setUser', userData)
+				if(this.$mq === 'xs' || this.$mq === 'sm') {
+					this.$store.commit('toggleMenu', false)
+				}
 			} else {
 				localStorage.removeItem(userKey)
 				this.$router.push({ name: 'auth'})
@@ -183,7 +186,7 @@ export default {
 			"menu content"
 			"footer footer";
 		width: 100%;
-		max-width: 1300px;
+		max-width: 1900px;
 	}
 
 	#app.hide-menu {

@@ -11,7 +11,7 @@
           <b-tab :title="labelpage[0]" active>
             <MyProfile />
           </b-tab>
-          <b-tab v-if="currProfile < 3 " :title="labelpage[1]">
+          <b-tab v-if="currProfile < 4 " :title="labelpage[1]">
             <ManagerUsers />
           </b-tab>
         </b-tabs>
@@ -48,8 +48,12 @@ export default {
       obj: []
     };
   },
+  created(){
+    if(this.$mq === 'xs' || this.$mq === 'sm'){
+      this.$store.commit('toggleMenu', false)
+    }
+  },
   mounted() {
-    this.$store.state.isMenuVisible = false
     this.lang = this.$store.state.dLang;
     this.obj = defLang.langFind( this.lang, this.pagename, this.codename)
     this.titlepage = this.obj.title;

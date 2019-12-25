@@ -110,7 +110,9 @@ export default {
         }
     },
     created(){
-      this.$store.state.isMenuVisible = false
+      if(this.$mq === 'xs' || this.$mq === 'sm'){
+        this.$store.commit('toggleMenu', false)
+      }
     },
     mounted() {
       this.lang = this.$store.state.dLang;

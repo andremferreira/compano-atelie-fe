@@ -49,11 +49,16 @@ export default {
         };
     },
   methods: {
-      modifyLang(lang, name, cod ) {
-          defLang.langFind( lang, name, cod)
-          localStorage.lang = lang
-          this.$store.state.dLang = lang
+        modifyLang(lang, name, cod ) {
+            defLang.langFind( lang, name, cod)
+            localStorage.lang = lang
+            this.$store.state.dLang = lang
     },
+        verifyXs() {
+            if(this.$mq === 'xs' || this.$mq === 'sm'){
+                this.$store.commit('toggleMenu', false)
+            }
+        }
   },
   mounted() {
         this.lang = localStorage.lang || this.$store.state.dLang || 'pt-BR';
@@ -65,6 +70,7 @@ export default {
         this.descriptionpage = this.obj.description;
         this.pathRoute = this.obj.path;
         this.labelpage = this.obj.label;
+        this.verifyXs();
   },
   watch: {
       changeLang() {

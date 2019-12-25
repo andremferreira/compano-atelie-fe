@@ -428,8 +428,12 @@ export default {
           .catch(showError)
       },
     },
+    created(){
+        if(this.$mq === 'xs' || this.$mq === 'sm'){
+        this.$store.commit('toggleMenu', false)
+        }
+    },    
     mounted(){
-        this.$store.state.isMenuVisible = false
         this.lang = this.$store.state.dLang;
         this.obj = defLang.langFind(this.lang, this.pagename, this.codename);
         this.titlepage = this.obj.title;

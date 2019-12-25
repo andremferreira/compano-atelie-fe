@@ -18,7 +18,7 @@
                 <b-form-group id="form-service-g-client" :label="labelpage[1]" label-for="input-budget-client">
                      <b-form-input list="op-list-client" requered v-model="idClient" @blur="modifyClient(idClient)"></b-form-input> 
                         <datalist id="op-list-client">
-                            <option v-for="(client, i ) in clients" :key="i" :value="i"
+                            <option v-for="(client, i ) in clients" :key="i" :value="clients[i].id_client"
                             >{{ `${clients[i].vc_name} ${clients[i].vc_lastname}`}}
                             </option>
                         </datalist>
@@ -94,8 +94,8 @@
                                         <td style="width:7.5%;"><span class="pl-2">{{ js.qtd }}</span></td>
                                         <td style="width:15%;"><span class="pl-2">{{ fMoney(js.val) }}</span></td>
                                         <td style="width:15%;">
-                                            <b-button variant="warning" size="sm" class="mt-1 mb-1 ml-1" @click="editServiceItens(i, js.id, js.qtd)"><i class="fa fa-pencil"></i></b-button>
-                                            <b-button variant="danger" size="sm" class="mt-1 mb-1 ml-1" @click="popItem(i)"><i class="fa fa-trash"></i></b-button>
+                                            <b-button variant="warning" :disabled="editItem" size="sm" class="mt-1 mb-1 ml-1" @click="editServiceItens(i, js.id, js.qtd)"><i class="fa fa-pencil"></i></b-button>
+                                            <b-button variant="danger" :disabled="editItem" size="sm" class="mt-1 mb-1 ml-1" @click="popItem(i)"><i class="fa fa-trash"></i></b-button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -264,14 +264,14 @@ export default {
                 { key: "id_budget", label: "Id", sortable: true },
                 { key: "id_user", label: "User", sortable: true, formatter: (value) =>  { return this.getUser(value) } },
                 { key: "id_client", label: "Client", sortable: true, formatter: (value) =>  { return this.getClient(value) }},
-                { key: "ts_update", label: "Create Dt.", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } },
+                { key: "ts_update", label: "Register.", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } },
                 { key: "actions", label: "Actions" }
             ],
             fieldsPt: [
                 { key: "id_budget", label: "Cód.", sortable: true },
                 { key: "id_user", label: "Usuário", sortable: true , formatter: (value) =>  { return this.getUser(value) } },
                 { key: "id_client", label: "Cliente", sortable: true, formatter: (value) =>  { return this.getClient(value) } },
-                { key: "ts_update", label: "Dt. Criação", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } },
+                { key: "ts_update", label: "Registro", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } },
                 { key: "actions", label: "Ações" }
             ],
             moneyEn: {decimal: ".",thousands: ",",prefix: "$ ",precision: 2,masked: false},
@@ -283,6 +283,7 @@ export default {
             searchbudget: '',
             total: 0,
             qtd: 1,
+            editItem: false
         }
     },
     methods: {
@@ -310,6 +311,15 @@ export default {
                     if (val == this.clients[i].id_client) {
                         client = this.cpfFormat(this.clients[i].vc_social_security_code)
                         return client;
+                }
+            }
+            return client;
+        },
+        setClient(val){
+            let client;
+            for (var i in this.clients) {
+                    if (val == this.clients[i].id_client) {
+                        return this.clients[i]
                 }
             }
             return client;
@@ -391,6 +401,7 @@ export default {
             if (!this.budget.id_user) this.budget.id_user = this.currUser
             if (!this.idClient) return showError('Informe o código do cliente!');
             if (!this.budget.js_budget_service) return showError('Adicione um serviço!');
+            if (this.budget.js_budget_service.length == 0) return showError('Informe ao mesmo um item para realizar o registro do orçamento!')
             const method = this.budget.id_budget ? 'put' : 'post'
             const pathCall = this.budget.id_budget ? `/api/budget/id/${this.budget.id_budget}` : `/api/budget`
             const query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
@@ -412,7 +423,7 @@ export default {
         loadbudget(budget, mode = 'save') {
             this.mode = mode
             this.budget = { ...budget }
-            this.idClient = this.budget.id_client
+            this.idClient = this.budget.id_client 
             this.modifyClient(this.idClient)
             this.calcBudget()
             this.seq = this.budget.js_budget_service.length
@@ -449,12 +460,12 @@ export default {
           .catch(showError)
       },
       modifyClient(value){
-          if (!value || !this.clients[value]) {
+          if (!value) {
               this.client = {}
               this.idClient = null
               return
           }
-          this.client = this.clients[value]
+          this.client = this.setClient(value)
           this.client.fullname = this.client.vc_name  + ' ' + this.client.vc_lastname
           this.budget.id_client = this.client.id_client
       },
@@ -484,6 +495,7 @@ export default {
           this.idService = null
           this.calcBudget()
           this.showItens = true
+          this.editItem = false
       },
       calcBudget() {
         let soma = 0
@@ -501,6 +513,7 @@ export default {
           this.idService = idS;
           this.qtd = qtdS;
           this.popItem(val);
+          this.editItem = true;
       },
         fMoney(valor) {
             const lang = this.lang
@@ -529,8 +542,12 @@ export default {
             return dateTime
      }
     },
+    created(){
+      if(this.$mq === 'xs' || this.$mq === 'sm'){
+        this.$store.commit('toggleMenu', false)
+      }
+    },
     mounted(){
-        this.$store.state.isMenuVisible = false
         this.lang = this.$store.state.dLang;
         this.obj = defLang.langFind(this.lang, this.pagename, this.codename);
         this.titlepage = this.obj.title;
@@ -541,8 +558,6 @@ export default {
         this.iconpage = this.obj.icon;
         this.errorslist =  this.obj.errorsList;
         this.loadbudgets();
-        
-        
     },
     watch: {
         changeLang() {

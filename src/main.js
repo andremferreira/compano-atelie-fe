@@ -6,13 +6,11 @@ import App from './App'
 import './config/bootstrap'
 import './config/msg'
 import './config/vmask'
+import './config/mq'
+
 import store from './config/store'
 import router from './config/router'
 Vue.config.productionTip = false
-
-Vue.filter('inverter', function(valor) {
-	return valor.split('').reverse().join('')
-})
 
 Vue.directive('uppercase',
   {

@@ -37,8 +37,8 @@
               <b-form-group :label="`${labelpage[11]}:`" label-for="user-profile">
                 <b-form-select id="user-profile" v-model="user.in_profile" :disabled="mode === 'remove'">
                   <option :value="null" disabled>{{labelpage[13]}}</option>
-                  <option value="1">{{labelpage[3]}}</option>
-                  <option value="2">{{labelpage[4]}}</option>
+                  <option value="1" v-show="this.$store.state.user.profile <= 1">{{labelpage[3]}}</option>
+                  <option value="2" v-show="this.$store.state.user.profile <= 2">{{labelpage[4]}}</option>
                   <option value="3">{{labelpage[5]}}</option>
                   <option value="4">{{labelpage[6]}}</option>
                 </b-form-select>
