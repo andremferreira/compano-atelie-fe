@@ -381,6 +381,34 @@
                     "placeholder": ["Enter Mnemonic.", "Enter service description.", "Enter estimate time.", "Material cost ($ 0.00)", "Third party cost ($ 0.00)", "Service ($ 0.00)"]
                 }
             ]
+        },
+        {
+            "page": "PainelSo",
+            "cod": "BUDGET02",
+            "icon": [],
+            "subicon": [],
+            "subiconcolor":[],
+            "path": ["/servOrders"],
+            "subpath": [],
+            "alert": [],
+            "variation": [
+                {
+                    "type": "pt-BR",
+                    "title": ["Gerar ordem de serviço."],
+                    "subtitle": ["Selecione o responsável por executar o serviço:"],
+                    "description": [],
+                    "label": ["Responsável","Cancelar", "Gerar OS", "Selecione"],
+                    "placeholder": []
+                },
+                {
+                    "type": "en-US",
+                    "title": ["Service order register."],
+                    "subtitle": ["Define the service owner."],
+                    "description": [],
+                    "label": ["Owner", "Cancel", "Create SO", "Select"],
+                    "placeholder": []
+                }
+            ]
         }
     ]
 }

@@ -59,8 +59,8 @@
               <b-row>
                   <div class="lnk-form-toggle">
                     <a href @click.prevent="showSingUp = !showSingUp" >
-                        <span v-if="showSingUp">Já possuí cadastro? Acesse o Login!</span>
-                        <span v-else >Não possuí cadastro? Registre-se Aqui!</span>
+                        <span v-if="showSingUp">Já possui cadastro? Acesse o Login!</span>
+                        <span v-else >Não possui cadastro? Registre-se Aqui!</span>
                     </a>
                   </div>
               </b-row>
@@ -101,7 +101,7 @@ export default {
                 .catch(showError)
         },
         singExec(){
-            if (!this.showSingUp) return this.singin();
+            if (this.showSingUp) return this.singup();
             else return this.singin();
         }
     }

@@ -48,7 +48,30 @@ const routes = [
 }
 ]
 
+const scrollBehavior = (to, from, savedPosition) => {
+    if (savedPosition) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve( savedPosition )
+            }, 500)
+          })
+      } else if (to.hash) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve( { selector: to.hash } )
+            }, 500)
+          })
+      } else {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve( { x: 0, y: 0 } )
+            }, 500)
+          })
+      }
+    }
+
 export default new VueRouter({
    mode: 'history',
-   routes 
+   scrollBehavior,
+   routes
 })

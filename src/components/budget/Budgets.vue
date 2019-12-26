@@ -1,11 +1,11 @@
 <template>
     <div class="budgets-pages">
     <PageTitle :icon="iconpage[0]" :main="titlepage[0]" :sub="subtitlepage[0]" />
-    <b-card>
+    <b-card id="initial-title-budget">
       <template v-slot:header>
         <h4 class="mb-0">{{ titlepage[1] }}</h4>
       </template>
-      <b-card-title>
+      <b-card-title >
         <h5>{{ subtitlepage[1] }}</h5>
       </b-card-title>
       <b-card-text>{{ descriptionpage[0] }}</b-card-text>
@@ -164,7 +164,7 @@
           striped
           responsive="true"
           :items="budgets"
-          :fields="fieldsPt"
+          :fields="lang=='pt-BR' || !lang ? fieldsPt : fieldsEn"
           small="small"
           class="mt-3"
           :busy="tbIsBusy"
@@ -176,7 +176,7 @@
             </div>
           </template>
           <template v-slot:cell(actions)="data">
-              <b-button size="sm" class="mr-2 mt-1 budget-cost">
+              <b-button size="sm" @click="showOwnerModal(data.item)" class="mr-2 mt-1 budget-cost">
                 <i class="fa fa-plus"></i>
               </b-button>
               <b-button size="sm" variant="warning" @click="loadbudget(data.item, 'save')" class="mr-2 mt-1">
@@ -199,6 +199,7 @@
       </b-card-body>
       <template v-slot:footer>
         <em>
+            <PainelSo :users="users" :budget="budget"/>
         </em>
       </template>
     </b-card>
@@ -206,12 +207,13 @@
 </template>
 <script>
 import PageTitle from '@/components/template/PageTitle'
+import PainelSo from './PainelSo'
 import { baseApiUrl, showError, showSuccess } from "@/global";
 import defLang from "@/config/factory/defLang";
 import axios from "axios";
 export default {
     name: 'budgets',
-    components: { PageTitle },
+    components: { PageTitle, PainelSo },
     computed:{
       currUser() {
             return this.$store.state.user.id;
@@ -262,17 +264,17 @@ export default {
             showItens: false,
             fieldsEn: [
                 { key: "id_budget", label: "Id", sortable: true },
+                { key: "actions", label: "Actions" },
                 { key: "id_user", label: "User", sortable: true, formatter: (value) =>  { return this.getUser(value) } },
                 { key: "id_client", label: "Client", sortable: true, formatter: (value) =>  { return this.getClient(value) }},
-                { key: "ts_update", label: "Register.", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } },
-                { key: "actions", label: "Actions" }
+                { key: "ts_update", label: "Register", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } }
             ],
             fieldsPt: [
                 { key: "id_budget", label: "Cód.", sortable: true },
+                { key: "actions", label: "Ações" },
                 { key: "id_user", label: "Usuário", sortable: true , formatter: (value) =>  { return this.getUser(value) } },
                 { key: "id_client", label: "Cliente", sortable: true, formatter: (value) =>  { return this.getClient(value) } },
-                { key: "ts_update", label: "Registro", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } },
-                { key: "actions", label: "Ações" }
+                { key: "ts_update", label: "Registro", sortable: true, formatter: (value) =>  { return this.fDateTime(value) } }
             ],
             moneyEn: {decimal: ".",thousands: ",",prefix: "$ ",precision: 2,masked: false},
             moneyPt: {decimal: ",",thousands: ".",prefix: "R$ ",precision: 2,masked: false},     
@@ -397,7 +399,6 @@ export default {
             this.tbIsBusy = !this.tbIsBusy
         },
         savebudget() {
-            //todo ajustar msg erro
             if (!this.budget.id_user) this.budget.id_user = this.currUser
             if (!this.idClient) return showError(this.descriptionpage[2]);
             if (!this.budget.js_budget_service || this.budget.js_budget_service.length == 0) return showError(this.descriptionpage[3]);
@@ -427,17 +428,21 @@ export default {
             this.calcBudget()
             this.seq = this.budget.js_budget_service.length
             this.showItens = true
+            this.goToForm()
 
         },
         cancelbudget() {
             this.mode = 'save'
             this.budget = {}
             this.client = {}
+            this.service = {}
             this.idClient = null
             this.idService = null
             this.seq = 0
             this.total = 0
             this.showItens = false
+            this.editItem = false
+            this.qtd = 1
             this.loadbudgets()
         },
         removebudget(){
@@ -502,7 +507,7 @@ export default {
             soma = soma + this.budget.js_budget_service[i].val;
             }
         this.total = soma
-        },
+      },
       popItem(val) {
           this.budget.js_budget_service.splice(val,1);
           this.seq--
@@ -539,7 +544,14 @@ export default {
             const seconds = ("0" + date_ob.getSeconds()).slice(-2);
             const dateTime = lang === 'pt-BR' ? day + '/' + month + '/' + year + ' ' + hours + ':'+ minutes + ':' + seconds : month + '/' + day + '/' + year + ' ' + hours + ':'+ minutes + ':' + seconds
             return dateTime
-     }
+     },
+     showOwnerModal(item){
+         this.budget = item
+         this.$bvModal.show('modal-service-owner')
+     },
+     goToForm(){
+        document.getElementById('initial-title-budget').scrollIntoView({ behavior: 'smooth' })
+      }
     },
     created(){
       if(this.$mq === 'xs' || this.$mq === 'sm'){

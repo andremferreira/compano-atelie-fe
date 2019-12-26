@@ -162,10 +162,10 @@ export default {
         user: { in_profile: null },
         users: [],
         fields: [
+            { key: 'actions', label: 'Actions'},
             { key: 'fullname', label: 'Name', sortable: true },
             { key: 'vc_email', label: 'E-mail', sortable: true },
             { key: 'in_profile', label: 'Profile', sortable: true, formatter: (value) =>  { return this.perfilUser(value) } },
-            { key: 'actions', label: 'Actions'}
           ],
       }
     },

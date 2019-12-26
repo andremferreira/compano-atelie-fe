@@ -1,7 +1,7 @@
 <template>
   <div class="client">
     <PageTitle :icon="iconpage[0]" :main="titlepage[0]" :sub="subtitlepage[0]" />
-    <b-card>
+    <b-card id="initial-title-client">
       <template v-slot:header>
         <h4 class="mb-0">{{ titlepage[1] }}</h4>
       </template>
@@ -454,10 +454,10 @@
             </div>
           </template>
           <template v-slot:cell(actions)="data">
-            <b-button variant="warning" @click="loadClient(data.item)" class="mr-2 mt-1">
+            <b-button variant="warning" size="sm" @click="loadClient(data.item)" class="mr-2 mt-1">
               <i class="fa fa-pencil"></i>
             </b-button>
-            <b-button variant="danger" @click="loadClient(data.item, 'remove')" class="mr-2 mt-1">
+            <b-button variant="danger" size="sm" @click="loadClient(data.item, 'remove')" class="mr-2 mt-1">
               <i class="fa fa-trash"></i>
             </b-button>
           </template>
@@ -788,6 +788,7 @@ export default {
         vc_social_security_code: ssc
       }
       this.showZipCode()
+      this.goToForm()
     },
     cancelClient(){
       this.mode = 'save'
@@ -857,6 +858,9 @@ export default {
       toggleBusy() {
         this.startLoad = !this.startLoad
         this.tbIsBusy = !this.tbIsBusy
+      },
+      goToForm(){
+        document.getElementById('initial-title-client').scrollIntoView({ behavior: 'smooth' })
       }
   },
     created(){

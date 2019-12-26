@@ -1,7 +1,7 @@
 <template>
     <div class="services-pages">
     <PageTitle :icon="iconpage[0]" :main="titlepage[0]" :sub="subtitlepage[0]" />
-    <b-card>
+    <b-card id="initial-title-service">
       <template v-slot:header>
         <h4 class="mb-0">{{ titlepage[1] }}</h4>
       </template>
@@ -294,18 +294,18 @@ export default {
             service: {},
             switch: {value: true, disabled: false },
             fieldsEn: [
+                { key: "actions", label: "Actions" },
                 { key: "vc_service_mnemonic", label: "Mnemonic", sortable: true },
                 { key: "tx_service_description", label: "Description", sortable: true },
                 { key: "bo_active", label: "Active", sortable: true },
                 { key: "bo_critical_service", label: "Critical", sortable: true },
-                { key: "actions", label: "Actions" }
             ],
             fieldsPt: [
+                { key: "actions", label: "Ações" },
                 { key: "vc_service_mnemonic", label: "Mnemônio", sortable: true },
                 { key: "tx_service_description", label: "Descrição", sortable: true },
                 { key: "bo_active", label: "Situação", sortable: true },
                 { key: "bo_critical_service", label: "Criticidade", sortable: true},
-                { key: "actions", label: "Ações" }
             ],
             moneyEn: {decimal: ".",thousands: ",",prefix: "$ ",precision: 2,masked: false},
             moneyPt: {decimal: ",",thousands: ".",prefix: "R$ ",precision: 2,masked: false},     
@@ -427,6 +427,9 @@ export default {
           })
           .catch(showError)
       },
+      goToForm(){
+        document.getElementById('initial-title-service').scrollIntoView({ behavior: 'smooth' })
+      }
     },
     created(){
         if(this.$mq === 'xs' || this.$mq === 'sm'){
