@@ -368,7 +368,7 @@
                     "type": "pt-BR",
                     "title": ["Gestão de Orçamentos","Cadastro de Orçamentos"],
                     "subtitle": ["Cadastro & Cia.", "Recomendações & Boas Práticas", "Confirmação de Remoção de Orçamento."],
-                    "description": ["Verifique todas as informações do orçamento, antes de registrar (quantidade e valor de cada item).", "Realmente deseja remover o Orçamento?"],
+                    "description": ["Verifique todas as informações do orçamento, antes de registrar (quantidade e valor de cada item).", "Realmente deseja remover o Orçamento?", "Informe o código do cliente!", "Informe o código do serviço!"],
                     "label": ["Cod","Cód. Cliente", "Cód. Orçamento", "Nome do cliente", "CPF", "Cód. Serviço", "Quantidade", "Descrição do serviço", "Serviço", "Descrição", "Qtd.", "Ação", "Usuário","Salvar", "Cancelar","Sim","Não", "Procurar...", "Remover", "Valor total do serviço:"],
                     "placeholder": ["Informe o Mnemônio.", "Descreva detalhadamente o serviço.", "Informe estimativa de tempo.", "Custo de materiais (R$ 0,00)", "Custo de terceiros (R$ 0,00)", "Custo do serviço (R$ 0,00)"]
                 },
@@ -376,7 +376,7 @@
                     "type": "en-US",
                     "title": ["Budgets Management","Budget Register"],
                     "subtitle": ["Registration & Purposes", "Recommendations & Best Practices","Service Exclude Confirmation"],
-                    "description": ["Please, check all information about the budget before register.", "Are you sure to remove the Budget?"],
+                    "description": ["Please, check all information about the budget before register.", "Are you sure to remove the Budget?", "Enter client id!", "Enter service id!"],
                     "label": ["Id", "Client Id", "Budget Id", "Client name","S.Security Code", "Service Id", "Quantity", "Service description", "Service", "Description", "Un.", "Action", "User", "Save", "Cancel", "Yes", "No", "Search...", "Remove", "Total value of service:"],
                     "placeholder": ["Enter Mnemonic.", "Enter service description.", "Enter estimate time.", "Material cost ($ 0.00)", "Third party cost ($ 0.00)", "Service ($ 0.00)"]
                 }

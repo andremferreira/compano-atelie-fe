@@ -399,9 +399,8 @@ export default {
         savebudget() {
             //todo ajustar msg erro
             if (!this.budget.id_user) this.budget.id_user = this.currUser
-            if (!this.idClient) return showError('Informe o código do cliente!');
-            if (!this.budget.js_budget_service) return showError('Adicione um serviço!');
-            if (this.budget.js_budget_service.length == 0) return showError('Informe ao mesmo um item para realizar o registro do orçamento!')
+            if (!this.idClient) return showError(this.descriptionpage[2]);
+            if (!this.budget.js_budget_service || this.budget.js_budget_service.length == 0) return showError(this.descriptionpage[3]);
             const method = this.budget.id_budget ? 'put' : 'post'
             const pathCall = this.budget.id_budget ? `/api/budget/id/${this.budget.id_budget}` : `/api/budget`
             const query = `?lang=${this.$store.state.dLang}`.toString().replace('-','_') 
