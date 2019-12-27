@@ -410,5 +410,34 @@
                 }
             ]
         }
+        ,
+        {
+            "page": "ServOrders",
+            "cod": "SERORD01",
+            "icon": ["fa fa-handshake-o","fa fa-floppy-o", "fa fa-undo", "fa fa-times", "fa fa-search", "fa fa-print"],
+            "subicon": [],
+            "subiconcolor":[],
+            "path": ["/servOrders"],
+            "subpath": [],
+            "alert": [],
+            "variation": [
+                {
+                    "type": "pt-BR",
+                    "title": ["Ordem de Serviços","Gestâo de Ordem de Serviços"],
+                    "subtitle": ["Cadastro & Cia.", "Recomendações & Boas Práticas", "Confirmação de Remoção de Ordem de Serviço."],
+                    "description": ["Acompanhe o posicionamento da ordem de serviço.", "Realmente deseja remover a ordem de serviço?"],
+                    "label": ["OS","Cliente", "Solicitante", "Responsável", "Serviços", "Valor", "Estado","Recebido", "Pago", "Entregue","Salvar", "Cancelar","Sim","Não", "Procurar...", "Remover", "Nº da Ordem de Serviço", "Imprimir", "Cód. Orçamento", "Descrição", "Qtd.", "Valor", "Cancelado"],
+                    "placeholder": []
+                },
+                {
+                    "type": "en-US",
+                    "title": ["Service Orders","Management of Service Orders"],
+                    "subtitle": ["Registration & Purposes", "Recommendations & Best Practices","Service Order Exclude Confirmation"],
+                    "description": ["Track the position of the service order.", "Are you sure to remove the service order?"],
+                    "label": ["SO", "Client", "User", "Owner", "Services", "Value", "Status", "Received", "Paid", "Delivered", "Save", "Cancel", "Yes", "No", "Search...", "Remove", "Id Service Order", "Print", "Id Budget", "Description", "Un.", "Value", "Canceled"],
+                    "placeholder": []
+                }
+            ]
+        }        
     ]
 }

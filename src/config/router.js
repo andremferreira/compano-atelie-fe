@@ -2,11 +2,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Auth from '@/components/auth/Auth'
-import Home from '@/components/home/Home'
 import AdminPages from '@/components/admin/AdminPages'
-import Services from '@/components/service/Services'
+import Home from '@/components/home/Home'
 import Clients from '@/components/client/Clients'
 import Budgets from '@/components/budget/Budgets'
+import Services from '@/components/service/Services'
+import ServOrders from '@/components/servOrder/ServOrders'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,12 @@ const routes = [
     name: 'services',
     path: '/services',
     component: Services
+}
+, 
+{
+    name: 'servOrders',
+    path: '/servOrders',
+    component: ServOrders
 }
 , 
 {
