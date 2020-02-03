@@ -125,6 +125,7 @@ export default {
     font-weight: 500;
     font-size: 1.1rem !important;
     transition: all 300ms ease-in-out;
+    cursor: pointer;
 }
 
 .nav a:hover{

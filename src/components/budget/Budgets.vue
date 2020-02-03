@@ -99,10 +99,13 @@
                                         </td>
                                     </tr>
                                 </tbody>
+                                <tfoot>
+                                    <tr class="total-footer">
+                                        <td colspan="3" class="pl-1"><strong>Total</strong></td>
+                                        <td colspan="2" class="pr-2" style="text-align:left; padding-left:7px;"><strong>{{ fMoney(total) }}</strong></td>
+                                    </tr>
+                                </tfoot>
                             </table>
-                            <div class="total mt-2">
-                                 <h5 class="pr-3 pt-2">Total:</h5><span class="pr-3 pt-2"><strong>{{ fMoney(total) }}</strong></span>
-                            </div>
                         </div>
                     </b-col>
                 </b-row>
@@ -191,9 +194,9 @@
         <div class="paginator-box">
             <b-pagination @click="loadbudgets" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
             <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
-              <b-dropdown-item @click="limit=limit">{{limit}}</b-dropdown-item>
-              <b-dropdown-item @click="limit=limit*2">{{limit * 2}}</b-dropdown-item>
-              <b-dropdown-item @click="limit=limit*4">{{limit * 4}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=10">{{10}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=20">{{20}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=30">{{30}}</b-dropdown-item>
           </b-dropdown>
         </div>
       </b-card-body>
@@ -238,7 +241,7 @@ export default {
     data() {
         return {
             page: 1,
-            limit: 5,
+            limit: 10,
             count: 0,
             lang: null,
             seq: 1,

@@ -103,7 +103,9 @@
         <hr>
         <b-table 
           sticky-header="stickyHeader" :no-border-collapse="true"
-          hover outlined striped :items="users" :fields="this.fields" responsive small="small">
+          hover outlined striped :items="users" 
+          :fields="lang=='pt-BR' || !lang ? fieldsPt : fieldsEn"
+          responsive small="small">
           <template v-slot:cell(actions)="data">
               <b-button size="sm" variant="warning" @click="loadUser(data.item)" class="mr-2 mt-1">
                 <i class="fa fa-pencil"></i>
@@ -116,9 +118,9 @@
         <div class="paginator-box">
             <b-pagination @click="loadUsers" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
             <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
-              <b-dropdown-item @click="limit=5" >5</b-dropdown-item>
-              <b-dropdown-item @click="limit=10">10</b-dropdown-item>
+              <b-dropdown-item @click="limit=10" >10</b-dropdown-item>
               <b-dropdown-item @click="limit=20">20</b-dropdown-item>
+              <b-dropdown-item @click="limit=30">30</b-dropdown-item>
           </b-dropdown>
         </div>
       </b-card-body>
@@ -146,8 +148,9 @@ export default {
     data: function() {
       return {
         page: 1,
-        limit: 5,
+        limit: 10,
         count: 0,
+        lang: null,
         mode: 'save',
         confirm: '',
         pagename: "ManagerUsers",
@@ -161,11 +164,17 @@ export default {
         obj: [],
         user: { in_profile: null },
         users: [],
-        fields: [
+        fieldsEn: [
             { key: 'actions', label: 'Actions'},
             { key: 'fullname', label: 'Name', sortable: true },
             { key: 'vc_email', label: 'E-mail', sortable: true },
             { key: 'in_profile', label: 'Profile', sortable: true, formatter: (value) =>  { return this.perfilUser(value) } },
+          ],
+        fieldsPt: [
+            { key: 'actions', label: 'Ação'},
+            { key: 'fullname', label: 'Name', sortable: true },
+            { key: 'vc_email', label: 'E-mail', sortable: true },
+            { key: 'in_profile', label: 'Perfil', sortable: true, formatter: (value) =>  { return this.perfilUser(value) } },
           ],
       }
     },
@@ -279,6 +288,7 @@ export default {
     watch: {
     changeLang(val, old) {
       if (val != old) {
+        this.lang = this.$store.state.dLang;
         this.obj = defLang.langFind( this.$store.state.dLang, this.pagename, this.codename);
         this.titlepage = this.obj.title;
         this.subtitlepage = this.obj.subtitle;

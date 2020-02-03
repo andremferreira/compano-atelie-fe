@@ -465,9 +465,9 @@
           <div class="paginator-box">
             <b-pagination @click="loadClients" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
             <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
-              <b-dropdown-item @click="limit=limit">{{limit}}</b-dropdown-item>
-              <b-dropdown-item @click="limit=limit*2">{{limit * 2}}</b-dropdown-item>
-              <b-dropdown-item @click="limit=limit*4">{{limit * 4}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=10">{{10}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=20">{{20}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=30">{{30}}</b-dropdown-item>
           </b-dropdown>
         </div>
       </b-card-body>
@@ -531,7 +531,7 @@ export default {
   data() {
     return {
       page: 1,
-      limit: 5,
+      limit: 10,
       count: 0,
       lang: null,
       renderComponent: true,

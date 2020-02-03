@@ -261,9 +261,9 @@
         <div class="paginator-box">
             <b-pagination @click="loadServiceOrders" class="mt-3" v-model="page" :total-rows="count" size="sm" :per-page="limit" />
             <b-dropdown split :text="`${limit}`" variant="primary" class="ml-2" size="sm" >
-              <b-dropdown-item @click="limit=limit">{{limit}}</b-dropdown-item>
-              <b-dropdown-item @click="limit=limit+10">{{limit+10}}</b-dropdown-item>
-              <b-dropdown-item @click="limit=limit+40">{{limit+40}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=10">{{10}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=20">{{20}}</b-dropdown-item>
+              <b-dropdown-item @click="limit=30">{{30}}</b-dropdown-item>
           </b-dropdown>
         </div>
       </b-card-body>
@@ -353,7 +353,8 @@ export default {
                 // this.serviceOrders = res.data.rows;
                 this.getClientsList();
                 this.getUsersList();
-                this.serviceOrders = res.data;
+                this.serviceOrders = res.data.rows;
+                this.count = res.data.count;
                 // this.count = res.data.count;
                 this.toggleBusy();
                 
@@ -430,7 +431,7 @@ export default {
         },
         searchServiceOrder() {
             if (!this.searchSo) return
-                this.strQuery = `&mne=${this.searchSo}`;
+                this.strQuery = `&servOrder=${this.searchSo}`;
                 this.searchToggle = !this.searchToggle;
                 if (this.searchToggle) {
                     this.loadServiceOrders()
